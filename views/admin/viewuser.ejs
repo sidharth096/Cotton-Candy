@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-seller-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">   
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admin/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/admin/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<%-include('../partials/adminheader')-%>
+        <section class="content-main">
+            <div class="content-header">
+                <a href="javascript:history.back()"><i class="material-icons md-arrow_back"></i> Go back </a>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header bg-primary" style="height:150px">
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl col-lg flex-grow-0" style="flex-basis:230px">
+                            <div class="img-thumbnail shadow w-100 bg-white position-relative text-center" style="height:190px; width:200px; margin-top:-120px">
+                                <img src="/admin/assets/imgs/brands/brand-3.jpg" class="center-xy img-fluid" alt="Logo Brand">
+                            </div>
+                        </div> <!--  col.// -->
+                        <div class="col-xl col-lg">
+                            <h3>Cotton Candy</h3>
+                            <p>Men's fasion store</p>
+                        </div> <!--  col.// -->
+                        <div class="col-xl-4 text-md-end">
+                            <select class="form-select w-auto d-inline-block">
+                                <option>Actions</option>
+                                <option>Disable shop</option>
+                                <option>Analyze</option>
+                                <option>Something</option>
+                            </select>
+                            <a href="#" class="btn btn-primary"> View live <i class="material-icons md-launch"></i> </a>
+                        </div> <!--  col.// -->
+                    </div> <!-- card-body.// -->
+                    <hr class="my-4">
+                    <div class="row g-4">
+                       
+                        <!-- <div class="col-md-12 col-lg-4 col-xl-2">
+                            <article class="box">
+                                <p class="mb-0 text-muted">Total sales:</p>
+                                <h5 class="text-success">238</h5>
+                                <p class="mb-0 text-muted">Revenue:</p>
+                                <h5 class="text-success mb-0">$2380</h5>
+                            </article>
+                        </div>  col.// -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <h6>Name</h6>
+                            <p>
+                                <%= userdetails.name %> <br>
+                                <template class="__cf_email__" data-cfemail="31585f575e715449505c415d541f525e5c">[email&#160;protected]</template> <br>
+        
+                            </p>
+                        </div> <!--  col.// -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <h6>User details</h6>
+                            <p>
+                                Email: <%= userdetails.email %> <br>
+                                Mobile:<%= userdetails.phonenumber %><br>
+    
+                            </p>
+                        </div> <!--  col.// -->
+                        <div class="col-sm-6 col-xl-4 text-xl-end">
+                            <map class="mapbox position-relative d-inline-block">
+                                <img src="/admin/assets/imgs/misc/map.jpg" class="rounded2" height="120" alt="map">
+                                <span class="map-pin" style="top:50px; left: 100px"></span>
+                                <button class="btn btn-sm btn-brand position-absolute bottom-0 end-0 mb-15 mr-15 font-xs"> Large </button>
+                            </map>
+                        </div> <!--  col.// -->
+                    </div> <!--  row.// -->
+                </div> <!--  card-body.// -->
+            </div> <!--  card.// -->
+          
+        </section> <!-- content-main end// -->
+        <%-include('../partials/adminfooter')-%>

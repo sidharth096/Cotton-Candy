@@ -1,0 +1,273 @@
+<%-include('../partials/adminheader')-%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Categories </h2>
+                <p>Add, edit or delete a category</p>
+            </div>
+            <div>
+                <input type="text" placeholder="Search Categories" class="form-control bg-white">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form id="myForm">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Category</label>
+                                <input type="text" placeholder="Type here" class="form-control" id="product_name"
+                                    name="category" />
+                            </div>
+                            <!-- <div class="mb-4">
+                                    <label for="product_slug" class="form-label">Slug</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_slug" />
+                                </div> -->
+                            <!-- <div class="mb-4">
+                                    <label class="form-label">Parent</label>
+                                    <select class="form-select">
+                                        <option>Clothes</option>
+                                        <option>T-Shirts</option>
+                                    </select>
+                                </div> -->
+                            <!-- <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" ></textarea>
+                                </div> -->
+                            <div class="d-grid">
+                                <button onclick="ready()" class="btn btn-primary">Create
+                                    category</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" />
+                                            </div>
+                                        </th>
+                                        <th>NO:</th>
+                                        <th>Catogory</th>
+
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let count=1; %>
+                                        <% categories.forEach(function(categories) { %>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" />
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <%=count%>
+                                                </td>
+                                                <td><b>
+                                                        <%=categories.categoryname%>
+                                                    </b></td>
+
+
+                                                <td class="text-end">
+                                                    <div>
+                                                        <button class="btn btn-sm btn-danger"
+                                                            onclick="deleteproduct('<%=categories._id%>')">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% count++; %>
+                                                       <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section> <!-- content-main end// -->
+    <%-include('../partials/adminfooter')-%>
+
+
+ 
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- 
+        <script>
+            function showAlert() {
+                swal({
+                    title: "Success!",
+                    text: "Your request was successful!",
+                    icon: "success",
+                    timer: 3000,
+                    buttons: false,
+                });
+            }
+        </script> -->
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function deleteproduct(productId) {
+                const url2 = `/admin/deletecategory/${productId}`;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Also deleted all products in this category!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'ok'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+
+                        try {
+                            const response = await fetch(url2, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            console.log(response);
+                            Swal.fire(
+                                'deleted!',
+                                ' Category has been deleted.',
+                                'success'
+                            ).then(res => {
+                                window.location.reload()
+                            })
+
+
+                        } catch (error) {
+                            console.error(`${error.message}`);
+                        }
+
+
+                    }
+                })
+            }
+
+
+
+
+            // $(document).ready(function () {
+            //     // Attach event listener to the form submission event
+            //     $('#myForm').submit(function (event) {
+            //         event.preventDefault(); // Prevent default form submission behavior
+
+            //         // Retrieve the form data
+            //         var formData = $(this).serialize();
+            //         console.log("hello");
+            //         console.log(formData);
+            //         // Create an Ajax request
+            //         $.ajax({
+            //             type: 'POST',
+            //             url: '/admin/addcategory',
+            //             data: formData,
+            //             success: function (response) {
+            //                 if (response.status) {
+            //                     Swal.fire({
+            //                         position: 'center',
+            //                         icon: 'success',
+            //                         title: 'Category added',
+            //                         showConfirmButton: false,
+            //                         timer: 1600
+            //                     }).then(res => {
+            //                     window.location.reload()
+            //                 })
+            //                 }
+            //                 else {
+            //                     Swal.fire({
+            //                         icon: 'warning',
+            //                         title: 'Category already excisted',
+            //                     })
+            //                 }
+            //             },
+            //             error: function (xhr, status, error) {
+            //                 // Handle any errors that occur during the request
+            //                 console.error(error);
+            //             }
+            //         });
+            //     });
+            // });
+
+
+        </script>
+       <script>
+        function ready() {
+          const categoryInput = document.getElementById("product_name");
+          const category = categoryInput.value.trim();
+          const specialCharsRegex = /[!@#$%^&*()+=\[\]{};':"\\|,.<>\/?]/;
+      
+          // Check if the category is empty or consists only of whitespace
+          if (!category) {
+            showAlert("Category name cannot be empty");
+            return;
+          }
+      
+          // Check if the category contains special characters
+          if (specialCharsRegex.test(category)) {
+            showAlert("Category name cannot contain special characters");
+            return;
+          }
+      
+          // Submit the form if the validation passes
+          console.log("bb");
+          addCategory(category);
+        }
+      
+        function addCategory(category) {
+          // Create an Ajax request to add the category
+          $.ajax({
+            type: 'POST',
+            url: '/admin/addcategory',
+            data: { category },
+            success: function (response) {
+                console.log("aaa");
+                console.log(response); 
+                console.log("aaa");
+              if (response.status==true) {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Category added',
+                  showConfirmButton: false,
+                  timer: 1600
+                }).then(res => {
+                  window.location.reload();
+                });
+              } else if(response.status==false) {
+                showAlert("Category already exists");
+                
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error(error);
+            }
+          });
+        }
+      
+        function showAlert(message) {
+          Swal.fire({
+            icon: 'warning',
+            text: message,
+          }).then(res => {
+                  window.location.reload();
+                });;
+        }
+      
+        $(document).ready(function () {
+          // Attach event listener to the form submission event
+          $('#myForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            // ready();
+          });
+        });
+      </script>
+      

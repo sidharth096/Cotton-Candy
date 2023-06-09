@@ -1,0 +1,149 @@
+<%-include('../partials/userheader')-%>
+
+
+  <div role="main" class="main shop py-4">
+
+    <div class="container py-4">
+
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5 mb-5 mb-lg-0 mt-5">
+          <h2 class="font-weight-bold text-5 mb-0 mt-3 text-center">Cotton Candy</h2>
+          <h3 class="font-weight-bold text-5 mb-2 text-center ">Login</h3>
+          <% var msg=msg || '' ; %>
+            <% if (msg) { %>
+              <span class="text-danger font-weight-bold text-center d-flex justify-content-center" >
+               <h6 id="mytext"><%= msg %></h6> 
+              </span>
+              <% } %>
+                <form action="/login" id="login-form" method="post" class="needs-validation mt-3">
+                  <div class="row">
+                    <div class="form-group col">
+                      <label class="form-label text-color-dark text-3">Email address <span
+                          class="text-color-danger">*</span></label>
+                      <input type="text" value="" name="email" id="email" class="form-control form-control-lg text-4"
+                        required>
+                      <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                        id="emailError"></span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <label class="form-label text-color-dark text-3">Password <span
+                          class="text-color-danger">*</span></label>
+                      <input type="password" value="" id="password" name="password"
+                        class="form-control form-control-lg text-4" required>
+                      <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                        id="passwordError"></span>
+                    </div>
+                  </div>
+                  <div class="row justify-content-between mt-4">
+                    <div class="form-group col-md-auto">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="rememberme">
+
+                        <label class="form-label custom-control-label cur-pointer text-2" for="rememberme">Remember
+                          Me</label>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-auto">
+                      <a class="text-decoration-none text-color-dark text-color-hover-primary font-weight-semibold text-2"
+                        href="/forgotpass">Forgot Password?</a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <button type="submit"
+                        class="btn btn-dark btn-modern w-100 text-uppercase rounded-0 font-weight-bold text-3 py-3"
+                        data-loading-text="Loading...">Login</button>
+                      <div class="divider">
+
+                      </div>
+                      <div class="form-group col-md-auto text-center mt-3 ">
+                        <a class="text-decoration-none text-color-dark  text-color-hover-primary font-weight-semibold text-2 "
+                          href="/otplogin">Login with OTP</a>
+                      </div>
+                      <div class="form-group col-md-auto text-center mt-3 ">
+                        <a class="text-decoration-none text-color-dark  text-color-hover-primary font-weight-semibold text-2 "
+                          href="/signup">Create new account</a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script>
+    const loginForm = document.getElementById("login-form");
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password")
+    //   const password2 = document.getElementById("password2")
+
+
+    const emailRegX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    const passRegX = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{4,}$/;
+
+    loginForm.addEventListener('submit', (e) => {
+
+
+      if (email.value === "" || email.value === null) {
+        e.preventDefault();
+        document.getElementById("emailError").classList.remove('d-none');
+        document.getElementById("emailError").innerHTML = "Email must be filled!"
+      } else if (!email.value.match(emailRegX)) {
+        e.preventDefault();
+        document.getElementById("emailError").classList.remove('d-none');
+        document.getElementById("emailError").innerHTML = "Invalid Email Address";
+      } else if (email.value.match(emailRegX)) {
+        document.getElementById("emailError").classList.remove('d-none');
+        document.getElementById("emailError").innerHTML = ""
+      }
+
+
+
+      if (password.value === "" || password.value === null) {
+        e.preventDefault();
+        document.getElementById("passwordError").classList.remove('d-none');
+        document.getElementById("passwordError").innerHTML = "password number must be filled!"
+      } else if (!password.value.match(passRegX)) {
+        e.preventDefault();
+        document.getElementById("passwordError").classList.remove('d-none');
+        document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter,<br> one lowercase letter, one number and one special character.";
+      } else if (password.value.match(passRegX)) {
+        document.getElementById("passwordError").classList.remove('d-none');
+        document.getElementById("passwordError").innerHTML = ""
+      }
+
+      function hideText() {
+        document.getElementById("mytext").style.display = "none";
+      }
+
+      window.onload = function () {
+        console.log("hallo");
+        setTimeout(hideText, 2000); // Hide text after 5 seconds
+      };
+
+
+    })
+
+  </script>
+
+  <!-- Optional JavaScript; choose one of the two! -->
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+  <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+   
+
+ 

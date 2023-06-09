@@ -1,0 +1,283 @@
+
+ <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"  />
+
+    <title>Cotton candy</title>
+    <!-- <style>
+      h1{
+        font-size: 40px;
+      }
+    </style> -->
+  </head>
+  <%-include('../partials/userheader')-%>
+<body>
+  <div role="main" class="main shop py-4">
+    <div class="container py-4">
+      <div class="row justify-content-center align-items-center ">
+        <div class="col-md-6 col-lg-5 ">
+          <h1 class="font-weight-bold text-5 mb-0 mt-1 text-center">Cotton Candy</h1>
+          <h2 class="font-weight-bold text-5 mb-0 mt-2 text-center">Register</h2>
+          <form action="/signup" id="signup-form" method="post">
+            <div class="row">
+              <div class="form-group col">
+                <div class="row mt-3">
+
+                  <!-- user alredy exist msg -->
+                  <% var msg=msg || '' ; %>
+                    <% if (msg) { %>
+                      <span class="text-danger font-weight-bold text-center">
+                        <%= msg %>
+                      </span>
+                      <% } %>
+
+                </div>
+
+                <label class="form-label text-color-dark text-3 mt-3">Name
+                  <span class="text-color-danger">*</span></label>
+                <input id="username" type="text" value="" name="name" class="form-control form-control-lg text-4" />
+              </div>
+              <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="usernameError"></span>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label class="form-label text-color-dark text-3 mt-3"> Email address
+                  <span class="text-color-danger">*</span></label>
+                <input id="email" type="text" value="" name="email" class="form-control form-control-lg text-4" />
+                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="emailError"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label class="form-label text-color-dark text-3 mt-3">Mobile no
+                  <span class="text-color-danger">*</span></label>
+                <input id="phonenumber" type="text" value="" name="mobile" class="form-control form-control-lg text-4" />
+              </div>
+              <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="phonenumberError"></span>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label class="form-label text-color-dark text-3">Password <span
+                    class="text-color-danger">*</span></label>
+                <input id="password" type="password" value="" name="password"
+                  class="form-control form-control-lg text-4"/>
+              </div>
+              <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="passwordError"></span>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                  <label class="form-label text-color-dark text-3">Confirm Password <span
+                          class="text-color-danger">*</span></label>
+                  <input type="password" value="" class="form-control form-control-lg text-4"
+                       id="password2" />
+                  <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px"
+                      id="password2Error"></span>
+              </div>
+           </div>
+
+            
+
+            <div class="row">
+              <div class="form-group col">
+                <p class="text-2 mb-2">
+
+                  <!-- <a href="#" class="text-decoration-none">privacy policy.</a> -->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <button type="submit"
+                  class="btn btn-dark btn-modern w-100 text-uppercase rounded-0 font-weight-bold text-3 py-3"
+                  data-loading-text="Loading...">
+                  Register
+                </button>
+                <div class="form-group col-md-auto text-center mt-3 ">
+                  <a class="text-decoration-none text-color-dark  text-color-hover-primary font-weight-semibold text-2 "
+                    href="/login">Already have an account</a>
+                </div>
+              </div>
+            </div>
+          </form>
+                    
+        </div>
+      </div>
+    </div>
+    <script>
+      const loginForm = document.getElementById("signup-form");
+
+      const userName = document.getElementById("username");
+      const email = document.getElementById("email");
+      const mobile = document.getElementById("phonenumber");
+      const password = document.getElementById("password")
+      const password2 = document.getElementById("password2");
+      //   const password2 = document.getElementById("password2")
+
+
+      const usernameRegex = /^[a-zA-Z0-9_]+$/;
+      const emailRegX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+      const mobileRegex = /^\d{10}$/;
+      const passRegX = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{6,}$/;
+      const PassstrengthRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+      loginForm.addEventListener('submit', (e) => {
+        if (userName.value === "" || userName.value === null) {
+          e.preventDefault();
+          document.getElementById("usernameError").classList.remove('d-none');
+          document.getElementById("usernameError").innerHTML = "Name must be filled!----"
+        } else if (!userName.value.match(usernameRegex)) {
+          e.preventDefault();
+          document.getElementById("usernameError").classList.remove('d-none');
+          document.getElementById("usernameError").innerHTML = "invalid name"
+        } else if (userName.value.match(usernameRegex)) {
+          document.getElementById('usernameError').innerHTML = "";
+          document.getElementById('usernameError').classList.add('d-none')
+        }
+
+
+        if (email.value === "" || email.value === null) {
+            e.preventDefault();
+            document.getElementById("emailError").classList.remove('d-none');
+            document.getElementById("emailError").innerHTML = "Email must be filled!"
+        } else if (!email.value.match(emailRegX)) {
+            e.preventDefault();
+            document.getElementById("emailError").classList.remove('d-none');
+            document.getElementById("emailError").innerHTML = "Invalid Email Address";
+        } else if (email.value.match(emailRegX)) {
+            document.getElementById("emailError").classList.remove('d-none');
+            document.getElementById("emailError").innerHTML = ""
+        }
+
+
+        if (mobile.value === "" || mobile.value === null) {
+          e.preventDefault();
+          document.getElementById("phonenumberError").classList.remove('d-none');
+          document.getElementById("phonenumberError").innerHTML = "Phone number must be filled!"
+        } else if (!mobile.value.match(mobileRegex)) {
+          e.preventDefault();
+          document.getElementById("phonenumberError").classList.remove('d-none');
+          document.getElementById("phonenumberError").innerHTML = "Invalid Phone Number";
+        } else if (mobile.value.match(mobileRegex)) {
+          document.getElementById("phonenumberError").classList.remove('d-none');
+          document.getElementById("phonenumberError").innerHTML = ""
+        }
+
+        // if (password.value === "" || password.value === null) {
+        //   e.preventDefault();
+        //   document.getElementById("passwordError").classList.remove('d-none');
+        //   document.getElementById("passwordError").innerHTML = "password number must be filled!"
+        // } else if (!password.value.match(passRegX)) {
+        //   e.preventDefault();
+        //   document.getElementById("passwordError").classList.remove('d-none');
+        //   document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter,<br> one lowercase letter, one number and one special character.";
+        // }else if(!password.value.match(PassstrengthRegex)){
+        //   document.getElementById("passwordError").classList.remove('d-none');
+        //   document.getElementById("passwordError").innerHTML = "Password strengthrs"  
+        // } else if (password.value.match(passRegX)) {
+        //   document.getElementById("passwordError").classList.remove('d-none');
+        //   document.getElementById("passwordError").innerHTML = ""
+        // }
+       if (password.value === "" || password.value === null) {
+    e.preventDefault();
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "Password must be filled!";
+  } else if (!password.value.match(PassstrengthRegex)) {
+    e.preventDefault();
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter, one lowercase letter, one number, and one special character.";
+  } 
+  // else if (!password.value.match(passRegX)) {
+  //   e.preventDefault();
+  //   document.getElementById("passwordError").classList.remove('d-none');
+  //   document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter, one lowercase letter, one number, and one special character.";
+  // }
+    else if (password.value.match(PassstrengthRegex)) {
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "";
+  }
+
+
+  if (password2.value === "" || password2.value === null) {
+    e.preventDefault();
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "Password must be filled!";
+  } else if (!password.value.match(PassstrengthRegex)) {
+    e.preventDefault();
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter, one lowercase letter, one number, and one special character.";
+  }
+  //  else if (!password.value.match(passRegX)) {
+  //   e.preventDefault();
+  //   document.getElementById("passwordError").classList.remove('d-none');
+  //   document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter, one lowercase letter, one number, and one special character.";
+  // } 
+    else if (password.value.match(PassstrengthRegex)) {
+    document.getElementById("passwordError").classList.remove('d-none');
+    document.getElementById("passwordError").innerHTML = "";
+  }
+  if (password.value !== password2.value) {
+       e.preventDefault();
+       document.getElementById("password2Error").classList.remove("d-none");
+       document.getElementById("password2Error").innerHTML =
+         "Passwords do not match!";
+     } else {
+       document.getElementById("password2Error").classList.remove("d-none");
+       document.getElementById("password2Error").innerHTML = "";
+     }
+
+        // if (password2.value === "" || password2.value === null) {
+        //     e.preventDefault();
+        //     document.getElementById("password2Error").classList.remove("d-none");
+        //     document.getElementById("password2Error").innerHTML =
+        //         "password number must be filled!"; r
+        // } else if (!password2.value.match(passRegX)) {
+        //     e.preventDefault();
+        //     document.getElementById("password2Error").classList.remove("d-none");
+        //     document.getElementById("password2Error").innerHTML =
+        //         "Password must contain at least 6 characters ";
+        // }else if(!password.value.match(PassstrengthRegex)){
+        //    document.getElementById("passwordError").classList.remove('d-none');
+        //    document.getElementById("passwordError").innerHTML = "Password strengthrs"  
+        // } else if (password2.value.match(passRegX)) {
+        //     document.getElementById("password2Error").classList.remove("d-none");
+        //     document.getElementById("password2Error").innerHTML = "";
+        // }
+        // if (password2.value === "" || password2.value === null) {
+        //     e.preventDefault();
+        //     document.getElementById("password2Error").classList.remove('d-none');
+        //     document.getElementById("password2Error").innerHTML = "password number must be filled!"
+        // } else if (!password.value.match(passRegX)) {
+        //     e.preventDefault();
+        //     document.getElementById("password2Error").classList.remove('d-none');
+        //     document.getElementById("password2Error").innerHTML = "Password must contain at least 6 characters including one uppercase letter,<br> one lowercase letter, one number and one special character.";
+        // } else if (password.value.match(passRegX)) {
+        //     document.getElementById("password2Error").classList.remove('d-none');
+        //     document.getElementById("password2Error").innerHTML = ""
+        // }
+      })
+    </script>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+<%- include('../shop/layout/user-header.ejs') %>
+
+
+
+
+
+
+    <head>
+        <meta charset="utf-8">
+        <title>Outlooks</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="">
+        <meta property="og:type" content="">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="profile/imgs/theme/favicon.svg">
+        <!-- Template CSS -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="profile/css/main.css">
+    </head>
+
+
+
+    <!-- Header Info Begin -->
+    <div class="header-info">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="header-item">
+                        <img src="shop/img/icons/delivery.png" alt="">
+                        <p>Free shipping on orders over $30 in USA</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-lg-center">
+                    <div class="header-item">
+                        <img src="shop/img/icons/voucher.png" alt="">
+                        <p>20% Student Discount</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-xl-right">
+                    <div class="header-item">
+                        <img src="shop/img/icons/sales.png" alt="">
+                        <p>30% off on dresses. Use code: 30OFF</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Info End -->
+    <!-- Header End -->
+
+    <!-- Page Add Section Begin -->
+    <section class="page-add">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="page-breadcrumb">
+                        <h2>Checkout<span>.</span></h2>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="shop/img/add.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <%= console.log("================="); %>
+    <%= console.log(Addresses[0]); %>
+    <%= console.log("================="); %>
+
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card-header">
+                        <h5 class="mb-0">Billing Address</h5>
+                      </div>
+                      <br>
+                      <%= console.log(Addresses[0]._id); %>
+                      <% for(let i = 0; i < Addresses.length; i++) { %>
+                        <div class="card mb-4 mb-lg-1">
+                            <div class="card-body">
+                                <div class="form-check">
+                                            <%= console.log( Addresses[i]._id ); %>
+                                    <input data-value="<%= Addresses[i]._id %>" class="form-check-input  billing-address" type="radio" name="billing-address"
+                                        value="<%= Addresses[i].streetname %>, <%= Addresses[i].apartmentnumber %>, <%= Addresses[i].city %>, <%= Addresses[i].state %> <%= Addresses[i].zipcode %>"
+                                        <% if(i === 0) { %> checked <% } %>>
+                                    <label class="form-check-label" for="address<%= i %>">
+                                        <p><%= Addresses[i].firstname %> <%= Addresses[i].lastname %></p>
+                                        <p>Phone: <%= Addresses[i].phone %></p>
+                                        <p>Email: <%= Addresses[i].email %></p>
+                                        <p>Address: </p>
+                                        <address>
+                                            <p>Street Name: <%= Addresses[i].streetname %></p>
+                                            <p>Apartment Number: <%= Addresses[i].apartmentnumber %></p>
+                                            <p>City: <%= Addresses[i].city %></p>
+                                            <p>State: <%= Addresses[i].state %></p>
+                                            <p>Zipcode: <%= Addresses[i].zipcode %></p>
+                                        </address>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                      
+                    <button class="btn btn-sm mt-30" data-toggle="modal" data-target="#exampleModal">Add New
+                        Address</button>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Your Orders</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let i=0; i < products.length; i++) { %>
+                                        <tr>
+                                            <td class="image product-thumbnail"><img
+                                                    src="/uploads/<%= products[i].productId.productImage %>.jpg"
+                                                    alt="#"></td>
+                                            <td>
+                                                <h5><a href="shop-product-full.html">
+                                                        <%= products[i].productId.productName %>
+                                                    </a></h5> <span class="product-qty">x <%= products[i].quantity%>
+                                                </span>
+                                            </td>
+                                            <% const total=products[i].productId.productPrice * products[i].quantity %>
+                                                <td>Rs. <%= total %>
+                                                </td>
+                                        </tr>
+                                        <% } %>
+                                            <tr>
+                                                <th>SubTotal</th>
+                                                <td class="product-subtotal" colspan="2"> Rs. <%= subtotal %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Shipping</th>
+                                                <td colspan="2"><em>Free Shipping</em></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total</th>
+                                                <td colspan="2" class="product-subtotal"><span
+                                                        class="font-xl text-brand fw-900"> Rs. <%= subtotal %></span>
+                                                </td>
+                                            </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        <div class="payment_method">
+                            <div class="mb-25">
+                                <h5>Payment</h5>
+                            </div>
+                            <div class="payment_option">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option"
+                                        id="exampleRadios3" checked="">
+                                    <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse"
+                                        data-target="#bankTranfer" aria-controls="bankTranfer">Internet Banking</label>
+
+                                </div>
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option"
+                                        id="exampleRadios4" checked="">
+                                    <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse"
+                                        data-target="#checkPayment" aria-controls="checkPayment">RazorPay</label>
+
+                                </div>
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option"
+                                        id="exampleRadios5" checked="" value="COD">
+                                    <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse"
+                                        data-target="#paypal" aria-controls="paypal">Cash On Delivery</label>
+
+                                </div>
+                            </div>
+                            <button id="placeOrder-btn" class="btn btn-fill-out btn-block mt-30">Place
+                                Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Address</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/addAddress" id="placeOrder-form">
+                        <div class="form-group">
+                            <label for="firstname">First name *</label>
+                            <input type="text" required="" name="firstname" placeholder="First name *" id="firstname">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Last name *</label>
+                            <input type="text" required="" name="lastname" placeholder="Last name *" id="lastname">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone *</label>
+                            <input required="" type="text" name="phone" placeholder="Phone *" id="phone">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address *</label>
+                            <input required="" type="text" name="email" placeholder="Email address *" id="email">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Apartment Number *</label>
+                            <input type="text" name="apartmentnumber" required="" placeholder="Apartment Number *"
+                                id="address">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address2">Street Name</label>
+                            <input type="text" name="streetname" required="" placeholder="Street Name" id="address2">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City / Town *</label>
+                            <input required="" type="text" name="city" placeholder="City / Town *" id="city">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State / County *</label>
+                            <input required="" type="text" name="state" placeholder="State / County *" id="state">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipcode">Postcode / ZIP *</label>
+                            <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" id="zipcode">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit" form="placeOrder-form" class="btn btn-primary" id="save-address-btn">Save
+                        Address</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section spad">
+        <div class="container">
+            <div class="newslatter-form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form action="#">
+                            <input type="text" placeholder="Your email address">
+                            <button type="submit">Subscribe to our newsletter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-widget">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>About us</h4>
+                            <ul>
+                                <li>About Us</li>
+                                <li>Community</li>
+                                <li>Jobs</li>
+                                <li>Shipping</li>
+                                <li>Contact Us</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Customer Care</h4>
+                            <ul>
+                                <li>Search</li>
+                                <li>Privacy Policy</li>
+                                <li>2019 Lookbook</li>
+                                <li>Shipping & Delivery</li>
+                                <li>Gallery</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Our Services</h4>
+                            <ul>
+                                <li>Free Shipping</li>
+                                <li>Free Returnes</li>
+                                <li>Our Franchising</li>
+                                <li>Terms and conditions</li>
+                                <li>Privacy Policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Information</h4>
+                            <ul>
+                                <li>Payment methods</li>
+                                <li>Times and shipping costs</li>
+                                <li>Product Returns</li>
+                                <li>Shipping methods</li>
+                                <li>Conformity of the products</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social-links-warp">
+            <div class="container">
+                <div class="social-links">
+                    <a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+                    <a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
+                    <a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+                    <a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+                    <a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+                    <a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
+                </div>
+            </div>
+
+            <div class="container text-center pt-5">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is
+                    made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a
+                        href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+            </div>
+
+
+        </div>
+    </footer>
+
+
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+
+    <script src="/shop/js/jquery-3.3.1.min.js"></script>
+    <script src="/shop/js/bootstrap.min.js"></script>
+    <script src="/shop/js/jquery.magnific-popup.min.js"></script>
+    <script src="/shop/js/jquery.slicknav.js"></script>
+    <script src="/shop/js/owl.carousel.min.js"></script>
+    <script src="/shop/js/jquery.nice-select.min.js"></script>
+    <script src="/shop/js/mixitup.min.js"></script>
+    <script src="/shop/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery Validation Plugin CDN -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <!-- Bootstrap CSS CDN -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <!-- Add this script to the end of your HTML body -->
+
+    <script>
+        // Form validation script
+        $(document).ready(function () {
+            $('#placeOrder-form').submit(function (event) {
+                $('.error-message').remove();
+
+                var firstName = $('#firstname').val().trim();
+                var lastName = $('#lastname').val().trim();
+                var phone = $('#phone').val().trim();
+                var email = $('#email').val().trim();
+                var apartmentNumber = $('#address').val().trim();
+                var streetName = $('#address2').val().trim();
+                var city = $('#city').val().trim();
+                var state = $('#state').val().trim();
+                var zipCode = $('#zipcode').val().trim();
+
+
+                if (firstName.length < 1) {
+                    $('#firstname').after('<div class="alert alert-danger error-message">Please enter your first name.</div>');
+                    event.preventDefault();
+                }
+
+                if (lastName.length < 1) {
+                    $('#lastname').after('<div class="alert alert-danger error-message">Please enter your last name.</div>');
+                    event.preventDefault();
+                }
+
+                if (phone.length < 1) {
+                    $('#phone').after('<div class="alert alert-danger error-message">Please enter your phone number.</div>');
+                    event.preventDefault();
+                } else {
+                    var phoneRegex = /^\d{10}$/;
+                    if (!phoneRegex.test(phone)) {
+                        $('#phone').after('<div class="alert alert-danger error-message">Please enter a valid phone number.</div>');
+                        event.preventDefault();
+                    }
+                }
+
+                if (email.length < 1) {
+                    $('#email').after('<div class="alert alert-danger error-message">Please enter your email address.</div>');
+                    event.preventDefault();
+                } else {
+                    var emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                    if (!emailRegex.test(email)) {
+                        $('#email').after('<div class="alert alert-danger error-message">Please enter a valid email address.</div>');
+                        event.preventDefault();
+                    }
+                }
+
+                if (apartmentNumber.length < 1) {
+                    $('#address').after('<div class="alert alert-danger error-message">Please enter your apartment number.</div>');
+                    event.preventDefault();
+                } else {
+                    var apartmentRegex = /^\d{3}$/;
+                    if (!apartmentRegex.test(apartmentNumber)) {
+                        $('#address').after('<div class="alert alert-danger error-message">Please enter a valid 3-digit apartment number.</div>');
+                        event.preventDefault();
+                    }
+                }
+
+
+                if (streetName.length < 1) {
+                    $('#address2').after('<div class="alert alert-danger error-message">Please enter your street name.</div>');
+                    event.preventDefault();
+                }
+
+                if (city.length < 1) {
+                    $('#city').after('<div class="alert alert-danger error-message">Please enter your city.</div>');
+                    event.preventDefault();
+                }
+
+                if (state.length < 1) {
+                    $('#state').after('<div class="alert alert-danger error-message">Please enter your state.</div>');
+                    event.preventDefault();
+                }
+
+                if (zipCode.length < 1) {
+                    $('#zipcode').after('<div class="alert alert-danger error-message">Please enter your 6 digit zip code.</div>');
+                    event.preventDefault();
+                } else {
+                    var zipCodeRegex = /^\d{6}$/;
+                    if (!zipCodeRegex.test(zipCode)) {
+                        $('#zipcode').after('<div class="alert alert-danger error-message">Please enter a valid zip code.</div>');
+                        $('#zipcode').addClass('is-invalid');
+                        event.preventDefault();
+                    } else {
+                        $('#zipcode').removeClass('is-invalid');
+                    }
+                }
+            });
+        });
+    </script>
+
+<script>
+var dataValue;
+const radioInputs = document.querySelectorAll('.billing-address');
+radioInputs.forEach(function(radio) {
+  radio.addEventListener('change', function() {
+
+     dataValue = radio.getAttribute('data-value');
+
+    console.log('Selected data-value: ', dataValue);
+  });
+});
+
+
+    $(document).ready(function() {
+        $('#placeOrder-btn').on('click', function(e) {
+            e.preventDefault();
+            console.log(dataValue);
+            var payment_method = $('input[name="payment"]:checked').val();
+            $.ajax({
+                type: 'POST',
+                url: '/placeOrder',
+                data: {address_id: dataValue, payment_method: payment_method},
+               
+                success: function(response) {
+                   
+                    placeOrder(response.address, response.payment_method);
+                },
+                error: function( status, error) {
+                  
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+    <!-- Template  JS -->
+    <script src="/profile/js/main.js"></script>
+    </body>
+
+    </html>

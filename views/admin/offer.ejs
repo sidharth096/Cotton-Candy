@@ -1,0 +1,239 @@
+<%-include('../partials/adminheader')-%>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Offer </h2>
+                    <p>Add,delete a offer</p>
+                </div>
+               
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/add-offer" method="post" >
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" placeholder="Type here" name="name" class="form-control" id="name" />
+                                </div>
+                                <div class="mb-4">
+                                    <label for="Discount-amount" class="form-label">Discount </label>
+                                    <input type="text" placeholder="Type here" name="discount" class="form-control" id="Discount" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category">
+                                        <% Category.forEach(function(category){ %>
+                                        <option> <%=category.categoryname  %></option>
+                                       
+                                   
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" placeholder="Type here" name="endDate"  class="form-control" id="End-date" />
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Discount</th>
+                                            <th>Category</th>
+                                            <th>End date</th>
+                                            <th>status</th>
+                                            
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if(offer){ %>
+                                            <% let count=1 %>
+                                            <%offer.forEach(function(offer) { %>
+                                                
+                                            <tr>
+                                             
+                                                <td><%=count %></td>
+                                                <td><b><%=offer.title %></b></td>
+                                                <td><%=offer.discount %></td>
+                                                <td><%=offer.category %></td>
+                                                <td><%=offer.endDate.toISOString().split('T') %></td>
+                                                <td>
+                                                    <% if(offer.offeractive==false){ %>
+                                                        <span class="badge rounded-pill alert-danger">Not Active</span>
+                                                        <% }else { %>
+                                                        <span class="badge rounded-pill alert-success">Active</span>
+                                                        <% } %>
+                                                </td>
+                                                <td class="text-end">
+                                                    <% if(offer.offeractive==false){ %>
+                                                    <button onclick="activeOffer('<%=offer._id%>')" class="btn btn-sm font-sm btn-success rounded">
+                                                        Active
+                                                    </button>
+                                                    <% }else { %>
+                                                        <button onclick="deactiveOffer('<%=offer._id%>')" class="btn btn-sm font-sm btn-warning rounded">
+                                                            Deactive
+                                                        </button>
+                                                    <% } %>
+                                                    <button onclick="deleteOffer('<%=offer._id%>')" class="btn btn-sm font-sm btn-danger rounded">
+                                                        <i class="material-icons md-delete_forever"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <% count++ %>
+                                            <% }) %>
+    
+                                            <% }else{ %>
+                                            <h2>No offers</h2>
+                                            <% } %>
+                                           
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section>
+        <div class="pagination-area mt-15 mb-50">
+               
+           
+       </div> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+            <%-include('../partials/adminfooter')-%>
+
+
+            
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+ function deleteOffer(offerId) {
+   const url2 = `/admin/deleteOffer/${offerId}`;
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "ok",
+   }).then(async (result) => {
+     if (result.isConfirmed) {
+       try {
+         const response = await fetch(url2, {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+         });
+         console.log(response);
+         if(response.status){
+            Swal.fire("deleted!", "Offer has been deleted.", "success").then(
+           (res) => {
+             window.location.reload();
+           }
+         );
+         
+         }
+      
+       } catch (error) {
+         console.error(`${error.message}`);
+       }
+     }
+   });
+ }
+
+function activeOffer(offerId) {
+   const url2 = `/admin/activeOffer/${offerId}`;
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "ok",
+   }).then(async (result) => {
+     if (result.isConfirmed) {
+       try {
+         const response = await fetch(url2, {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+         });
+         console.log(response);
+         if(response.status){
+            Swal.fire("Actived!", "Offer has been Activated.", "success").then(
+           (res) => {
+             window.location.reload();
+           }
+         );
+         
+         }
+      
+       } catch (error) {
+         console.error(`${error.message}`);
+       }
+     }
+   });
+ }
+
+function deactiveOffer(offerId) {
+   const url2 = `/admin/deactiveOffer/${offerId}`;
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "ok",
+   }).then(async (result) => {
+     if (result.isConfirmed) {
+       try {
+         const response = await fetch(url2, {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+         });
+         console.log(response);
+         if(response.status){
+            Swal.fire("Deactived!", "Offer has been DEactivated.", "success").then(
+           (res) => {
+             window.location.reload();
+           }
+         );
+         
+         }
+      
+       } catch (error) {
+         console.error(`${error.message}`);
+       }
+     }
+   });
+ }
+ </script>

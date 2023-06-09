@@ -1,0 +1,194 @@
+<%-include('../partials/adminheader')-%>
+  <section class="content-main">
+    <div class="content-header">
+      <h2 class="content-title">Product list</h2>
+      <div>
+        <a href="/admin/addproduct" class="btn btn-primary"><i class="material-icons md-plus"></i> Add product</a>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <header class="card-header">
+        <div class="row gx-3">
+          <!-- <div class="col-lg-4 col-md-6 me-auto">
+            <input type="text" placeholder="Search..." class="form-control" />
+          </div> -->
+          <div class="col-lg-2 col-md-3 col-6">
+            <form class="search-form " action="/search" method="GET">
+                <div class="input-group">
+                    <input  type="text"  class="form-control" placeholder="Search term">
+                    <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                </div>
+                
+            </form>
+        </div>
+          <div class="col-lg-2 col-md-3 col-6">
+            <select class="form-select">
+              <option>Status</option>
+              <option>Active</option>
+              <option>Disabled</option>
+              <option>Show all</option>
+            </select>
+          </div>
+          <!-- <div class="col-lg-2 col-md-3 col-6">
+            <select class="form-select">
+              <option>Show 20</option>
+              <option>Show 30</option>
+              <option>Show 40</option>
+            </select>
+          </div> -->
+        </div>
+      </header>
+      <!-- card-header end// -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" id="user-lists">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Product</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>category</th>
+                <th>Quantity</th>
+                <th class="text-end">Action</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% let count=1; %>
+              <% products.forEach(function(products) { %>
+
+                  <tr>
+                    <td>
+                      <%= count %>
+                    </td>
+                    <td width="25%">
+                      <a href="#" class="itemside">
+                        <!-- <div class="left">
+                                                    <img src="/admin/imgs/people/avatar1.jpg" class="img-sm img-avatar"
+                                                        alt="Userpic">
+                                                </div> -->
+                        <div class="info pl-3">
+                          <h6 class="mb-0 title">
+                            <% if (products.productimage && products.productimage.length > 0) { %>
+                                <img src="/uploads/<%= products.productimage[0]%>" class="img-sm img-thumbnail"  alt="Product Image">
+                              <% } else { %>
+                                <img src="/uploads/default-image.jpg" alt="Default Image">
+                              <% } %>
+                          </h6>
+                        </div>
+                      </a>
+                    </td>
+                    <td>
+                      <div class="info">
+                        <h6 class="mb-0 title">
+                            <%=products.productname%>
+
+                        </h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="info pl-3">
+                        <h6 class="mb-0 title">
+                            <%=products. productpromotionalprice%>
+                        </h6>
+                      </div>
+                    </td>
+
+                    <td>
+                        <% if(products.productdeactive==false){ %>
+                            <span class="badge rounded-pill alert-success">Active</span>
+                            <% }else { %>
+                            <span class="badge rounded-pill alert-danger">Deactive</span>
+                            <% } %>
+                                         
+                                        </td>
+                                        
+                    <td>
+                        <%=products.productcategory%>
+                    </td>
+                    <td>
+                        <h6><%=products.productQuantity %></h6>
+                       
+                    </td>
+                    <td>
+                      <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                        <div class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                            <div class="dropdown-menu">
+
+                                <a href="/admin/editproduct/<%=products._id%>" class="btn btn-sm font-sm rounded btn-brand">
+                                    <i class="material-icons md-edit"></i> Edit
+                                </a>
+                                <% if(products.productdeactive==true) { %>
+                                <a href="/admin/activeproduct/<%=products._id%>" class="btn btn-sm font-sm rounded btn-brand">
+                                    <i class="material-icons md-edit"></i>Ative
+                                </a>
+                                <% }else{ %>
+                                <a href="/admin/deactiveproduct/<%=products._id%>" class="btn btn-sm font-sm rounded btn-brand">
+                                    <i class="material-icons md-edit"></i>Deative
+                                </a>
+                                <% } %>
+                                <button onclick="deleteproduct('<%=products._id%>')" class="btn btn-sm font-sm btn-danger rounded">
+                                    <i class="material-icons md-delete_forever"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    </td>
+                  </tr>
+                  <% count++; %>        <% }); %>
+            </tbody>
+          </table>
+          <!-- table-responsive.// -->
+        </div>
+      </div>
+      <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+     
+        <%-include('pagination')-%>
+    </div> 
+</section> <!-- content-main end// -->
+<%-include('../partials/adminfooter')-%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+ function deleteproduct(productId) {
+   const url2 = `/admin/deleteproduct/${productId}`;
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "ok",
+   }).then(async (result) => {
+     if (result.isConfirmed) {
+       try {
+         const response = await fetch(url2, {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+         });
+         console.log(response);
+         if(response.status){
+         Swal.fire("deleted!", "User has been deleted.", "success").then(
+           (res) => {
+             window.location.reload();
+           }
+         );
+          }
+       } catch (error) {
+         console.error(`${error.message}`);
+       }
+     }
+   });
+ }
+ </script>

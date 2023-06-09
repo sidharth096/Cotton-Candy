@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-seller-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admin/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/admin/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<%-include('../partials/adminheader')-%>
+    <section class="content-main">
+        <form action="/admin/editproductpost/<%=productdetails._id%>" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- <form> -->
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here" value="<%=productdetails.productname %>"
+                                    class="form-control" id="product_name" name="productname">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+
+                            </div>
+                            <div class="row"> <textarea placeholder="Type here" class="form-control" rows="4"
+                                    name="description"><%=productdetails.productdescription%></textarea>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="$" type="text" class="form-control"
+                                                value="<%=productdetails.productregularprice %>" name="regularprice">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Promotional price</label>
+                                        <input placeholder="$" type="text" class="form-control"
+                                            value=" <%=productdetails.productpromotionalprice%>"
+                                            name="promotionalprice">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-lg-4">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-select">
+                                            <option> USD </option>
+                                            <option> EUR </option>
+                                            <option> RUBL </option>
+                                        </select>
+                                    </div> -->
+                            </div>
+                            <!-- <div class="mb-4">
+                                    <label class="form-label">Tax rate</label>
+                                    <input type="text" placeholder="%" class="form-control" id="product_name">
+                                </div>
+                                <label class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-label"> Make a template </span>
+                                </label> -->
+                            <!-- </form> -->
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Shipping</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- <form> -->
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Size</label>
+                                        <input type="text" placeholder="inch" class="form-control"
+                                            value="<%=productdetails.productsize %>" id="product_name" name="size">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label for="product_name" class="form-label">Height</label>
+                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
+                                        </div>
+                                    </div> -->
+                            </div>
+                            <!-- <div class="mb-4">
+                                    <label for="product_name" class="form-label">Weight</label>
+                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
+                                </div> -->
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Quantity</label>
+                                <input type="text" placeholder="$" class="form-control" id="product_name"
+                                    value="<%=productdetails.productquantity %>" name="quantity">
+                            </div>
+                            <!-- </form> -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+
+                              <%for(i=0;i<productdetails.productimage.length;i++){ %>
+                                <img src="/uploads/<%=productdetails.productimage[i]%>" alt="">
+                              <% } %>
+                   
+
+                                <input class="form-control" type="file" name="productimage" value="value="
+                                    <%=productdetails.productimage[0]%>" multiple>
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Organization</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gx-2">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category">
+                                        <% categories.forEach(function(categories) { %>
+
+                                            <option>
+                                                <%=categories.categoryname %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                                <!-- <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Sub-category</label>
+                                    <select class="form-select">
+                                        <option> Nissan </option>
+                                        <option> Honda </option>
+                                        <option> Mercedes </option>
+                                        <option> Chevrolet </option>
+                                    </select>
+                                    </div>
+                                     <div class="mb-4">
+                                    <label for="product_name" class="form-label">Tags</label>
+                                    <input type="text" class="form-control">
+                                 </div> -->
+                            </div> <!-- row.// -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+            </div>
+
+        </form>
+    </section> <!-- content-main end// -->
+    <%-include('../partials/adminfooter')-%>
+
+    <script>
+        const form = document.querySelector('#add-product');
+    
+        const nameInput = document.getElementById('product_name');
+        const descInput = document.getElementById('prodDescription');
+        const pricepromoInput = document.getElementById('prodpromoPrice');
+        const priceregInput = document.getElementById('prodregPrice');
+        const qtyInput = document.getElementById('product_quantity');
+        const sizeInput = document.getElementById('product_size');
+        const imageInput = document.getElementById('product_image');
+    
+        const nameError = document.getElementById('nameError');
+        const descError = document.getElementById('descError');
+        const priceproError = document.getElementById('priceproError');
+        const priceregError = document.getElementById('priceregError');
+        const qtyError = document.getElementById('quantityError');
+        const sizeError = document.getElementById('sizeError');
+        const imageError = document.getElementById('imageError');
+    
+        // Regular expressions for validation
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const descRegex = /^[A-Za-z\s]+$/;
+        const priceRegex = /^\d+(\.\d{1,2})?$/;
+        const qtyRegex = /^\d+$/;
+        const sizeRegex =  /^(S|L|M|XL|XXL|XXXL)$/;
+    
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+    
+            let isValid = true;
+    
+            if (nameInput.value.trim() === '') {
+                nameError.innerHTML = 'Please enter the product title';
+                isValid = false;
+            } else if (!nameRegex.test(nameInput.value.trim())) {
+                nameError.innerHTML = 'Please enter a valid product title (only alphanumeric characters and spaces are allowed)';
+                isValid = false;
+            } else {
+                nameError.innerHTML = '';
+            }
+    
+            if (descInput.value.trim() === '') {
+                descError.innerHTML = 'Please enter the product description';
+                isValid = false;
+            } else if (!descRegex.test(descInput.value.trim())) {
+                descError.innerHTML = 'Please enter a valid product description (only alphanumeric characters and spaces are allowed)';
+                isValid = false;
+            } else {
+                descError.innerHTML = '';
+            }
+    
+            if (pricepromoInput.value.trim() === '') {
+                priceproError.innerHTML = 'Please enter the product price';
+                isValid = false;
+            } else if (!priceRegex.test(pricepromoInput.value.trim())) {
+                priceproError.innerHTML = 'Please enter a valid product price (e.g., 10 or 10.99)';
+                isValid = false;
+            } else {
+                priceproError.innerHTML = '';
+            }
+    
+            if (priceregInput.value.trim() === '') {
+                priceregError.innerHTML = 'Please enter the product price';
+                isValid = false;
+            } else if (!priceRegex.test(priceregInput.value.trim())) {
+                priceregError.innerHTML = 'Please enter a valid product price (e.g., 10 or 10.99)';
+                isValid = false;
+            } else {
+                priceregError.innerHTML = '';
+            }
+    
+            if (qtyInput.value.trim() === '') {
+                qtyError.innerHTML = 'Please enter the product quantity';
+                isValid = false;
+            } else if (!qtyRegex.test(qtyInput.value.trim())) {
+                qtyError.innerHTML = 'Please enter a valid product quantity (only positive whole numbers are allowed)';
+                isValid = false;
+            } else {
+                qtyError.innerHTML = '';
+            }
+    
+            if (sizeInput.value.trim() === '') {
+        sizeError.innerHTML = 'Please enter the product size';
+        isValid = false;
+    } else {
+        sizeError.innerHTML = '';
+    }
+    if (imageInput.files.length === 0) {
+                imageError.innerHTML = 'Please select an image';
+                isValid = false;
+            } else {
+                imageError.innerHTML = '';
+               } 
+
+    if (isValid) {
+        form.submit();
+       }
+    });
+ 
+          
+  </script>

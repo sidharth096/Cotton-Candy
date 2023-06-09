@@ -1,0 +1,133 @@
+<head>
+    <style>
+        .order_review{
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 73px;
+        }
+        .t-head{
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<% var username=username || '' ; %>
+<% var Wishlistcount=Wishlistcount|| 0 ; %>
+<% var cartCount=cartCount|| 0 ; %>
+<% if (username) { %>
+    <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%>
+
+ <% }else{%>
+    <%-include('../partials/userheader')-%>
+<% } %>
+ 
+                    <div class="col-md-sm-8">
+                        <div class="order_review">
+                            <div class="mb-20">
+                                <h4>Your Orders</h4>
+                            </div>
+                            <div class="table-responsive order_table text-center">
+                                <table class="table">
+                                    <thead class="t-head">
+                                        <tr>
+                                            
+                                            <th>Order Date</th>
+                                            <!-- <th>Address</th> -->
+                                            <th>Payment Method</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                            
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%orders.forEach(function(order){ %>
+                                        <tr>
+                                            <td><%=order.orderDate.toISOString().split('T')[0] %></td>
+                                           
+                                            <td><%=order.paymentMethod %></td>
+                                            <td>
+                                                <% if(order.orderStatus=='placed' ) {%>
+                                                    <span
+                                                        class="badge rounded-pill alert-success text-success">
+                                                        <%= order.orderStatus %>
+                                                    </span>
+                                                    <% }else if (order.orderStatus=='Cancelled' )  { %>
+                                                        <span
+                                                            class="badge rounded-pill alert-danger text-danger">
+                                                            <%= order.orderStatus %>
+                                                        </span>
+                                                        <% }else{ %>
+                                                            <span
+                                                                class="badge rounded-pill alert-warning text-warning">
+                                                                <%= order.orderStatus %>
+                                                            </span>
+        
+                                                         <% } %>
+
+
+                                            </td>
+                                            <td>₹<%=order.totalAmount%></td>
+                                            <td> <a href="/orderdetailsOf-user/<%=order._id%>" class="btn btn-dark rounded font-sm mt-15">View
+                                                details</a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                      
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+   
+    <!-- Preloader Start -->
+    <!-- <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/shop.js"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+</html>
+<%-include('../partials/userfooter')-%>

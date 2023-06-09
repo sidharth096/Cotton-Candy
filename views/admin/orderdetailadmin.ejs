@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admin/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/admin/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<%- include('../partials/adminheader') %>
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order detail</h2>
+            <p>Details for Order ID: <%= Order._id %></p>
+        </div>
+    </div>
+    <div class="card">
+        <header class="card-header">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                    <span>
+                        <i class="material-icons md-calendar_today"></i> <b><%= Order.orderDate.toISOString().split('T')[0] %></b>
+                    </span> <br>
+                    <small class="text-muted">Order ID:  <%= Order._id %></small>
+                </div>
+                <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                    <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
+                        <option>Change status</option>
+                        <option>Awaiting payment</option>
+                        <option>Confirmed</option>
+                        <option>Shipped</option>
+                        <option>Delivered</option>
+                    </select>
+                    <a class="btn btn-primary" href="#">Save</a>
+                    <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="row mb-50 mt-20 order-info-wrap">
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-person"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Customer</h6>
+                            <p class="mb-1">
+                                <%= Order.user.name %> <br> <template class="cf_email" data-cfemail="email"></template> <br>  +91<%= Order.user.phonenumber %> 
+                            </p>
+                            <a href="#">View profile</a>
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-local_shipping"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Order info</h6>
+                            <p class="mb-1">
+                                Shipping: Fargo express <br> Pay method:<%= Order.paymentMethod %>  <br> Status: <%= Order.orderStatus %>
+                            </p>
+                            <a href="#">Download info</a>
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-place"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Deliver to</h6>
+
+                            <p class="mb-1">
+                             <br> <br> 
+                            </p>
+                            <a href="#">View profile</a>
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+            </div> <!-- row // -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Product</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <% for( let i = 0; i < Order.orderedItems.productId.length; i++ ) { %>
+                                        <tr>
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/uploads/<%= Order.orderedItems.productId[i].productimage[0] %>" width="40" height="40" class="img-xs" alt="Item">
+                                                    </div>
+                                                    <div class="info"> <%= Order.orderedItems.productId[i].productName %> </div>
+                                                </a>
+                                            </td>
+                                            <td>Rs.<%= Order.orderedItems.productId[i].productpromotionalprice %></td>
+                                            <td><%= Order.orderedItems.quantity %></td>
+                                            <td class="text-end">
+                                                 <%= Order.orderedItems.productId[i].productpromotionalprice %>
+                                              </td>
+                                              </tr>
+                                       
+                                       <% } %>
+                                </tr>
+                                
+                                <tr>
+                                    <td colspan="4">
+                                        <article class="float-end">
+                                            <dl class="dlist">
+                                                <dt>Subtotal:</dt>
+                                                <dd>₹ <%= Order.orderedItems.productId[0].productpromotionalprice %></dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Shipping cost:</dt>
+                                                <dd>Free Delivery</dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Grand total:</dt>
+                                                <dd> <b class="h5">₹ <%= Order.totalAmount %></b> </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt class="text-muted">Status:</dt>
+                                                <dd>
+                                                    <% if(Order.orderStatus=='placed' ) {%>
+                                                        <span
+                                                            class="badge rounded-pill alert-success text-success">
+                                                            <%= Order.orderStatus %>
+                                                        </span>
+                                                        <% }else if (Order.orderStatus=='Cancelled' )  { %>
+                                                            <span
+                                                                class="badge rounded-pill alert-danger text-danger">
+                                                                <%= Order.orderStatus %>
+                                                            </span>
+                                                            <% }else{ %>
+                                                                <span
+                                                                    class="badge rounded-pill alert-warning text-warning">
+                                                                    <%= Order.orderStatus %>
+                                                                </span>
+            
+                                                             <% } %>
+
+
+                                                </dd>
+                                            </dl>
+                                        </article>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <% if(Order.orderStatus=='placed' ) {%>
+                            <button onclick="cancelOrder('<%=Order._id%>')" type="button" class="btn btn-light">Order
+                            Cancel</button>
+                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-light">Return Order
+                            </button>
+                            <button onclick="DeliveredOrder('<%=Order._id%>')" type="button" class="btn btn-light">Order Delivered 
+                           </button>
+                         <% }else if(Order.orderStatus=='delivered'){ %>
+                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-light">Return Order
+                            </button>
+                         <% } %>   
+                    </div> <!-- table-responsive// -->
+                </div> <!-- col// -->
+                
+                    <!-- <div class="box shadow-sm bg-light">
+                        <h6 class="mb-15">Payment info</h6>
+                        <p>
+                            <img src="assets/imgs/card-brands/2.png" class="border" height="20"> Master Card **** **** 4768 <br>
+                            Business name: Grand Market LLC <br>
+                            Phone: +1 (800) 555-154-52
+                        </p>
+                    </div> -->
+                    <!-- <div class="h-25 pt-4">
+                        <div class="mb-3">
+                            <label>Notes</label>
+                            <textarea class="form-control" name="notes" id="notes" placeholder="Type some note"></textarea>
+                        </div>
+                        <button class="btn btn-primary">Save note</button>
+                    </div> -->
+                </div> <!-- col// -->
+            </div>
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+<%- include('../partials/adminfooter') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function cancelOrder(orderId) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed to checkout!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+
+                            type: 'put',
+                            url: `/cancelOrder/${orderId}`,
+
+
+                            success: function (response) {
+                                console.log("ghggg");
+                                console.log(response);
+                                if (response.status) {
+                                    Swal.fire(
+                                        'Cancelled!',
+                                        'Order has been Cancelled.',
+                                        'success'
+                                    )
+                                    setTimeout(() => {
+                                        window.location.reload()
+                                        console.log(response)
+
+                                    }, 1200)
+                                } else {
+                                    console.log("3333333333333");
+                                    console.log(response.response);
+
+                                }
+                            },
+                            error: function (status, error) {
+
+                                console.log(error);
+                            }
+                        });
+                    }
+                })
+            }
+     
+                    function ReturnOrder(orderId) {
+                      console.log("lllll");
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, proceed to checkout!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+        
+                                    type: 'put',
+                                    url: `/admin/ReturnOrder/${orderId}`,
+        
+        
+                                    success: function (response) {
+                                        console.log("ghggg");
+                                        console.log(response);
+                                        if (response.status) {
+                                            Swal.fire(
+                                                'Return!',
+                                                'Order has been Returned.',
+                                                'success'
+                                            )
+                                            setTimeout(() => {
+                                                window.location.reload()
+                                                console.log(response)
+        
+                                            }, 1200)
+                                        } else {
+                                            console.log("3333333333333");
+                                            console.log(response.response);
+        
+                                        }
+                                    },
+                                    error: function (status, error) {
+        
+                                        console.log(error);
+                                    }
+                                });
+                            }
+                        })
+                    }
+
+                    function DeliveredOrder(orderId) {
+                      console.log("lllll");
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, proceed to checkout!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+        
+                                    type: 'put',
+                                    url: `/admin/orderDelivery/${orderId}`,
+        
+        
+                                    success: function (response) {
+                                        console.log("ghggg");
+                                        console.log(response);
+                                        if (response.status) {
+                                            Swal.fire(
+                                                'Return!',
+                                                'Order has been Delivered.',
+                                                'success'
+                                            )
+                                            setTimeout(() => {
+                                                window.location.reload()
+                                                console.log(response)
+        
+                                            }, 1200)
+                                        } else {
+                                            console.log("3333333333333");
+                                            console.log(response.response);
+        
+                                        }
+                                    },
+                                    error: function (status, error) {
+        
+                                        console.log(error);
+                                    }
+                                });
+                            }
+                        })
+                    }
+
+
+                </script>
+

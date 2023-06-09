@@ -1,0 +1,134 @@
+<%-include('../partials/adminheader')-%>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Coupon </h2>
+                    <p>Add,delete a coupon</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/add-coupen" method="post" >
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Coupen Name</label>
+                                    <input type="text" placeholder="Type here" name="couponName" class="form-control" id="product-name" />
+                                </div>
+                                <div class="mb-4">
+                                    <label for="Discount-amount" class="form-label">Discount amount</label>
+                                    <input type="text" placeholder="Type here" name="couponAmount" class="form-control" id="Discount-amount" />
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Expired on</label>
+                                    <input type="date" placeholder="Type here" name="couponExpiry"  class="form-control" id="Expiry-date" />
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>No</th>
+                                            <th>Coupen Name</th>
+                                            <th>Coupen code</th>
+                                            <th>Discount Amount</th>
+                                            <th>Expirary date</th>
+                                            
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let count=1 %>
+                                        <%coupon.forEach(function(coupon) { %>
+                                            
+                                        <tr>
+                                         
+                                            <td><%=count %></td>
+                                            <td><b><%=coupon.couponName %></b></td>
+                                            <td><%=coupon.code %></td>
+                                            <td><%=coupon.discount %></td>
+                                            <td><%=coupon.expiryDate.toISOString().split('T') %></td>
+                                            <td class="text-end">
+                                                <button onclick="deleteCoupon('<%=coupon._id%>')" class="btn btn-sm font-sm btn-danger rounded">
+                                                    <i class="material-icons md-delete_forever"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <% count++ %>
+                                        <% }) %>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+            <%-include('../partials/adminfooter')-%>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+ function deleteCoupon(couponId) {
+   const url2 = `/admin/deleteCoupon/${couponId}`;
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "ok",
+   }).then(async (result) => {
+     if (result.isConfirmed) {
+       try {
+         const response = await fetch(url2, {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+           },
+         });
+         console.log(response);
+         if(response.status){
+            Swal.fire("deleted!", "Coupon has been deleted.", "success").then(
+           (res) => {
+             window.location.reload();
+           }
+         );
+         
+         }
+      
+       } catch (error) {
+         console.error(`${error.message}`);
+       }
+     }
+   });
+ }
+ </script>

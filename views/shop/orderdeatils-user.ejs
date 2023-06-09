@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/magiczoomplus/magiczoomplus.css" type="text/css">
+</head>
+    <% var username=username || '' ; %>
+    <% var Wishlistcount=Wishlistcount|| 0 ; %>
+    <% var cartCount=cartCount|| 0 ; %>
+    <% if (username) { %>
+        <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%>
+    
+     <% }else{%>
+        <%-include('../partials/userheader')-%>
+    <% } %>
+     
+
+
+    <body >
+        <div class="col-md-12">
+            <div class="order_review">
+                <div class="mb-20">
+                    <h4>Your Orders</h4>
+                </div>
+                <% orderdetailes.forEach(function(product){%>
+                    <div class="card shadow-0 border mb-10 mt-10">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-2 col-sm-2">
+                                    <img src="/uploads/<%=product.orderedProduct.productimage[0]%>" alt="" />
+                                </div>
+                                <div class="col-md-4 col-sm-3 align-items-center">
+                                    <p class="mb-0">
+                                        <%=product.orderedProduct.productname%>...
+                                    </p>
+                                    <p>
+                                        <%=product.orderedProduct.productcategory %>
+                                    </p>
+                                    <p class="text-muted mb-0 small">
+                                        Qty: <%=product.orderedItems.quantity%>
+                                    </p>
+                                    <p class="text-muted mb-0 small">
+                                        &#8377; <%=product.orderedProduct.productpromotionalprice%>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 align-items-center">
+                                    <p>OrderDate:<%=product.orderDate %>
+                                    </p>
+                                    <p>PaymentMethod:<%=product.paymentMethod %>
+                                    </p>
+                                    <p>
+                                        <% if(product.orderStatus=='placed' ) {%> OrderStatus:
+                                            <span class="badge rounded-pill alert-success text-success">
+                                                <%=product.orderStatus%>
+                                            </span>
+                                            <% }else if (product.orderStatus=='Cancelled' ) { %>
+                                                OrderStatus:
+                                                <span class="badge rounded-pill alert-danger text-danger">
+                                                    <%=product.orderStatus%>
+                                                </span>
+                                                <% }else{ %> OrderStatus:
+                                                    <span class="badge rounded-pill alert-warning text-warning">
+                                                        <%=product.orderStatus%>
+                                                    </span>
+
+                                                             <% } %>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 align-items-center">
+                                    <p>
+                                        <%=address[0].name%><br />
+                                            <%=address[0].address%><br />
+                                                <%=address[0].city%><br />
+                                                    <%=address[0].state%><br />
+                                                        <%=address[0].postcode%><br />
+                                                            <%=address[0].email%>
+                                    </p>
+                                </div>
+                                <% if(orderdetailes[0].orderStatus=='placed' ) {%>
+                                    <div class="col-md-2 col-sm-2 align-items-center">
+                                        <button type="button" onclick="cancelOrder('<%=orderid%>')" class="btn btn-dark mr-2">
+                                            Order Cancel
+                                        </button>
+                                        <button onclick="ReturnOrder('<%=orderid%>')" type="button" class="btn btn-danger">
+                                            Return Order
+                                        </button>
+                                    </div>
+                                    
+                                    <% } %>
+                            </div>
+                            <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1" />
+                        </div>
+                    </div>
+                    <% }) %>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+            </div>
+        </div>
+    </body>
+    <%-include('../partials/userfooter')-%>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!-- <script>
+    function cancelOrder(orderId) {
+        const url2 = `cancelOrder/${orderId}`;
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ok'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                try {
+                    const response = await fetch(url2, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    console.log(response.status==true);
+                    console.log("sgsgs");
+                    Swal.fire(
+                        'Cancelled!',
+                        'Order has been Cancelled.',
+                        'success'
+                    ).then(res => {
+                        window.location.reload()
+                    })
+
+
+                } catch (error) {
+                    console.error(`${error.message}`);
+                }
+
+
+            }
+        })
+    }
+    </script> -->
+        <script>
+            function cancelOrder(orderId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, proceed to checkout!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "put",
+                            url: `/cancelOrder/${orderId}`,
+
+                            success: function (response) {
+                                console.log("ghggg");
+                                console.log(response);
+                                if (response.status) {
+                                    Swal.fire("Cancelled!", "Order has been Cancelled.", "success");
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                        console.log(response);
+                                    }, 1200);
+                                } else {
+                                    console.log("3333333333333");
+                                    console.log(response.response);
+                                }
+                            },
+                            error: function (status, error) {
+                                console.log(error);
+                            },
+                        });
+                    }
+                });
+            }
+        </script>
+        <script>
+            function ReturnOrder(orderId) {
+                console.log("lllll");
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, proceed to checkout!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "put",
+                            url: `/ReturnOrder/${orderId}`,
+
+                            success: function (response) {
+                                console.log("ghggg");
+                                console.log(response);
+                                if (response.status) {
+                                    Swal.fire("Return!", "Order has been Returned.", "success");
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                        console.log(response);
+                                    }, 1200);
+                                } else {
+                                    console.log("3333333333333");
+                                    console.log(response.response);
+                                }
+                            },
+                            error: function (status, error) {
+                                console.log(error);
+                            },
+                        });
+                    }
+                });
+            }
+        </script>

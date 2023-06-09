@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <style>
+        .tip{
+            position: absolute;
+            right: -12px;
+            top: -11px;
+            height: 18px;
+            width: 18px;
+            background: #898888;
+           font-size: 10px;
+           font-weight: 500;
+           color: #ffffff;
+           line-height: 5px;
+           text-align: center;
+           border-radius:50%;
+        }
+    </style>
+</head>
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class="header__top__links">
+
+                            <% var username=username || '' ; %>
+                            <% if (!username) { %>
+                                <a href="/login">Login</a>
+                                <a href="/signup">Sign up</a>
+                            <% } %>
+
+
+                           
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="/about">About Us</a></li>
+                                <li><a href="/shop">Shop Details</a></li>
+                                <!-- <li><a href="./shopping-cart.html">Shopping Cart</a></li> -->
+                                <li><a href="/orderList">My Orders</a></li>
+                                <!-- <li><a href="./blog-details.html">Blog Details</a></li> -->
+                            </ul>
+                        </li>
+                        <li><a href="/about">About us</a></li>
+                        <li><a href="/contact">Contact us</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option">
+                    <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+
+                    <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                        <% if (username&&wishlistcount) { %>
+                            <div class="tip">
+                          <span id="wishlistCount">
+                            <%= wishlistcount %>
+                          </span>  
+                          </div>
+                          <% } %>
+                    <a href="/shoppingcart"><img src="img/icon/cart.png" alt=""> 
+                        <% if (username&&cartCount) { %>
+                            <div class="tip">
+                          <span id="cartCount">
+                            <%= cartCount %>
+                          </span>  
+                          </div>
+                          <% } %>
+                         
+                    </a>
+                    
+                    <% if(username){ %>
+                        <div class="header__top__hover">
+                            <span class="text-dark text-brand font-weight-bold"> <%= username %>   <i class="arrow_carrot-down text-dark" ></i></span>
+                            <ul>
+                                <li><a href="/userProfile"class="text-dark" >Account</a ></li>
+                                <li><a href="/logout"class="text-dark" >Logout</a ></li>
+                                
+                            </ul>
+                        </div>
+                     <% } %>   
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
