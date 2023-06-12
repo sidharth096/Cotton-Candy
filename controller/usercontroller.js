@@ -919,11 +919,53 @@ removeFromWishList: async (req, res) => {
         res.json({ success: false, message: response.message });
       }
     } catch (error) {}
-  }
+  },
 
+productFiltering: async (req, res) => {
+  try {
+    console.log("aaaa");
+    console.log(req.body);
+    let categories = req.body["categories[]"];
+    let pricerange = req.body["priceRanges[]"];
+    let colour = req.body["colors[]"];
+    let size = req.body.size;
 
+    // Build the filter object based on the provided data
+    const filter = {};
 
-   
+    if (categories && categories !== "") {
+      filter.productcategory = categories;
+    }
+
+    if (pricerange && pricerange !== "") {
+      let [minPrice, maxPrice] = pricerange.split("-");
+      filter.productpromotionalprice = {
+        $gte: parseInt(minPrice),
+        $lte: parseInt(maxPrice)
+      };
+    }
+
+    if (colour && colour !== "") {
+      filter.productcolour = colour;
+    }
+
+    if (size && size !== "") {
+      filter.productsize = size;
+    }
+
+    // Find products based on the filter object
+    const filteredProducts = await product.find(filter);
+
+    console.log(filteredProducts);
+
+    // Send the filtered products as a response
+    res.json(filteredProducts);
+  } catch (error) {
+    // Handle any errors that occur during filtering
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while filtering products." });
+  }
+}
 
 
 

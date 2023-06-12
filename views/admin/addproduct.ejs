@@ -1,5 +1,5 @@
 <%-include('../partials/adminheader')-%>
-        <section class="content-main">
+    <section class="content-main">
         <form action="/admin/addproductpost" method="post" enctype="multipart/form-data" id="add-product">
             <div class="row">
                 <div class="col-9">
@@ -18,34 +18,39 @@
                         </div>
                         <div class="card-body">
                             <!-- <form> -->
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="productname">
-                                    <span class="text-danger"  id="nameError"></span>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Full description</label>
-                                    <textarea placeholder="Type here" class="form-control" rows="4"name="description" id="prodDescription"></textarea>
-                                    <span class="text-danger"  id="descError"></span>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Regular price</label>
-                                            <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control"name="regularprice" id="prodpromoPrice">
-                                                <span class="text-danger"  id="priceregError"></span>
-                                            </div>
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product title</label>
+                                <input type="text" name="productname" placeholder="Type here" class="form-control"
+                                    id="product_name">
+                                <span class="text-danger" style="font-size: 12px; margin-left: 10px;" id="nameError"></span>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+                                <textarea placeholder="Type here" name="description" class="form-control" rows="4"
+                                    id="prodDescription"></textarea>
+                                <span class="text-danger " style="font-size: 12px; margin-left: 10px;"
+                                    id="descError"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="₹" name="regularprice" type="text" class="form-control"
+                                                id="prodregPrice">
+                                            <span class="text-danger" style="font-size: 12px; margin-left: 10px;" id="priceregError"></span>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control"name="promotionalprice" id="prodregPrice">
-                                            <span class="text-danger"  id="priceproError"></span>
-                                        </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Promotional price</label>
+                                        <input placeholder="₹" name="promotionalprice" type="text" class="form-control"
+                                            id="prodpromoPrice">
+                                        <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="priceproError"></span>
                                     </div>
-                                    <!-- <div class="col-lg-4">
+                                </div>
+                                <!-- <div class="col-lg-4">
                                         <label class="form-label">Currency</label>
                                         <select class="form-select">
                                             <option> USD </option>
@@ -53,8 +58,8 @@
                                             <option> RUBL </option>
                                         </select>
                                     </div> -->
-                                </div>
-                                <!-- <div class="mb-4">
+                            </div>
+                            <!-- <div class="mb-4">
                                     <label class="form-label">Tax rate</label>
                                     <input type="text" placeholder="%" class="form-control" id="product_name">
                                 </div>
@@ -66,33 +71,46 @@
                         </div>
                     </div> <!-- card end// -->
                     <div class="card mb-4">
-                        
+                        <div class="card-header">
+                            <!-- <h4>Shipping</h4> -->
+                        </div>
                         <div class="card-body">
                             <!-- <form> -->
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Size</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_size"name="size">
-                                            <span class="text-danger"  id="sizeError"></span>
-                                        </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Size</label>
+                                        <select class="form-select"name="size">
+                                            <option> S </option>
+                                            <option> M </option>
+                                            <option> L </option>
+                                            <option> XL </option>
+                                            <option> XXL </option>
+                                        </select>
+                                        
+                                        <span class="text-danger"  id="sizeError"></span>
                                     </div>
-                                    <!-- <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Height</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div> -->
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label for="product_name" class="form-label">Weight</label>
-                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
-                                </div> -->
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Quantity</label>
-                                    <input type="text" placeholder="$" class="form-control" id="product_quantity"name="quantity">
-                                    <span class="text-danger"  id="quantityError"></span>
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">colour</label>
+                                        <input type="text" name="colour" class="form-control"
+                                            id="product_colour">
+                                        <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="colourError"></span>
+                                    </div>
                                 </div>
+                            </div>
+                            
+                                
+                              
+                           
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">quantity</label>
+                                <input type="text" name="quantity" placeholder="₹" class="form-control"
+                                    id="product_quantity">
+                                <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="quantityError"></span>
+                            </div>
+                            
                             <!-- </form> -->
                         </div>
                     </div> <!-- card end// -->
@@ -104,9 +122,9 @@
                         </div>
                         <div class="card-body">
                             <div class="input-upload">
-                                <img src="assets/imgs/theme/upload.svg" alt="">
+                                <!-- <img src="assets/imgs/theme/upload.svg" alt=""> -->
                                 <input class="form-control" type="file" name="productimage" id="product_image" multiple>
-                                <span class="text-danger " id="imageError"></span>
+                                <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="imageError"></span>
                             </div>
                         </div>
                     </div> <!-- card end// -->
@@ -118,11 +136,12 @@
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Category</label>
-                                    <select class="form-select" name="category">
+                                    <select name="category" class="form-select">
                                         <% categories.forEach(function(categories) { %>
-
-                                        <option><%=categories.categoryname %> </option>
-                                        <% }); %>
+                                            <option>
+                                                <%=categories.categoryname%>
+                                            </option>
+                                             <% }); %>
                                     </select>
                                 </div>
                                 <!-- <div class="col-sm-6 mb-3">
@@ -144,39 +163,45 @@
                 </div>
             </div>
         </form>
-        </section> <!-- content-main end// -->
-        <%-include('../partials/adminfooter')-%>
+    </section> <!-- content-main end// -->
+    <%-include('../partials/adminfooter')-%>
         <script>
             const form = document.querySelector('#add-product');
-        
+
             const nameInput = document.getElementById('product_name');
             const descInput = document.getElementById('prodDescription');
             const pricepromoInput = document.getElementById('prodpromoPrice');
             const priceregInput = document.getElementById('prodregPrice');
             const qtyInput = document.getElementById('product_quantity');
-            const sizeInput = document.getElementById('product_size');
+            // const weigInput = document.getElementById('product_weig');
             const imageInput = document.getElementById('product_image');
-        
+            const colourInput = document.getElementById('product_colour')
+            // const sizeInput = document.getElementById('product_size');
+
             const nameError = document.getElementById('nameError');
             const descError = document.getElementById('descError');
             const priceproError = document.getElementById('priceproError');
             const priceregError = document.getElementById('priceregError');
             const qtyError = document.getElementById('quantityError');
-            const sizeError = document.getElementById('sizeError');
+            // const weigError = document.getElementById('weigError');
             const imageError = document.getElementById('imageError');
-        
+            const colourError = document.getElementById('colourError')
+            // const sizeError = document.getElementById('sizeError');
+
             // Regular expressions for validation
             const nameRegex = /^[A-Za-z\s]+$/;
             const descRegex = /^[A-Za-z\s]+$/;
-            const priceRegex = /^\d+(\.\d{1,2})?$/;
+            const priceRegex = /^(?!0$)\d+(\.\d{1,2})?$/;
+            const colourRegex = /^[A-Za-z\s]+$/;
             const qtyRegex = /^\d+$/;
-            const sizeRegex =  /^(S|L|M|XL|XXL|XXXL)$/;
-        
+            const weightRegex = /^\d+(\.\d{1,2})?$/;
+            // const sizeRegex =  /^(S|L|M|XL|XXL|XXXL)$/;
+
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-        
+
                 let isValid = true;
-        
+
                 if (nameInput.value.trim() === '') {
                     nameError.innerHTML = 'Please enter the product title';
                     isValid = false;
@@ -186,7 +211,7 @@
                 } else {
                     nameError.innerHTML = '';
                 }
-        
+
                 if (descInput.value.trim() === '') {
                     descError.innerHTML = 'Please enter the product description';
                     isValid = false;
@@ -196,27 +221,27 @@
                 } else {
                     descError.innerHTML = '';
                 }
-        
+
                 if (pricepromoInput.value.trim() === '') {
                     priceproError.innerHTML = 'Please enter the product price';
                     isValid = false;
                 } else if (!priceRegex.test(pricepromoInput.value.trim())) {
-                    priceproError.innerHTML = 'Please enter a valid product price (e.g., 10 or 10.99)';
+                    priceproError.innerHTML = 'Please enter a valid product price ';
                     isValid = false;
                 } else {
                     priceproError.innerHTML = '';
                 }
-        
+
                 if (priceregInput.value.trim() === '') {
                     priceregError.innerHTML = 'Please enter the product price';
                     isValid = false;
                 } else if (!priceRegex.test(priceregInput.value.trim())) {
-                    priceregError.innerHTML = 'Please enter a valid product price (e.g., 10 or 10.99)';
+                    priceregError.innerHTML = 'Please enter a valid product price';
                     isValid = false;
                 } else {
                     priceregError.innerHTML = '';
                 }
-        
+
                 if (qtyInput.value.trim() === '') {
                     qtyError.innerHTML = 'Please enter the product quantity';
                     isValid = false;
@@ -226,26 +251,34 @@
                 } else {
                     qtyError.innerHTML = '';
                 }
-        
-                if (sizeInput.value.trim() === '') {
-            sizeError.innerHTML = 'Please enter the product size';
-            isValid = false;
-        } else {
-            sizeError.innerHTML = '';
-        }
-        if (imageInput.files.length === 0) {
+
+                // if (sizeInput.value.trim() === '') {
+                // sizeError.innerHTML = 'Please enter the product size';
+                // isValid = false;
+                //  } else {
+                // sizeError.innerHTML = '';
+                // }
+                if (imageInput.files.length === 0) {
                     imageError.innerHTML = 'Please select an image';
                     isValid = false;
                 } else {
                     imageError.innerHTML = '';
-                } 
+                }
+                
+                if (colourInput.value.trim() === '') {
+                    colourError.innerHTML = 'Please enter the product colour';
+                    isValid = false;
+                } else if (!colourRegex.test(colourInput.value.trim())) {
+                    colourError.innerHTML = 'Please enter a valid';
+                    isValid = false;
+                } else {
+                    colourError.innerHTML = '';
+                }
 
-        if (isValid) {
-            form.submit();
-        }
-    });
+                if (isValid) {
+                    form.submit();
+                }
+            });
 
-              
-        
-        
+
         </script>

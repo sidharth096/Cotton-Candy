@@ -98,16 +98,20 @@
                                 <div class="col-lg-6">
                                     <div class="mb-4">
                                         <label for="product_name" class="form-label">Size</label>
+
                                         <input type="text" placeholder="inch" class="form-control"
                                             value="<%=productdetails.productsize %>" id="product_name" name="size">
                                     </div>
                                 </div>
-                                <!-- <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Height</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div> -->
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">colour</label>
+                                        
+                                        <input type="text" name="colour" class="form-control" value="<%=productdetails.productcolour %>"
+                                            id="product_colour">
+                                        <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="colourError"></span>
+                                    </div>
+                                </div>
                             </div>
                             <!-- <div class="mb-4">
                                     <label for="product_name" class="form-label">Weight</label>
@@ -115,6 +119,7 @@
                                 </div> -->
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Quantity</label>
+                                
                                 <input type="text" placeholder="$" class="form-control" id="product_name"
                                     value="<%=productdetails.productquantity %>" name="quantity">
                             </div>

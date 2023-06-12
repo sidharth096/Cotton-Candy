@@ -51,6 +51,7 @@
     router.post('/verify-payment',authentication,usercontroller.verifypayment)
     router.post('/apply-coupon',authentication,usercontroller.applyCoupon)
     router.post('/add-to-wishList',usercontroller.addToWishList);
+    router.post('/productFiltering',usercontroller.productFiltering);
     router.put('/remove-from-wishList/:id',usercontroller.removeFromWishList);
     
      
