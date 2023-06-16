@@ -38,6 +38,7 @@
                                     <thead> 
                                         <tr>
                                             <th colspan="2">Product</th>
+                                            <th> </th>
                                             <th>Total</th>
                                         </tr>
                                     </thead>
@@ -47,20 +48,22 @@
                                          <tr>
                                              <td class="image product-thumbnail"><img src="/uploads/<%=orders[i].orderedProduct.productimage[0]%>" alt="#"></td>
                                              <td>
-                                               <h5><a href="shop-product-full.html"><%=orders[i].orderedProduct.productname%></a></h5> <span class="product-qty"><%=orders[i].orderedItems.quantity %></span>
+                                               <h5><a href="#"><%=orders[i].orderedProduct.productname%></a></h5> Qty:<span class="product-qty"><%=orders[i].orderedItems.quantity %></span>
                                              </td>
-                                             <td><%=orders[i].orderedProduct.productpromotionalprice%></td>
+                                             <td>
+                                                <% if(orders[i].orderedProduct.coupon ){  %>
+                                                
+                                                  discount:<%=orders[i].orderedProduct.coupon%>
+                                                <% } %>
+                                                  <%=orders[i].orderedProduct.productpromotionalprice%>
+                                            </td>
                                           </tr>  
                                         <% } %>
                                         <tr> 
                                             <th>SubTotal</th>
                                             <td class="product-subtotal" colspan="2">₹<%=total%></td>
                                         </tr>
-                                        <div>
-                                            <button onclick="window.location=' /orderlist'"
-                                            class="btn btn-outline-primary rounded">go to
-                                            orders</button>
-                                         </div>
+                                        
                                         
                                         <!-- <tr>
                                             <th>Shipping</th>
@@ -73,6 +76,11 @@
                                        
                                     </tbody>
                                 </table>
+                                <div>
+                                    <button onclick="window.location=' /orderlist'"
+                                    class="btn btn-outline-primary rounded">go to
+                                    orders</button>
+                                 </div>
                             </div>
                             <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                          

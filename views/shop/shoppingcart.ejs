@@ -1,284 +1,334 @@
-<% var username=username || '' ; %>
-<% var Wishlistcount=Wishlistcount|| 0 ; %>
-<% var cartCount=cartCount|| 0 ; %>
-<% if (username) { %>
-    <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%>
+<% var username=username || '' ; %> <% var Wishlistcount=Wishlistcount|| 0 ; %>
+<% var cartCount=cartCount|| 0 ; %> <% if (username) { %>
+<%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%> <%
+}else{%> <%-include('../partials/userheader')-%> <% } %>
 
- <% }else{%>
-    <%-include('../partials/userheader')-%>
-<% } %>
- 
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Shopping Cart</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <a href="/shop">Shop</a>
+            <span>Shopping Cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
 
-            <!-- Breadcrumb Section Begin -->
-            <section class="breadcrumb-option">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                      <h4>Shopping Cart</h4>
-                      <div class="breadcrumb__links">
-                        <a href="/">Home</a>
-                        <a href="/shop">Shop</a>
-                        <span>Shopping Cart</span>
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+  <div class="container">
+    <div class="row">
+      <% if (Cart || Cart!=null) { %> <% if (Cart.products != '') { %>
+      <div class="col-lg-8">
+        <div class="shopping__cart__table">
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% product.forEach(function(products) { %>
+              <tr>
+                <td class="product__cart__item d-flex">
+                  <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                    <a class="itemside" href="">
+                      <div class="left">
+                        <% if (products.productId.productimage&&
+                        products.productId.productimage.length> 0){%>
+                        <img
+                          src="/uploads/<%=products.productId.productimage[0]%>"
+                          class="img-sm img-thumbnail"
+                          alt="Product Image"
+                        />
+                        <% } else { %>
+                        <img
+                          src="/uploads/default-image.jpg"
+                          alt="Default Image"
+                        />
+                        <% } %>
                       </div>
-                    </div>
+                    </a>
                   </div>
-                </div>
-              </div>
-            </section>
-            <!-- Breadcrumb Section End -->
-
-            <!-- Shopping Cart Section Begin -->
-            <section class="shopping-cart spad">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <div class="shopping__cart__table">
-                      <% if (Cart || Cart!=null) { %>
-                                             
-                                            
-                        <% if (Cart.products != '') { %>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                         
-                            <% product.forEach(function(products) { %>
-                              <tr>
-                                <td class="product__cart__item d-flex ">
-                                  <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name ">   
-                                    <a class="itemside" href="">
-                                      <div class="left ">
-                                        <% if (products.productId.productimage&& products.productId.productimage.length>
-                                          0){%>
-                                          <img src="/uploads/<%=products.productId.productimage[0]%>"
-                                            class="img-sm img-thumbnail" alt="Product Image" />
-                                          <% } else { %> 
-                                            <img src="/uploads/default-image.jpg" alt="Default Image" />
-                                            <% } %>
-                                            
-                                      </div>
-                                    </a>
-                                  
-                                   
-                                  </div>
-                                  <div class="product__cart__item__text">
-                                                <h6>
-                                                  <%=products.productId.productname%>
-                                                </h6>
-                                                <h5>&#x20B9; <%=products.productId.productpromotionalprice%></h5>
-                                   </div>
-                                </td>
-
-                                <td class="quantity__item"> 
-                                  <div class="quantity d-flex">
-                                    <button class="cart-item-count mr-3"
-                                      onclick="changeQuantity('<%= products.productId._id %>', '<%= Cart._id %>', -1)">
-                                      -
-                                    </button>
-
-                                    <span id="<%=products.productId._id %>">
-                                      <%=products.quantity%>
-                                    </span>
- 
-                                    <button class="cart-item-count ml-3"
-                                      onclick="changeQuantity('<%= products.productId._id %>', '<%= Cart._id %>', 1)">
-                                      +
-                                    </button>
-                                  </div>
-                                </td>  
-                                <td class="cart__price">
-                                  ₹
-                                  <span id="<%= products.productId._id %>" data-product-id="<%= products.productId._id %>" data-field="promotional-price" data-promotional-price="<%= products.productId.productpromotionalprice %>">
-                                    <%= products.productId.productpromotionalprice*products.quantity%>
-                                  </span>
-
-                                  
-                                </td>
-                                <td class="cart__close">
-                                  <a   onclick="removecartitem('<%=products.productId._id%>%>')">
-                                    <i class="fa fa-close"></i></a>
-                                </td>
-                              </tr>
-                              
-                              <% }); %>  
-                        </tbody>
-                       
-                      </table>
-                      <% }else{ %>
-                       
-                       <div class="text-center"><img style=" display: block;
-                           margin-left: auto;
-                           margin-right: auto;
-                           width: 50%;" src="img/cart-img.jpg" alt="cart empty"><h4> Cart is empty</h4></div>
-                      
-                 <% } %>
-                 <% }else{ %>
-                  
-                   <div class="text-center"><img style=" display: block;
-                       margin-left: auto;
-                       margin-right: auto;
-                       width: 50%;" src="img/cart-img.jpg" alt="cart empty"><h4> Cart is empty</h4></div>
-                  
-             <% } %>
-                    </div>
-                    <div class="row">
-                     
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="continue__btn update__btn">
-                          <a href="/shop">Continue Shopping</a>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="product__cart__item__text">
+                    <h6><%=products.productId.productname%></h6>
+                    <h5>
+                      &#x20B9; <%=products.productId.productpromotionalprice%>
+                    </h5>
                   </div>
-                <%if(total>0){%>
-                  <div class="col-lg-4">
-                    
-                    <div class="cart__total">
-                      <h6>Cart total</h6>
-                      <ul>
-                           <li>Total <span id="total">&#x20B9; <%=total%>  </span></li>
-                      </ul>
-                      <a href="/checkout" class="primary-btn">Proceed to checkout</a>
-                    </div> 
+                </td>
+
+                <td class="quantity__item">
+                  <div class="quantity d-flex">
+                    <button
+                      class="cart-item-count mr-3"
+                      onclick="changeQuantity('<%= products.productId._id %>', '<%= Cart._id %>', -1)"
+                    >
+                      -
+                    </button>
+
+                    <span id="<%=products.productId._id %>">
+                      <%=products.quantity%>
+                    </span>
+
+                    <button
+                      class="cart-item-count ml-3"
+                      onclick="changeQuantity('<%= products.productId._id %>', '<%= Cart._id %>', 1)"
+                    >
+                      +
+                    </button>
                   </div>
-                  <%}%>
-                </div>
-              </div>
-            </section>
-            <!-- Shopping Cart Section End -->
+                </td>
+                <td class="cart__price">
+                  ₹
+                  <span
+                    id="<%= products.productId._id %>"
+                    data-product-id="<%= products.productId._id %>"
+                    data-field="promotional-price"
+                    data-promotional-price="<%= products.productId.productpromotionalprice %>"
+                  >
+                    <%=
+                    products.productId.productpromotionalprice*products.quantity%>
+                  </span>
+                </td>
+                <td class="cart__close">
+                  <a onclick="removecartitem('<%=products.productId._id%>%>')">
+                    <i class="fa fa-close"></i
+                  ></a>
+                </td>
+              </tr>
 
-            <%-include('../partials/userfooter')-%>
+              <% }); %>
+            </tbody>
+          </table>        
+        </div>
 
-              //
-              // <script>
-              //    function changeQuantity(productId, cartid, count){
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="continue__btn update__btn">
+              <a href="/shop">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
 
-              //    console.log("hjhjh");
-              //     $.ajax({
-              //       url: "/change-product-quantity",
-              //       data: {
-              //         product: productId,
-              //         cart: cartid,
-              //         count: count,
-              //       },
-              //       method: "post",
-              //       success: (response) => { },
-              //     });
-              //   }
-              // </script>
+      </div>
+      <% }else{ %>
+       <div class="col-lg-12">
+        <div class="shopping__cart__table">
+         <div class="text-center">
+            <img
+              style="
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+              "
+              src="img/cart-img.jpg"
+              alt="cart empty"
+            />
+            <h4>Cart is empty</h4>
+        </div>
+        </div>
+        <div class="row ">
+          <div class="col-lg-12 col-md-12 col-sm-12 ">
+            <div class="continue__btn update__btn text-center">
+              <a href="/shop">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+       </div>
 
-              // <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <% } %> <% }else{ %>
 
-              // <script>
-              //   function changeQuantity(productId, cartId, count) {
-              //     console.log("hjhjh");
-              //      var quantity=document.getElementById("qualityOFproduct").textContent;
-              //      quantity=parseInt(quantity)
-              //      console.log(quantity,'quality')
-           
-              //     $.ajax({
-              //       url: "/change-product-quantity",
-              //       data: {
-              //         product: productId,
-              //         cart: cartId,
-              //         count: count,
-              //       },
-              //       method: "post",
-              //       success: function (response) {  
-              //         document.getElementById("qualityOFproduct").textContent=quantity+count
+          
+            <div class="col-lg-12">
+        <div class="shopping__cart__table">
+         <div class="text-center">
+            <img
+              style="
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+              "
+              src="img/cart-img.jpg"
+              alt="cart empty"
+            />
+            <h4>Cart is empty</h4>
+        </div>
+        </div>
+        <div class="row ">
+          <div class="col-lg-12 col-md-12 col-sm-12 ">
+            <div class="continue__btn update__btn text-center">
+              <a href="/shop">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+       </div> 
 
-              //       },
-              //       error: function (xhr, status, error) {
-              //         // handle any errors here
-              //         console.error(error);
-              //       }
-              //     });
-              //   }
-              // </script>
-              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <% } %>
 
-              <script>
+      <%if(total>0){%>
+      <div class="col-lg-4">
+        <div class="cart__total">
+          <h6>Cart total</h6>
+          <ul>
+            <li>Total <span id="total">&#x20B9; <%=total%> </span></li>
+          </ul>
+          <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+        </div>
+      </div>
+      <%}%>
+    </div>
+  </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<%-include('../partials/userfooter')-%> // //
+<script>
+  //    function changeQuantity(productId, cartid, count){
+
+  //    console.log("hjhjh");
+  //     $.ajax({
+  //       url: "/change-product-quantity",
+  //       data: {
+  //         product: productId,
+  //         cart: cartid,
+  //         count: count,
+  //       },
+  //       method: "post",
+  //       success: (response) => { },
+  //     });
+  //   }
+  //
+</script>
+
+//
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+//
+<script>
+  //   function changeQuantity(productId, cartId, count) {
+  //     console.log("hjhjh");
+  //      var quantity=document.getElementById("qualityOFproduct").textContent;
+  //      quantity=parseInt(quantity)
+  //      console.log(quantity,'quality')
+
+  //     $.ajax({
+  //       url: "/change-product-quantity",
+  //       data: {
+  //         product: productId,
+  //         cart: cartId,
+  //         count: count,
+  //       },
+  //       method: "post",
+  //       success: function (response) {
+  //         document.getElementById("qualityOFproduct").textContent=quantity+count
+
+  //       },
+  //       error: function (xhr, status, error) {
+  //         // handle any errors here
+  //         console.error(error);
+  //       }
+  //     });
+  //   }
+  //
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
   function changeQuantity(proId, cartId, count) {
     let quantity = parseInt(document.getElementById(proId).innerHTML);
     count = parseInt(count);
 
-    $.ajax({ 
-      url: '/changeQuantity',
+    $.ajax({
+      url: "/changeQuantity",
       data: {
         cart: cartId,
         product: proId,
         count: count,
-        quantity: quantity
+        quantity: quantity,
       },
-      method: 'post',
+      method: "post",
       success: (response) => {
         if (response.response.remove) {
           Swal.fire("Removed!", "Product has been removed.", "success").then(
-                                                    (res) => {
-                                                        window.location.reload();
-                                                    }
-                                                );;
+            (res) => {
+              window.location.reload();
+            }
+          );
+        } else if (response.response.response) {
+          Swal.fire(
+            "Stock limit!",
+            "product not available more quantity.",
+            "success"
+          ).then();
         } else {
           console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
           console.log(response.total);
           quantity += count;
           document.getElementById(proId).innerHTML = quantity;
-          updatePromotionalPrice(proId, quantity,response.total);
+          updatePromotionalPrice(proId, quantity, response.total);
         }
-      }
+      },
     });
   }
 
-  function updatePromotionalPrice(proId, quantity,total) {
-    const promotionalPriceElement = document.querySelector(`span[data-product-id="${proId}"][data-field="promotional-price"]`);
+  function updatePromotionalPrice(proId, quantity, total) {
+    const promotionalPriceElement = document.querySelector(
+      `span[data-product-id="${proId}"][data-field="promotional-price"]`
+    );
     if (promotionalPriceElement) {
-      const productPromotionalPrice = parseFloat(promotionalPriceElement.dataset.promotionalPrice);
+      const productPromotionalPrice = parseFloat(
+        promotionalPriceElement.dataset.promotionalPrice
+      );
       const updatedPromotionalPrice = productPromotionalPrice * quantity;
       promotionalPriceElement.textContent = updatedPromotionalPrice.toFixed(2);
-      document.getElementById('total').innerHTML =total
+      document.getElementById("total").innerHTML = total;
     }
   }
 
   function removecartitem(productId) {
-                                    const url2 = `/removecartitem/${productId}`;
-                                    Swal.fire({
-                                        title: "Are you sure?",
-                                        text: "You won't be able to revert this!",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#3085d6",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "ok",
-                                    }).then(async (result) => {
-                                        if (result.isConfirmed) {
-                                            try {
-                                                const response = await fetch(url2, {
-                                                    method: "PUT",
-                                                    headers: {
-                                                        "Content-Type": "application/json",
-                                                    },
-                                                });
-                                                console.log(response);
-                                                Swal.fire("deleted!", "Product has been deleted.", "success").then(
-                                                    (res) => {
-                                                        window.location.reload();
-                                                    }
-                                                );
-                                            } catch (error) {
-                                                console.error(`${error.message}`);
-                                            }
-                                        }
-                                    });
-                                }
-
-
-
-  
+    const url2 = `/removecartitem/${productId}`;
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ok",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(url2, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          console.log(response);
+          Swal.fire("deleted!", "Product has been deleted.", "success").then(
+            (res) => {
+              window.location.reload();
+            }
+          );
+        } catch (error) {
+          console.error(`${error.message}`);
+        }
+      }
+    });
+  }
 </script>

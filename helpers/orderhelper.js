@@ -21,6 +21,7 @@ function orderDate() {
 }
 
 module.exports = {
+    
     orderPlacing: (order, totalAmount, cartItems,userid) => {
         return new Promise(async (resolve, reject) => {
             let status = order.payment_method == 'COD' ? 'placed' : 'pending';
@@ -30,9 +31,13 @@ module.exports = {
             let paymentMethod=order.payment_method;
             let addressId = order.address_id;
             let orderedItems = cartItems
-            console.log("orderedItems", orderedItems);
+            let couponAmount
 
-            console.log("orderedItems orderHelper ", orderedItems);
+
+            if(order.couponAmount){
+                couponAmount=order.couponAmount||0
+            }
+
             let ordered = new orderSchema({
                 user: userId,
                 address: addressId,
@@ -40,10 +45,10 @@ module.exports = {
                 totalAmount: totalAmount,
                 paymentMethod: paymentMethod,
                 orderStatus: status,
-                orderedItems: orderedItems.products
+                orderedItems: orderedItems.products,
+                coupon:couponAmount
             })
             await ordered.save();
-            console.log("upoladed to dbbbbbbbbbbbbbbb");
             
             let orderId=ordered._id
             console.log(orderId);
@@ -89,10 +94,6 @@ module.exports = {
               
                 
             ])
-
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            console.log("This is aggregation resilt", userOrderDetails);
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
             resolve(userOrderDetails)
@@ -158,64 +159,7 @@ module.exports = {
         })
     },
 
-    //------------------=--------------------------------------------------
 
-    // orderDetails:(orderId)=>{
-    //    return new Promise(async (resolve,reject)=>{
-    //     await orderSchema.find({_id:orderId}).
-    //     then((result)=>{
-    //         // console.log("totalAmount",result[0].totalAmount);
-    //         resolve(result[0])
-    //     })
-    //    })
-    // },
-
-//     getOrderedProductsDetails: (orderId) => {
-//         return new Promise(async(resolve,reject)=>{
-//             await orderSchema.aggregate([
-//                 {
-//                   $match: { _id: new ObjectId(orderId) }
-//                 },
-//                 {
-//                   $unwind: '$orderedItems'
-//                 },
-//                 {
-//                   $lookup: {
-//                     from: 'products',
-//                     localField: 'orderedItems.productId',
-//                     foreignField: '_id',
-//                     as: 'orderedProduct'
-//                   }
-//                 },
-//                 {
-//                   $lookup: {
-//                     from: 'addresses',
-//                     localField: 'address',
-//                     foreignField: '_id',
-//                     as: 'userAddress'
-//                   }
-//                 },
-//                 {
-//                   $unwind: '$orderedProduct'
-//                 }
-//               ]).then((result) => {
-//                 if (result.length > 0) {
-//                   const order = result[0];
-//                   if (order.userAddress.length > 0) {
-//                     const addressArray = order.userAddress[0].address;
-//                     console.log(addressArray);
-//                     // Output: Array containing the address
-//                   } else {
-//                     console.log('No address found');
-//                   }
-//                 } else {
-//                   console.log('Order not found');
-//                 }
-//                 resolve(result);
-//               });
-              
-//         })
-//     },
 
 getOrderedProductsDetails: (orderId) => {
     console.log("uuuuu");
@@ -264,7 +208,8 @@ getOrderedProductsDetails: (orderId) => {
             resolve(result)
         })
      })
-    },
+    },   
+
  getAllOrderStatusesCount: async () => {
     try {
         const orderStatuses = await orderSchema.find().select({ _id: 0, orderStatus: 1 })
@@ -306,15 +251,13 @@ getAllDeliveredOrdersByDate: (startDate, endDate) => {
       })
         .lean()
         .then((result) => {
-          console.log("orders in range", result);
           resolve(result);
         });
     });
   },
 
 getOrderedProductsDetailsOrderSuccess: (orderId) => {
-    console.log("uuuuu");
-    console.log(orderId);
+
     return new Promise(async (resolve, reject) => {
         await orderSchema.aggregate([
             {
@@ -363,11 +306,7 @@ function orderStatusCount(orderStatuses) {   //to display on doughnut chart
             counts[status] = 1;
         }
 
-        console.log(status);
-        //need to remove after adding razorpay
-       
-        // counts.cancelPending = 3;
-        // counts.canceled = 3
+  
 
     });
     console.log(counts);

@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
   productname: {
     type: String,
     required: true,
-    unique: true,
+   
   },
 //   productcolor: {
 //     type: String,
@@ -56,12 +56,13 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default:false,
   },
+  
+  productoffer: {
+    type: Boolean,
+    default:false,
+  },
 
 
-  // productimage:{
-  //   type: String,
-  //   required:true
-  // }
   
 //   productstatus: {
 //     type: Boolean,

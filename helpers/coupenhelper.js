@@ -5,29 +5,27 @@ module.exports={
     applyCoupon: (userId, couponCode, totalAmount) => {
         return new Promise(async (resolve, reject) => {
             let coupon = await couponSchema.findOne({ code: couponCode });
-            console.log("couponnnnnn", coupon);
+
 
             if (coupon && coupon.isActive == 'Active') {
                 if (!coupon.usedBy.includes(userId)) {
                     let cart = await cartSchema.findOne({ user: userId })
-                    const discount=coupon.discount
-                    console.log("cartttttttt", cart);
-
-                    // totalAmount=totalAmount-coupon.discount
-                    // console.log("1111111111111",typeof totalAmount);
+                    let discount=coupon.discount
                     totalAmount = totalAmount -discount;
                     cart.coupon=couponCode;
-                    // console.log("2222222222222",typeof cart.totalAmount);
+
                     await cart.save()
-                    // console.log("3333333333333");
+
                     coupon.usedBy.push(userId);
-                    await coupon.save()
-                    console.log("ccc");
+                    await coupon.save() 
+
+                    discount= currencyFormat(discount)
+                    totalAmount= currencyFormat(totalAmount)
+
                     console.log(discount);
-                    console.log(cart);
                     console.log(totalAmount);
         
-                    resolve({  status: true,totalAmount, message: "coupn added successfully" })
+                    resolve({  status: true,totalAmount,discount, message: "coupn added successfully" })
                 } else {
                     resolve({ status: false, message: "Coupon code already used" })
                 }
@@ -37,3 +35,13 @@ module.exports={
         })
     },
 }
+
+
+// convert a number to a indian currency format
+function currencyFormat(amount) {
+    return Number(amount).toLocaleString("en-in", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+    });
+  }

@@ -9,6 +9,22 @@
             background-color: black;
             color: white;
         }
+        h4 {
+           font-size: 24px;
+           text-align: center;
+           font-weight: 900;
+            
+        }
+        #orderlist{
+           margin-bottom: 10rem;
+           margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 73px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+       
+       
     </style>
 </head>
 
@@ -20,73 +36,68 @@
 
  <% }else{%>
     <%-include('../partials/userheader')-%>
-<% } %>
- 
-                    <div class="col-md-sm-8">
+<% } %> 
+
+               
+            <div class="container" id="orderlist">
+                <div class="">
+                    <h4>Your Orders</h4>
+                </div>
+                    <div class="col-md-sm-8 ">
                         <div class="order_review">
-                            <div class="mb-20">
-                                <h4>Your Orders</h4>
-                            </div>
+                            
                             <div class="table-responsive order_table text-center">
-                                <table class="table">
+                                <table class="table" id="order-list">
                                     <thead class="t-head">
                                         <tr>
-                                            
                                             <th>Order Date</th>
                                             <!-- <th>Address</th> -->
                                             <th>Payment Method</th>
                                             <th>Status</th>
                                             <th>Total</th>
-                                            <th>Action</th>
-                                            
-
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%orders.forEach(function(order){ %>
+                                        <% orders.forEach(function(order){ %>
                                         <tr>
-                                            <td><%=order.orderDate.toISOString().split('T')[0] %></td>
-                                           
-                                            <td><%=order.paymentMethod %></td>
+                                            <td><%= order.orderDate.toISOString().split('T')[0] %></td>
+                                            <!-- <td><%= order.address %></td> -->
+                                            <td><%= order.paymentMethod %></td>
                                             <td>
-                                                <% if(order.orderStatus=='placed' ) {%>
-                                                    <span
-                                                        class="badge rounded-pill alert-success text-success">
+                                                <% if(order.orderStatus == 'placed') { %>
+                                                    <span class="badge rounded-pill alert-success text-success">
                                                         <%= order.orderStatus %>
                                                     </span>
-                                                    <% }else if (order.orderStatus=='Cancelled' )  { %>
-                                                        <span
-                                                            class="badge rounded-pill alert-danger text-danger">
-                                                            <%= order.orderStatus %>
-                                                        </span>
-                                                        <% }else{ %>
-                                                            <span
-                                                                class="badge rounded-pill alert-warning text-warning">
-                                                                <%= order.orderStatus %>
-                                                            </span>
-        
-                                                         <% } %>
-
-
+                                                <% } else if (order.orderStatus == 'Cancelled') { %>
+                                                    <span class="badge rounded-pill alert-danger text-danger">
+                                                        <%= order.orderStatus %>
+                                                    </span>
+                                                <% } else { %>
+                                                    <span class="badge rounded-pill alert-warning text-warning">
+                                                        <%= order.orderStatus %>
+                                                    </span>
+                                                <% } %>
                                             </td>
-                                            <td>₹<%=order.totalAmount%></td>
-                                            <td> <a href="/orderdetailsOf-user/<%=order._id%>" class="btn btn-dark rounded font-sm mt-15">View
-                                                details</a>
-                                            </td>
+                                            <td>₹<%= order.totalAmount %></td>
+                                            <td class="text-right">
+                                                <a href="/orderdetailsOf-user/<%= order._id %>" class="btn btn-dark rounded font-sm mt-15">
+                                                    View details
+                                                </a>
+                                            </td>
                                         </tr>
                                         <% }) %>
-                                      
                                     </tbody>
                                 </table>
+                                
+                                
                             </div>
-                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                           
                            
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+          
    
     <!-- Preloader Start -->
     <!-- <div id="preloader-active">
@@ -125,9 +136,17 @@
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/shop.js"></script>
-</body>
+   
+
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 </html>
 <%-include('../partials/userfooter')-%>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+       $('#order-list').DataTable();
+      });
+   </script>

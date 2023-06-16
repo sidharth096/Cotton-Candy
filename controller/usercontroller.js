@@ -9,6 +9,8 @@ const orderModel = require('../models/ordermodels')
 const user = require('../models/usermodel')
 const couponModel = require('../models/coupenmodel')
 const orderHepler = require('../helpers/orderhelper');
+const walletHelper = require('../helpers/wallethelper');
+
 const wishlisthelper = require('../helpers/wishlisthelper');
 const producthelper = require('../helpers/producthelper')
 const orderhelper = require('../helpers/orderhelper');
@@ -20,9 +22,12 @@ const Razorpay = require('razorpay');
 
 dotenv.config();
 
+
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret;
 var instance = new Razorpay({
-    key_id: 'rzp_test_kk1KzL6j3Vt8x4',
-    key_secret: 'KOSqPmO7KQ70pBJpFCJKMYwB',
+    key_id,
+    key_secret 
   });
 
 
@@ -258,7 +263,7 @@ module.exports = {
      
     // },
     shop: async (req, res) => {
-      const count = parseInt(req.query.count) || 4;
+      const count = parseInt(req.query.count) || 9;
       const page = parseInt(req.query.page) || 1;
       const totalCount = await  product.countDocuments();
       const startIndex = (page - 1) * count;
@@ -347,6 +352,8 @@ module.exports = {
         }
         let cartId=req.params.id
         let user=req.session.userid
+        let walletBalance = await walletHelper.walletBalance(userId)
+        walletBalance = currencyFormat(walletBalance);
         let  addresses=await addressModal.find({user:req.session.userid._id} )
         const Cart = await cart.findOne({ user: user}).populate('products.productId')
         let total=await userhelper.getCartTotal(user)
@@ -364,7 +371,7 @@ module.exports = {
 
 
 
-        res.render("shop/checkout.ejs",{user,Cart,total,addresses,username,coupen,wishlistcount,cartCount});
+        res.render("shop/checkout.ejs",{user,Cart,total,addresses,username,coupen,wishlistcount,cartCount,walletBalance});
     },
     productdetail:async(req,res)=>{
         if(req.session.user){ 
@@ -395,13 +402,14 @@ module.exports = {
         } catch (error) {
             
         }
+
     },
     addToCart:async(req,res)=>{
         try {
             console.log("aaaaa");
             let userid=req.session.userid
             console.log(userid);
-              
+             
      
             userhelper.addToCart(userid,req.body).then(async(response)=>{
             
@@ -567,15 +575,36 @@ placeOrder : async (req, res) => {
                 
                     console.log("thanabana");
                     console.log(orderId);
-                    // await productHelper.decreaseStock(cartItems);
+                    await producthelper.decreaseStock(cartItems);
                     // await cartHelper.clearCart(userId);
                     // cartCount = await cartHelper.getCartCount(userId)
                     
             
          if (req.body.payment_method== 'COD') {
-          await producthelper.decreaseStock(cartItems);
+          
             res.status(202).json({status:true, orderId:orderId})
         }
+         else if (req.body.payment_method == 'wallet') {
+          let isPaymentDone = await walletHelper.payUsingWallet(userId, totalAmount);
+          if (isPaymentDone) {
+
+             await orderModel.findOneAndUpdate(
+              { _id: orderId },
+              {
+                $set: { 
+                  orderStatus: "placed"
+                }
+              })
+            
+            console.log("vannu");
+            console.log(orderId);
+            res.status(202).json({status:true, orderId:orderId})
+          }
+           else {
+              res.status(200).json({ payment_method: 'wallet', error: true, msg: "Insufficient Balance in wallet" })
+          }
+        }
+
         else{
             console.log("nmnmnm");
             userhelper.generaterazorpay(orderId,totalAmount).then((response)=>{
@@ -733,7 +762,7 @@ verifypayment: async (req, res) => {
               }
             }
           );
-
+          
           console.log("Payment is successful");
           res.json({ status: true ,orderId:orderObjId});
         } else {
@@ -780,17 +809,23 @@ userProfile:async(req,res)=>{
 cancelOrder:async(req,res)=>{ 
     try {
       let orderId=req.params.id
+      let userId=req.session.userid._id
       console.log("anamaamana");
       console.log(orderId);
-      await orderModel.updateOne(
+     const cancelledResponse= await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
-          $set: {
+          $set: { 
             orderStatus: "Cancelled"
           }
         })
+        console.log(cancelledResponse); 
+
+        if(cancelledResponse.paymentMethod!='COD'){
+          await walletHelper.addMoneyToWallet(userId,cancelledResponse.totalAmount);
+        }
         res.json({status:true})
-    
+      
 
          
     } catch (error) {
@@ -800,15 +835,22 @@ cancelOrder:async(req,res)=>{
  ReturnOrder:async(req,res)=>{
     try {
         let orderId=req.params.id
+        let userId=req.session.userid._id
         console.log("anamaamana");
         console.log(orderId);
-        await orderModel.updateOne(
+
+        const returnResponse= await orderModel.findOneAndUpdate(
           { _id: orderId },
           {
             $set: {
               orderStatus: "Return"
             }
           })
+
+          if(returnResponse.paymentMethod!='COD'){
+            await walletHelper.addMoneyToWallet(userId,returnResponse.totalAmount);
+          }
+
           res.json({status:true})
       
   
@@ -824,7 +866,7 @@ cancelOrder:async(req,res)=>{
     const query = req.query.query;
     console.log(query);
     // Perform the search query using the provided search term
-    const products = await product.find({ productname: { $regex: query, $options: 'i' } }).lean();
+    const products = await product.find({ productname: { $regex:new RegExp('^' + query, 'i') }}).lean();
     console.log("fff");
     console.log(products);
     res.redirect('/shop?array=' + encodeURIComponent(JSON.stringify(products)));
@@ -852,6 +894,9 @@ searchUser: async (req, res) => {
 },
  applyCoupon :async (req, res) => {
   try {
+      if(req.body.totalAmount <500){
+        res.json({ status: false, message: "Coupon available only for the 500₹ abouve purchase" })
+      }
       const user = req.session.userid
       console.log(user);
       const { totalAmount, couponCode } = req.body;
@@ -866,7 +911,7 @@ searchUser: async (req, res) => {
 },
 wishlist : async (req, res) => {
 
-  try {
+  try { 
       let userId = req.session.userid._id;
 
       if(req.session.user){ 
@@ -967,7 +1012,14 @@ productFiltering: async (req, res) => {
   }
 }
 
-
-
-
 }
+
+// convert a number to a indian currency format
+function currencyFormat(amount) {
+  return Number(amount).toLocaleString("en-in", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 0,
+  });
+}
+

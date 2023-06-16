@@ -12,9 +12,11 @@ const ObjectId=require('mongoose').Types.ObjectId
 const Razorpay = require('razorpay');
 
 
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret;
 var instance = new Razorpay({
-  key_id: 'rzp_test_kk1KzL6j3Vt8x4',
-  key_secret: 'KOSqPmO7KQ70pBJpFCJKMYwB',
+  key_id,
+  key_secret
 });
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -26,8 +28,7 @@ const { response } = require("express");
 dotenv.config();
 module.exports = {
   dosignup: async (req,res)=> {
-    console.log("2");
-    console.log(req.body);
+
     // console.log(user.find());
     return new Promise(async (resolve, reject)=> {
       try {
@@ -35,53 +36,24 @@ module.exports = {
           if (err) {
             reject(err);
             } else {
-              console.log("3");
+
             if (oldUser) {
               resolve({ status: true, user: null });
             }
             else {
-              console.log("4");
-              console.log(body.mobile);
+
               req.session.signupdata=req.body
               console.log(req.session.signupdata);
               let otpsend=await validatehelper.checkotpSignup(req.body.mobile)
-              console.log("7");
-              console.log(otpsend);
+
               if(otpsend.status==true){
                 let phonenumber=req.body.mobile
-                console.log("8");
-                console.log(phonenumber);
-                console.log(otpsend.msg);
+
                 res.render('shop/verifyotpsignup.ejs',{phonenumber} )
-                // validatehelper.verifyOTPSignup(body.mobile)
+                
               }
              
-              // var saltRounds = 10;
-              // var password = body.password.toString();
-              // bcrypt.hash(password, saltRounds, async function (err, newpassword) {
-              //   if (err) {
-              //     reject(err);
-              //   } else {
-              //     var newUser = new user({
-              //       name: body.name,
-              //       email: body.email,
-              //       password: newpassword,
-              //       phonenumber: body.mobile,
-              //       status: false
-
-              //     });
-                  //  newUser.save().then((err, savedUser)=> {
-                  //   if (err) { 
-                  //     reject(err);
-                  //   } else {
-
-                  //     resolve({ status: false, user: savedUser });
-                  //   }
-                  // });
-                //   var savedUser = await newUser.save();
-                //   resolve({ status: false, user: savedUser });
-                // }
-              // });
+          
             }
 
           }
@@ -183,7 +155,7 @@ module.exports = {
               resolve({ status: true, validuser, msg })
 
             } else {
-              console.log("no user");
+          
               let msg = "User not registered"
               resolve({ status: false, msg });
             }
@@ -197,49 +169,6 @@ module.exports = {
     })
   },
 
-  // verifyOtp: async (req, res) => {
-  //   try {
-  //     const otp = req.body.otp1 + req.body.otp2 + req.body.otp3 + req.body.otp4 + req.body.otp5;
-  //     const phonenumber = req.body.phone;
-  //     console.log(`Verifying OTP ${otp} for ${phonenumber}`);
-  //     client.verify.v2.services('VA78f0d5744013a723118798df8539c757').verificationChecks.create({
-  //       to: `+91${phonenumber}`,
-  //       code: otp
-  //     }).then(async (verificationCheck) => {
-  //       console.log(`Verification check status: ${verificationCheck.status}`);
-  //       if (verificationCheck.status === "approved") {
-  //         const user1 = await user.findOne({ phonenumber });
-  //         if (!user1) {
-  //           console.error(`User not found with phone number ${phonenumber}`);
-  //           res.render("shop/verifyotp", { msg2: "User not registered", phone: phonenumber });
-  //         } else if (!user1.status) {
-  //           console.error(`Account is blocked for user ${user1._id}`);
-  //           res.render("shop/verifyotp", { msg2: "Account is blocked...Unable to login", phone: phonenumber });
-  //         } else {
-  //           console.log(`User ${user1._id} logged in with phone number ${phonenumber}`);
-  //           req.session.login = true;
-  //           req.session.user = user1;
-  //           res.redirect("/");
-  //         }
-  //       } else {
-  //         console.error(`Incorrect OTP for ${phonenumber}`);
-  //         res.render("shop/verifyotp", { msg2: "INCORRECT OTP!!", phone: phonenumber });
-  //       }
-  //     }).catch((error) => {
-  //       console.error(`Failed to verify OTP for ${phonenumber}: ${error.message}`);
-  //       res.render("shop/verifyotp", {
-  //         msg2: "Error verifying OTP, please try again",
-  //         phone: phonenumber
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.error(`Error verifying OTP for ${phonenumber}: ${error.message}`);
-  //     res.render("shop/verifyotp", {
-  //       msg2: "Error verifying OTP, please try again",
-  //       phone: phonenumber
-  //     });
-  //   }
-  // },
 
 
   verifyOTP: async (req, res) => {
@@ -306,7 +235,6 @@ module.exports = {
     try {
       let productid = body
       let productdetails = await product.findById(productid)
-      console.log(productdetails);
       return productdetails
     } catch (error) {
 
@@ -314,21 +242,18 @@ module.exports = {
   },
   resetpasspost: async (body, userid) => {
     try {
-      console.log("hhhhhhhhhhhh");
-      console.log(body.password);
-      console.log(userid);
+
       var saltRounds = 10;
       var password = body.password.toString();
       bcrypt.hash(password, saltRounds, async function (err, newpassword) {
         if (err) {
           reject(err);
         } else {
-          console.log(newpassword);
-          console.log("jjk");
+    
           let userdata = await user.findById(userid);
           userdata.password = newpassword; // Set the new password on the user object
           await userdata.save(); // Save the updated user object to the database
-          console.log("sss");
+
         }
       });
     } catch (error) {
@@ -338,11 +263,8 @@ module.exports = {
   addToCart: async (userId,body) => {
     try {
 
-      console.log(body);
-      console.log(userId);
-      console.log(body.productid);
       if(!userId){ 
-        return{response:false}
+        return{response:false,}
       }
       let productId=body.productid
       const productdetail = await product.findById(productId);
@@ -351,12 +273,12 @@ module.exports = {
         throw new Error("Product not found");
       }
 
-      const quantity = productdetail.productQuantity;
+      const quantity = productdetail.productquantity;
 
       if (quantity < 1) {
-        return false;
+        return{response:true,limit:true, msg:"Product out of stock"}
       }
-      console.log("hello");
+ 
       let added;
       const cartuser = await Cart.findOne({ user: userId });
       if (cartuser) {
@@ -373,12 +295,11 @@ module.exports = {
         { $push: { products: { productId, quantity: 1 } } },
         { new: true }
       );
-      console.log(cart);
-      console.log("lllll");
+ 
 
       console.log(added);
       if (!cart && !added) {
-        console.log("hhhh");
+    
         await Cart.updateOne(
           { user: userId },
           { $push: { products: { productId, quantity: 1 } } },
@@ -397,8 +318,7 @@ module.exports = {
 
   removeCartitem: async (userId, productId) => {
     try {
-      console.log(productId);
-      console.log(userId);
+
       const userProduct = await product.findById(productId);
       console.log(userProduct);
       if (!userProduct) {
@@ -435,9 +355,9 @@ module.exports = {
       const productId=body.product
       const cartId=body.cart
       const count=body.count
+
       return new Promise((resolve,reject)=>{
         if (body.count == -1 && body.quantity == 1) {
-          console.log("hhhh");
           Cart
             .updateOne(
               { _id: cartId },
@@ -447,6 +367,7 @@ module.exports = {
               resolve({response:response,remove:true});
             });
         }
+     
         else{
           Cart.updateOne({_id:cartId,'products.productId':productId},{ $inc:{'products.$.quantity':count}}).then((response)=>{
             resolve(false)
@@ -508,15 +429,14 @@ module.exports = {
           }),
         { upsert: true }
       
-      console.log("yes");
+
       return({status:true})
            
 
     },
     deleteaddress: async (body) => {
       try {
-        console.log("popopopo");
-        console.log(body);
+ 
         let addressid = body;
         console.log(addressid);
         let address=await addressModal.findById(addressid);
@@ -526,8 +446,7 @@ module.exports = {
       } catch (error) {}
     },
     placeOrder:async(body,userId,total)=>{
-      console.log(body);
-      console.log("kkkk");
+
       let addressId=body.address_id
       const cart = await Cart.findOne({ user: userId }).populate('products.productId')
       // const adrs = await addressModal.findOne({ user: userId })
@@ -614,11 +533,10 @@ module.exports = {
 
 
 generaterazorpay:async(orderId,totalAmount)=>{
-  console.log("888888888");
-  console.log(orderId);
+
   console.log(totalAmount);
   try {
-    console.log("hghg");
+
     // var instance = new Razorpay({ key_id: 'rzp_test_gFlxCSnUJ3aK5l', key_secret: 'nvm1ozXmKUEnyqNOjDJCMY80' })
     var options = {
       amount: totalAmount*100,  // amount in the smallest currency unit

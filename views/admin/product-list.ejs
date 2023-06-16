@@ -1,18 +1,18 @@
 <%-include('../partials/adminheader')-%>
   <section class="content-main">
     <div class="content-header">
-      <h2 class="content-title">Product list</h2>
+      <h2 class="content-title"  scope="col">Product list</h2>
       <div>
         <a href="/admin/addproduct" class="btn btn-primary"><i class="material-icons md-plus"></i> Add product</a>
       </div>
     </div>
     <div class="card mb-4">
-      <header class="card-header">
-        <div class="row gx-3">
+      <!-- <header class="card-header">
+        <div class="row gx-3"> -->
           <!-- <div class="col-lg-4 col-md-6 me-auto">
             <input type="text" placeholder="Search..." class="form-control" />
           </div> -->
-          <div class="col-lg-2 col-md-3 col-6">
+          <!-- <div class="col-lg-2 col-md-3 col-6">
             <form class="search-form " action="/search" method="GET">
                 <div class="input-group">
                     <input  type="text"  class="form-control" placeholder="Search term">
@@ -29,30 +29,30 @@
               <option>Show all</option>
             </select>
           </div>
-          <!-- <div class="col-lg-2 col-md-3 col-6">
-            <select class="form-select">
+           <div class="col-lg-2 col-md-3 col-6"> -->
+            <!-- <select class="form-select">
               <option>Show 20</option>
               <option>Show 30</option>
               <option>Show 40</option>
             </select>
-          </div> -->
+          </div> 
         </div>
-      </header>
+      </header> -->
       <!-- card-header end// -->
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="user-lists">
+          <table class="table table-hover" id="product-list">
             <thead>
               <tr>
-                <th>No</th>
-                <th>Product</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>category</th>
-                <th>Quantity</th>
-                <th class="text-end">Action</th>
-                <th></th>
+                <th scope="col">No</th>
+                <th scope="col">Product</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status</th>
+                <th scope="col">category</th>
+                <th scope="col">Quantity</th>
+                <th scope="col" class="text-end">Action</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -72,7 +72,7 @@
                         <div class="info pl-3">
                           <h6 class="mb-0 title">
                             <% if (products.productimage && products.productimage.length > 0) { %>
-                                <img src="/uploads/<%= products.productimage[0]%>" class="img-sm img-thumbnail"  alt="Product Image">
+                                <img src="/uploads/<%= products.productimage[0]%>" class="img-sm img-thumbnail"  alt=  scope="col""Product Image">
                               <% } else { %>
                                 <img src="/uploads/default-image.jpg" alt="Default Image">
                               <% } %>
@@ -103,16 +103,16 @@
                             <span class="badge rounded-pill alert-danger">Deactive</span>
                             <% } %>
                                          
-                                        </td>
+                    </td>
                                         
                     <td>
                         <%=products.productcategory%>
                     </td>
                     <td>
-                        <h6><%=products.productQuantity %></h6>
+                        <h6><%=products.productquantity %></h6>
                        
                     </td>
-                    <td>
+                    <td class="text-end">
                       <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
                         <div class="dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
@@ -134,10 +134,8 @@
                                     <i class="material-icons md-delete_forever"></i> Delete
                                 </button>
                             </div>
-                        </div>
-
-
-                    </div>
+                         </div>
+                      </div>
                     </td>
                   </tr>
                   <% count++; %>        <% }); %>
@@ -149,14 +147,14 @@
       <!-- card-body end// -->
     </div>
     <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-     
-        <%-include('pagination')-%>
-    </div> 
+   
 </section> <!-- content-main end// -->
 <%-include('../partials/adminfooter')-%>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
  function deleteproduct(productId) {
    const url2 = `/admin/deleteproduct/${productId}`;
@@ -192,3 +190,5 @@
    });
  }
  </script>
+
+

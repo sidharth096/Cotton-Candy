@@ -430,6 +430,9 @@ ol {
 
 .header {
 	background: #ffffff;
+	-webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
+	box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
+	
 }
 
 .header__top {
@@ -1052,6 +1055,8 @@ ol {
 .product__item {
 	overflow: hidden;
 	margin-bottom: 40px;
+	
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .product__item.sale .product__item__pic .label {
@@ -1164,8 +1169,10 @@ ol {
 }
 
 .product__item__text {
-	padding-top: 29px;
+	padding-top: 12px;
 	position: relative;
+	background-color: #eeeeee;
+	text-align: center;
 
 }
 
@@ -1181,6 +1188,7 @@ ol {
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
+	
 }
 
 .product__item__text h6 {

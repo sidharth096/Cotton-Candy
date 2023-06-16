@@ -84,16 +84,116 @@
   .p11 .is-active {
     font-weight: bold;
   }
-  .product__item__text h3 span {
+  .product__item__text  span {
     color: #b7b7b7;
-    font-size: 17px;
-    font-weight: 400;
-    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 400px;
+    margin-left: 0px;
     text-decoration: line-through;
   }
   .d-flex {
     align-items: baseline;
   }
+  .description{
+    color: #818181;
+    font-size: 12px;
+    line-height: 1.5; 
+    margin-bottom: 0px;
+  }
+
+
+  
+    p,
+    li,
+    a {
+      font-size: 14px;
+    }
+  
+    /* GRID */
+    .eleven {
+      width: 91.53%;
+    }
+    .one {
+      width: 6.866%;
+    }
+    .pagination {
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .pagination ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+    .p1 a:hover {
+      background-color: #000000;
+      border-radius: 40%;
+      color: #fff;
+    }
+    .pagination a {
+      display: inline-block;
+      padding: 10px 18px;
+      color: #222;
+    }
+  
+    /* ONE */
+  
+    .p1 a {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      padding: 0;
+      text-align: center;
+    }
+  
+    .p1 a.is-active {
+      background-color: #000000;
+      border-radius: 100%;
+      color: #fff;
+    }
+  
+    .p11 a {
+      background-color: #000000;
+      margin: auto 5px;
+      color: #fff;
+      border: 3px solid #000000;
+      position: relative;
+    }
+    .p11 a:hover {
+      background-color: #051a0d;
+      color: #fff;
+      border: 3px solid #cef8df;
+    }
+    .p11 a:first-of-type:before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -25px;
+      border-top: 22px solid transparent;
+      border-bottom: 22px solid transparent;
+      border-right: 22px solid #000000;
+    }
+  
+    .p11 a:last-of-type:after {
+      content: "";
+      position: absolute;
+      top: -3px;
+      right: -25px;
+      border-top: 22px solid transparent;
+      border-bottom: 22px solid transparent;
+      border-left: 22px solid #000000;
+    }
+  
+    .p11 .is-active {
+      font-weight: bold;
+    }
+    span.price{
+      font-weight:bold ;
+      text-decoration: none;
+      color: #000000;
+      font-size: 18px;
+    }
 </style>
 <% var username=username || '' ; %> <% var Wishlistcount=Wishlistcount|| 0 ; %>
 <% var cartCount=cartCount|| 0 ; %> <% if (username) { %>
@@ -254,7 +354,7 @@
                   id="collapseFour"
                   class="collapse show"
                   data-parent="#accordionExample"
-                >
+                  >
                   <div class="card-body">
                     <div class="shop__sidebar__size">
                       <label for="S"
@@ -362,12 +462,11 @@
                 </div>
               </div>
 
-              <div>
-                <button class="btn btn-dark" type="submit" id="filterButton">
+                <a  href="" class="primary-btn"  id="filterButton">
                   Filter
-                </button>
-                <button class="btn btn-dark" id="clearButton">Clear All</button>
-              </div>
+                </a>
+               
+              
             </div>
           </div>
         </div>
@@ -390,10 +489,11 @@
               <a href="/productdetail/<%=product._id%>">
                 <div class="product__item__pic set-bg">
                   <img src="uploads/<%= product.productimage[3]%>" />
+                  <% if(product.productoffer){%>
+                    <span class="label">offer</span>
+                  <% } %>  
                   <ul class="product__hover">
-                    <!-- <li><a href="">
-                                                                        <img src="img/icon/heart.png"alt=""></a>
-                                                                    </li> -->
+                 
                     <li>
                       <a
                         href="#"
@@ -410,8 +510,7 @@
                         ><img src="img/shopping-cart.png" alt="" />
                       </a>
                     </li>
-                    <!-- <li><a href="#"><img src="img/icon/search.png"
-                                                                            alt=""></a></li> -->
+                  
                   </ul>
                 </div>
               </a>
@@ -419,160 +518,83 @@
               <div class="product__item__text">
                 <h5><%=product.productname %></h5>
 
-                <!-- <div class="rating">
-                                                                <i class="fa fa-star-o"></i>
-                                                                <i class="fa fa-star-o"></i>
-                                                                <i class="fa fa-star-o"></i>
-                                                                <i class="fa fa-star-o"></i>
-                                                                <i class="fa fa-star-o"></i>
-                                                            </div> -->
-                <div class="d-flex">
-                  <h5 class="mr-3">
-                    &#x20B9;<%=product.productpromotionalprice %>
-                  </h5>
-                  <h3>
-                    <span> &#x20B9;<%=product.productregularprice %> </span>
-                  </h3>
+                <div >
+                  
+                   <span class="price">&#x20B9; <%=product.productpromotionalprice %></span> 
+                
+                    <span > &#x20B9; <%=product.productregularprice %> </span>
+                 
                 </div>
+               
+                  <p class="description"> <%=product.productdescription %></p>
+                
+                   <% if (product.productquantity>0) { %>
+                                        <div
+                                        class="badge  text-success">
+                                        In stock  
+                                    </div>
+                                    <% } else { %>
+                                       <div
+                                        class="badge  text-danger">
+                                       Out of stock
+                                   </div>
+                                    <% } %>
 
-                <!-- <div class="product__color__select">
-                                                                <label for="pc-4">
-                                                                    <input type="radio" id="pc-4">
-                                                                </label>
-                                                                <label class="active black" for="pc-5">
-                                                                    <input type="radio" id="pc-5">
-                                                                </label>
-                                                                <label class="grey" for="pc-6">
-                                                                    <input type="radio" id="pc-6">
-                                                                </label>
-                                                            </div> -->
               </div>
             </div>
           </div>
           <% }); %>
         </div>
-      </div>
+        <div class="row">
+                                            <div class="col-lg-12">
+                                             
+                                              <div class="pagination p1 mx-auto">
+    <ul>
+        <% if (pagination.page > 1) { %>
+            <a href="shop?count=<%= pagination.count %>&page=<%= pagination.page-1 %>"><i class="fa fa-angle-left"></i></a>
+        <% } %>
+        
+      <% if (locals.pagination.page > 2) { %>
+      <!-- <a href="?count=<%= pagination.count %>&page=<%= pagination.page-1 %>"><li><</li></a> -->
+      <% } %>
+      <% if (pagination.page > 1) { %>
+      <a href="?count=<%= pagination.count %>&page=<%= pagination.page-1 %>"><li><%= pagination.page-1 %></li></a>
+      <% } %>
+      <a class="is-active" href="#"><li><%= pagination.page %></li></a>
+      <% for (let i = pagination.page+1; i <= Math.min(pagination.totalPages,pagination.page+6); i++) { %>
+      <a href="?count=<%= pagination.count %>&page=<%= i %>"><li><%= i %></li></a>
+      <% } %>
+      <% if (pagination.page < pagination.totalPages-1) { %>
+      <!-- <a href="?count=<%= pagination.count %>&page=<%= pagination.page+1 %>"><li>></li></a> -->
+      <% } %>
+
+      <% if (pagination.page < pagination.totalPages) { %>
+        <a href="shop?count=<%= pagination.count %>&page=<%= pagination.page+1 %>"><i class="fa fa-angle-right"></i></a>
+    <% } %>
+     
+    </ul>
+  </div>
+
+                                            </div>
+                                        </div>
+       </div>
+       
     </div>
   </div>
 </section>
 <!-- Shop Section End -->
 
-<%-include('../partials/userfooter')-%>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert@2"></script>
+<%-include('../partials/userfooter')-%>
 //Filter
 
 
 
-<script>
-  $(document).ready(function () {
-    // Filter button click event
-    $("#filterButton").click(function (event) {
-      event.preventDefault(); // Prevent the default form submission
 
-      // Retrieve the selected values for categories, price ranges, and colors
-      var selectedCategories = getSelectedValues(
-        '.shop__sidebar__categories input[type="checkbox"]:checked'
-      );
-      var selectedPriceRanges = getSelectedValues(
-        '.shop__sidebar__price input[type="checkbox"]:checked'
-      );
-      var selectedColors = getSelectedValues(
-        '.shop__sidebar__color input[type="checkbox"]:checked'
-      );
-      var radioButtons = document.querySelectorAll(
-        '.shop__sidebar__size input[type="radio"]'
-      );
-      var selectedSize = "";
-
-      for (var i = 0; i < radioButtons.length; i++) {
-        if (radioButtons[i].checked) {
-          selectedSize = radioButtons[i].value;
-          break;
-        }
-      }
-
-      console.log(selectedSize);
-
-      // Create the data object to send via AJAX
-      var data = {
-        categories: selectedCategories,
-        priceRanges: selectedPriceRanges,
-        colors: selectedColors,
-        size: selectedSize,
-      };
-
-      console.log(data);
-
-      // Send the selected values to the server-side for further processing
-      $.ajax({
-        url: "/productFiltering", // Replace with the URL of your server-side script
-        type: "POST",
-        data: data,
-        success: function (response) {
-          // Handle the response from the server
-          console.log("Filtered results received:", response);
-          // Update the UI with the filtered results
-          var productList = $("#productListCurrent ");
-          productList.empty(); // Empty the existing products
-
-          // Check if the response contains filtered products
-          if (response.length > 0) {
-            // Loop through the filtered products and append them to the product list
-            response.forEach(function (product) {
-              var productHtml = `
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                  <div class="product__item">
-                    <a href="/productdetail/${product._id}">
-                      <div class="product__item__pic set-bg">
-                        <img src="uploads/${product.productimage[3]}" alt="">
-                        <ul class="product__hover">
-                          <li><a href="#" data-value="${product._id}" class="add-produtToWishlist"><img src="img/icon/heart.png" alt=""></a></li>
-                          <li class="cartimg"><a type="button" data-pro="${product._id}" class="cartIncrement add-cart"><img src="img/shopping-cart.png" alt=""></a></li>
-                        </ul>
-                      </div>
-                    </a>
-                    <div class="product__item__text">
-                      <h5>${product.productname}</h5>
-                      <div class="d-flex">
-                        <h5 class="mr-3">&#x20B9;${product.productpromotionalprice}</h5>
-                        <h3><span>&#x20B9;${product.productregularprice}</span></h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `;
-
-              productList.append(productHtml);
-            });
-          } else {
-            // Display a message if no filtered products found
-            var noProductsHtml = `
-              <div class="col-12">
-                <p>No products found.</p>
-              </div>
-            `;
-            productList.append(noProductsHtml);
-          }
-        },
-        error: function () {
-          console.log("Error occurred while filtering results!");
-        },
-      });
-    });
-
-    // Function to retrieve selected values based on the provided selector
-    function getSelectedValues(selector) {
-      var selectedValues = [];
-      $(selector).each(function () {
-        selectedValues.push($(this).val());
-      });
-      return selectedValues;
-    }
-  });
-</script>
 
 <script>
   $(document).ready(function () {
@@ -593,7 +615,7 @@
             if (response.limit) {
               Swal.fire(
                 "sorry!",
-                "sorry you have only buy 10 quantity or product i sout of stock",
+                response.msg, 
                 "warning"
               );
             } else {
@@ -680,4 +702,124 @@
     });
   });
 </script>
-<script></script>
+<script>
+  $(document).ready(function () {
+    // Filter button click event
+    $("#filterButton").click(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Retrieve the selected values for categories, price ranges, and colors
+      var selectedCategories = getSelectedValues(
+        '.shop__sidebar__categories input[type="checkbox"]:checked'
+      );
+      var selectedPriceRanges = getSelectedValues(
+        '.shop__sidebar__price input[type="checkbox"]:checked'
+      );
+      var selectedColors = getSelectedValues(
+        '.shop__sidebar__color input[type="checkbox"]:checked'
+      );
+      var radioButtons = document.querySelectorAll(
+        '.shop__sidebar__size input[type="radio"]'
+      );
+      var selectedSize = "";
+
+      for (var i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+          selectedSize = radioButtons[i].value;
+          break;
+        }
+      }
+
+      console.log(selectedSize);
+
+      // Create the data object to send via AJAX
+      var data = {
+        categories: selectedCategories,
+        priceRanges: selectedPriceRanges,
+        colors: selectedColors,
+        size: selectedSize,
+      };
+
+      console.log(data);
+
+      // Send the selected values to the server-side for further processing
+      $.ajax({
+        url: "/productFiltering", // Replace with the URL of your server-side script
+        type: "POST",
+        data: data,
+        success: function (response) {
+          // Handle the response from the server
+          console.log("Filtered results received:", response);
+          // Update the UI with the filtered results
+          var productList = $("#productListCurrent ");
+          productList.empty(); // Empty the existing products
+
+          // Check if the response contains filtered products
+          if (response.length > 0) {
+            // Loop through the filtered products and append them to the product list
+            response.forEach(function (product) {
+              var productHtml = `
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                  <div class="product__item">
+                    <a href="/productdetail/${product._id}">
+                      <div class="product__item__pic set-bg">
+                        <img src="uploads/${product.productimage[3]}" alt="">
+                        ${product.productoffer ? '<span class="label">offer</span>' : ''}
+                        <ul class="product__hover">
+                          <li><a href="#" data-value="${product._id}" class="add-produtToWishlist"><img src="img/icon/heart.png" alt=""></a></li>
+                          <li class="cartimg"><a type="button" data-pro="${product._id}" class="cartIncrement add-cart"><img src="img/shopping-cart.png" alt=""></a></li>
+                        </ul>
+                      </div>
+                    </a>
+                    <div class="product__item__text">
+                      <h5>${product.productname}</h5>
+                      <div>
+                         <span class="price">&#x20B9;${product.productpromotionalprice}</span>
+                         <span>&#x20B9;${product.productregularprice}</span>
+                      </div>
+                      <p class="description">${product.productdescription}</p>
+                       ${product.productquantity > 0 ? '<div class="badge text-success">In stock</div>' : '<div class="badge text-danger">Out of stock</div>'}
+                    </div>
+                  </div>
+                </div>
+              `;
+
+              productList.append(productHtml);
+            });
+          } else {
+            
+            var noProductsHtml = `
+            <div class="text-center">
+            <img
+              style="
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;
+              "
+              src="img/product-empty.jpg"
+              alt="cart empty"
+            />
+            <h4>No Product</h4>
+        </div>
+            `;
+            productList.append(noProductsHtml);
+          }
+        },
+        error: function () {
+          console.log("Error occurred while filtering results!");
+        },
+      });
+    });
+
+    // Function to retrieve selected values based on the provided selector
+    function getSelectedValues(selector) {
+      var selectedValues = [];
+      $(selector).each(function () {
+        selectedValues.push($(this).val());
+      });
+      return selectedValues;
+    }
+  });
+</script>
+

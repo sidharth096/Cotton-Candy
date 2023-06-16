@@ -5,10 +5,17 @@ const product = require("../models/productmodel")
 const orderModel = require('../models/ordermodels')
 const Coupon = require('../models/coupenmodel')
 const Offer = require('../models/offermodel')
+const admin = require("../models/adminmodel")
+const twilioFunctions = require('../config/twilio')
 const voucherCode = require("voucher-code-generator")
 const bcrypt = require('bcrypt')
 
 const dotenv = require("dotenv");
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken)
+
 dotenv.config();
 module.exports = {
 
@@ -63,45 +70,88 @@ module.exports = {
 
         response.numberOfCategories = await Category.find({}).count();
 
-        console.log(response);
-        console.log("vvv");
         resolve(response)
     })
 },
-  // categories: async (body) => {
-  //   try {
-  //     console.log("hai");
-  //     console.log(body);
-  //     let name=body.category
-  //     console.log(name);
-  //     // let productcategory = category.find({categoryname:'name'})
 
-  //     category.findOne({ categoryname: body.category }).then(async(oldcategory, err) => {
-  //       console.log(oldcategory);
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         if (oldcategory) {
-  //           console.log("aaaa");
-  //           return{ status:false};
-  //         } else {
-  //           console.log("bbb");
-  //           const newcategory = new category({
-  //             categoryname: body.category
-  //             //   Categorydescription: category.categorydescription,
-  //           });
-  //           await newcategory.save();
-  //           return { status: true }
-  //         }
+checkotpForgot: function (body) {
 
-  //       }
-  //     }); 
+  return new Promise((resolve, reject) => {
+    try {
+      admin.findOne({ phonenumber: body.phonenumber }).then((validuser, err) => {
 
+        if (err) {
+          reject(err)
+        }
+        else {
+          if (validuser) {
+            console.log(validuser);
+            twilioFunctions.generateOTP(validuser.phonenumber);
+            // const msg1 = "OTP SENT!!";
+            let msg = "otp send"
+            resolve({ status: true, validuser, msg })
 
-  //   } catch (error) {
-  //     console.error("Error adding category:", error);
-  //   }
-  // },
+          } else {
+
+            let msg = "Incorrect number"
+            resolve({ status: false, msg });
+          }
+
+        }
+      })
+    }
+    catch {
+
+    }
+  })
+},
+verifyOTPForgetAdmin: async (req, res) => {
+  const otp = req.body.otp1 + req.body.otp2 + req.body.otp3 + req.body.otp4 + req.body.otp5;
+  const phonenumber = req.body.phone;
+
+  try {
+    client.verify.v2.services(`VA8b01b7f5e6f1671b4ddf2e23e407544e`).verificationChecks.create({
+      to: `+91${phonenumber}`,
+      code: otp
+    }).then(async (verificationChecks) => {
+      if (verificationChecks.status === "approved") {
+        let Admin = await admin.findOne({ phonenumber: phonenumber });
+        res.render('admin/changepasswordAdmin.ejs',{Admin})
+      }
+      else {
+        let msg = "Incorrect OTP"
+        res.render('admin/verifyotpforgotAdmin.ejs', { msg, phonenumber })
+      }
+
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("catchError", {
+      message: error.message,
+    });
+  }
+},
+resetpasspostAdmin: async (body, adminId) => {
+  try {
+
+    var saltRounds = 10;
+    var password = body.password.toString();
+    bcrypt.hash(password, saltRounds, async function (err, newpassword) {
+      if (err) {
+        reject(err);
+      } else {
+
+        let admindata = await admin.findById(adminId);
+        admindata.password = newpassword; // Set the new password on the user object
+        await admindata.save(); // Save the updated user object to the database
+
+      }
+    });
+  } catch (error) {
+    // Handle errors here
+  }
+},
+
  
 
   addCategories: async (category) => {
@@ -109,22 +159,11 @@ module.exports = {
       console.log("fkjgkdfjkjl");
       console.log(category);
       console.log(category.category);
-      // Check if cathe category is empty or consists only of whitespace
-      // if (!category.CategoryName || !category.CategoryName.trim()) {
-      //   return { success: false, message: 'Category name cannot be empty' };
-      // }
-  
-      // Check if the category name has any uppercase letters
-      // if (category.CategoryName.toLowerCase() !== category.CategoryName) {
-      //   return { success: false, message: 'Category name cannot contain uppercase letters' };
-      // }
-  
-      // Check if any category already exists with the same name (case-insensitive)
+
       const existingCategory = await Category.findOne({
         categoryname: { $regex: new RegExp(`^${category.category}$`, 'i') }
       });
-      console.log("999999999999");
-      console.log(existingCategory);
+
   
       if (existingCategory) {
         return { status: false };
@@ -134,7 +173,6 @@ module.exports = {
         categoryname: category.category,
       });
       await newCategory.save();
-      console.log("vannu");
       return { status: true };
     } catch (error) {
       console.error('Error adding category:', error);
@@ -149,7 +187,6 @@ module.exports = {
   addproduct: async (body, file) => {
     try {
 
-      console.log(file);
 
       const newproduct = new product({
         productname: body.productname,
@@ -163,18 +200,17 @@ module.exports = {
         productimage: file.map((file) => file.filename)
       });
       await newproduct.save();
-      console.log(newproduct);
+    
 
     } catch (error) {
       console.error("Error addingproduct:", error);
     }
   },
    editproduct: async (body, file, productid) => {
-    console.log("hello");
-    console.log(file );
+
     
     if (file.length==0) {
-      console.log("nofile");
+
       await product.findByIdAndUpdate({ _id: productid },
         {
           $set:
@@ -192,7 +228,6 @@ module.exports = {
         })
     }
     else {
-      console.log("file");
 
       await product.findByIdAndUpdate({ _id: productid },
         {
@@ -215,19 +250,19 @@ module.exports = {
 
 
   blockuser: async (body) => {
-    console.log("jhhh");
+
     let userid = body
     let userdetail = await user.findById(userid)
     userdetail.block = true
     await userdetail.save()
-    console.log(userdetail);
+
   },
   unblockuser: async (body) => {
     let userid = body
     let userdetail = await user.findById(userid)
     userdetail.block = false
     await userdetail.save()
-    console.log(userdetail);
+
   },
 
 
@@ -382,9 +417,6 @@ addCoupon:(couponData) => {
           charset: voucherCode.charset("alphabetic")
       });
 
-      console.log("voucher code generator",couponCode[0]);
-
-      console.log(convertedDate);
 
       const coupon = await new Coupon({
           couponName: couponData.couponName,
@@ -395,16 +427,24 @@ addCoupon:(couponData) => {
 
       await coupon.save()
           .then(() => {
-              resolve(coupon._id)
+              resolve({status:true})
           })
           .catch((error) => {
               reject(error)
           })
       })
   },
+
+
+
+
+
+
+
+
+
 addOffer:(offerData) => {
-  console.log("aaa");
-  console.log(offerData);
+
   return new Promise(async (resolve, reject) => {
 
       const dateString = offerData.endDate;
@@ -445,8 +485,13 @@ activeOffer: async (body) => {
    let products=await product.find({productcategory:categoryname})
 
    for(let product of products){
-    product.productpromotionalprice=product.productpromotionalprice-discount
-    await product.save()
+    if(product.productpromotionalprice>=500){
+      product.productpromotionalprice=product.productpromotionalprice-discount
+      product.productoffer=true
+      
+      await product.save() 
+    }
+  
    }
 
    
@@ -472,6 +517,7 @@ deactiveOffer: async (body) => {
 
    for(let product of products){
     product.productpromotionalprice=product.productpromotionalprice+discount
+    product.productoffer=false
     await product.save()
    }
 

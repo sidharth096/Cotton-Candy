@@ -8,10 +8,16 @@ const orderModel = require("../models/ordermodels");
 const Coupon = require("../models/coupenmodel");
 const Offer = require("../models/offermodel");
 const orderhelper = require("../helpers/orderhelper");
+const admin = require("../models/adminmodel")
+const bcrypt = require('bcrypt')
 const ObjectId = require("mongoose").Types.ObjectId;
+
 dotenv.config();
 
 module.exports = {
+
+
+
   adminlogin: async (req, res) => {
     try {
       if (req.session.admin) {
@@ -23,6 +29,9 @@ module.exports = {
       console.error(err);
     }
   },
+
+  
+
   adminpanel: async (req, res) => {
     try {
       const orderStatus = await orderhelper.getAllOrderStatusesCount();
@@ -48,46 +57,84 @@ module.exports = {
 
   adminpostlogin: async (req, res) => {
     try {
-      if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
-        req.session.admin = true;
+      admin.findOne({ username: req.body.email }).then((validuser, err) => {
 
-        res.redirect("/admin/adminpanel");
-      } else {
-        let msg = "Invalid email or password";
-        res.render("admin/adminlogin.ejs", { msg });
-      }
+        if (err) {
+          reject(err)
+        }
+        else {
+          if (validuser) {
+            console.log(validuser);
+            bcrypt.compare(req.body.password, validuser.password).then((isPasswordMatch, err) => {
+              if (err) {
+                reject(err);
+              } else {
+                if (isPasswordMatch) {
+                  req.session.admin = true;
+                   res.redirect("/admin/adminpanel");
+                } else {
+                  let msg = "Incorrect password"
+                  res.render("admin/adminlogin.ejs", { msg });;
+                }
+              }
+            });
+
+          } else {
+            let msg = "Invalid email ";
+            res.render("admin/adminlogin.ejs", { msg });
+          }
+
+        }
+      })
+    
     } catch (error) {}
   },
+
+  forgotpassAdmin: async(req, res) => {
+    res.render("admin/forgotadmin.ejs");
+  },
+
+  checkotpForgot:(req,res)=>{
+      
+    adminhelper.checkotpForgot(req.body).then((response) => {
+        if(response.status){
+            let phonenumber=response.validuser.phonenumber
+            console.log(response.msg);
+            res.render('admin/verifyotpforgotAdmin.ejs',{phonenumber} )
+        }else{
+            console.log(response.msg);
+            let msg=response.msg
+            res.render('admin/forgotadmin.ejs',{msg})
+
+           
+        }
+    })
+},
+resetPassPostAdmin:async(req,res)=>{
+  try {
+      console.log("======================b=============");
+      let adminid=req.params.id
+      console.log(adminid);
+      adminhelper.resetpasspostAdmin(req.body,adminid).then((response)=>{
+          res.redirect('/admin')
+      })
+  } catch (error) {
+      
+  }
+},
+
   adminlogout: async (req, res) => {
-    req.session = false;
+    req.session.admin = false;
     res.redirect("/admin");
   },
   userslist: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 10;
-      const page = parseInt(req.query.page) || 1;
-      const totalCount = await user.countDocuments();
-      const startIndex = (page - 1) * count;
-      const totalPages = Math.ceil(totalCount / count);
-
-      // Generate a random offset based on the total count and the page size
-      const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      const endIndex = Math.min(count, totalCount - startIndex);
-      const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-        totalPages: totalPages,
-        page: page,
-        count: count,
-        startIndex: startIndex,
-        endIndex: endIndex,
-      };
+    
       let users = await user
         .find()
         .sort({ createdAt: -1 })
-        .skip(startIndex)
-        .limit(count)
-        .lean();
-      res.render("admin/userslist.ejs", { users, pagination });
+     
+      res.render("admin/userslist.ejs", { users});
     } catch (error) {}
   }, 
 
@@ -123,38 +170,21 @@ module.exports = {
   },
   productlist: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 4;
-      const page = parseInt(req.query.page) || 1;
-      const totalCount = await product.countDocuments();
-      const startIndex = (page - 1) * count;
-      const totalPages = Math.ceil(totalCount / count);
-
-      // Generate a random offset based on the total count and the page size
-      const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      const endIndex = Math.min(count, totalCount - startIndex);
-      const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-        totalPages: totalPages,
-        page: page,
-        count: count,
-        startIndex: startIndex,
-        endIndex: endIndex,
-      };
+      
 
       let products = await product
         .find()
         .sort({ createdAt: -1 })
-        .skip(startIndex)
-        .limit(count)
-        .lean();
+        
 
-      res.render("admin/product-list.ejs", { products, pagination });
+      res.render("admin/product-list.ejs", { products,});
     } catch (err) {
       console.error(err);
     }
   },
   addproduct: async (req, res) => {
     try {
+
       let categories = await category.find();
       res.render("admin/addproduct.ejs", { categories });
     } catch (error) {
@@ -165,6 +195,7 @@ module.exports = {
     try {
       console.log("fff");
       let images = req.files;
+      console.log("sss");
       adminhelper.addproduct(req.body, images).then((response) => {
         res.redirect("/admin/productlist");
       });
@@ -406,10 +437,26 @@ module.exports = {
   },
   addCoupen: async (req, res) => {
     try {
-      adminhelper.addCoupon(req.body);
-      res.redirect("/admin/coupen");
-    } catch (error) {}
-  },
+      let couponAmount=parseInt(req.body.couponAmount)
+      console.log("fgdf");
+      console.log(req.body);
+      console.log(couponAmount);
+      if(couponAmount<50||couponAmount>500){
+        
+        res.json({status:false})
+      }
+      else{
+        console.log("keenju");
+         adminhelper.addCoupon(req.body).then((response)=>{
+          console.log("bnnbbbbn");
+          console.log(response);
+          res.json({status:true})
+         });
+       
+      }
+   
+    } catch (error) {}
+  },
   salesReportPage: async (req, res) => {
     const sales = await orderhelper.getAllDeliveredOrders();
 
@@ -474,7 +521,7 @@ module.exports = {
       adminhelper.addOffer(req.body);
       res.redirect("/admin/offer");
     } catch (error) {}
-  },
+  }, 
 };
 // convert a number to a indian currency format
 function currencyFormat(amount) {

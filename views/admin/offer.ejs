@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="offer-list">
                                     <thead>
                                         <tr>
                                             
@@ -128,6 +128,7 @@
             
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
  function deleteOffer(offerId) {
    const url2 = `/admin/deleteOffer/${offerId}`;

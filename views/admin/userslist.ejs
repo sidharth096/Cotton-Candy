@@ -38,10 +38,11 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Mobile</th>
-                                <th class="text-end"> Action </th>
+                                <th>Status </th>
                                 <th></th>
+                                <th class="text-end"> Action</th>
                             </tr>
-                        </thead>
+                        </thead>    
                         <tbody>
 
 
@@ -80,20 +81,20 @@
                                             </div>
                                         </td>
 
-                                        <!-- <td>
-                                            <% if (user.isActive) { %>
+                                        <td>
+                                            <% if (user.block) { %>
+                                                <span class="badge rounded-pill alert-danger">
+                                                    Inactive
+                                                </span>
+                                                
+                                            <% }else{ %>
                                                 <span class="badge rounded-pill alert-success">
                                                     Active
                                                 </span>
-                                             
-                                            <% }else{ %>
-                                            <span class="badge rounded-pill alert-danger">
-                                                Inactive
-                                            </span>
                                             <% }%>
 
                                             
-                                        </td> -->
+                                        </td>
 
                                         <td>
                                             <% if(user.block==true){%>
@@ -121,9 +122,7 @@
                 </div>
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
-        <div class="pagination-area mt-15 mb-50">
-            <%-include('pagination')-%>
-        </div>
+        
     </section> <!-- content-main end// -->
     <%-include('../partials/adminfooter')-%>
 

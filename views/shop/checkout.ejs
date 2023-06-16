@@ -202,13 +202,14 @@
                                 <input type="text" name="couponCode" id="couponCode" style="width: 15%x; height: 45px;"
                                     class="form-control" placeholder="coupon code">
                                 <button onclick="applyCoupon('<%= total %>')">Apply</button>
+                                <input type="text" name="couponAmount" id="couponAmount" hidden >
                            
 
 
                             </h6>
                         </div>
                         <div>
-                            <button class="show-coupen-btn"   data-toggle="modal" data-target="#showCoupen">Available Coupons  </button>
+                            <button class="show-coupen-btn"   data-toggle="modal" data-target="#showCoupen">Available Coupons </button>
 
                             <div class="modal fade" id="showCoupen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -276,10 +277,18 @@
                                     <% }) %>
                             </ul>
                             <ul class="checkout__total__all">
-
+                                <li>Discount <span id="discount">
+                                   
+                                    </span></li>
+  
                                 <li>Total <span id="total">
                                     &#x20B9;<%=total%>
                                     </span></li>
+
+
+                                <li>
+                                    <p>wallet balance: <%= walletBalance %></p>
+                                </li>
                             </ul>
 
                             <div>
@@ -295,6 +304,15 @@
 
                                     <label for="online">Online Payment</label>
                                     <input type="radio" id="online" name="payment" value="onlinePayment">
+
+
+                                </div>
+                                <div class="d-flex justify-content-between  mb-2">
+
+
+
+                                    <label for="online">Wallet</label>
+                                    <input type="radio" id="wallet" name="payment" value="wallet">
 
 
                                 </div>
@@ -372,7 +390,10 @@
                     var payment_method = $('input[name="payment"]:checked').val();
                     console.log("aaa");
                     var total = $('#total').text().replace(/[^\d\.]/g, '').trim()
+                    let couponAmount=document.getElementById("couponAmount").value
+
                     console.log(total);
+                    console.log(couponAmount);
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "You won't be able to revert this!",
@@ -387,15 +408,15 @@
 
                                 type: 'POST',
                                 url: '/placeOrder',
-                                data: { address_id: dataValue, payment_method: payment_method, total: total },
+                                data: { address_id: dataValue, payment_method: payment_method, total: total,couponAmount:couponAmount },
 
                                 success: function (response) {
                                     console.log("ghggg");
-                                    console.log(response);
+                                    console.log(response); 
                                     console.log(response.orderId);
                                     const orderId = response.orderId
 
-                                    if (response.status) {
+                                    if (response.status==true) {
                                         Swal.fire(
                                             'Order placed!',
                                             'Thank you for order.',
@@ -406,13 +427,18 @@
                                             console.log(response)
 
                                         }, 1200)
-                                    } else {
+                                    } else if(response.status==false) {
                                         console.log("3333333333333");
                                         console.log(response.response);
                                         razorpayPayment(response)
 
                                         // document.querySelector('.cart-count').textContent=val+1
 
+                                    }else{
+                                        Swal.fire(
+                                            response.msg, 
+                                           'success'
+                                        ) 
                                     }
                                     // placeOrder(response.address, response.payment_method);
                                 },
@@ -565,6 +591,9 @@
                             // document.getElementById('couponApplySuccess').innerHTML = res.message
                             // document.getElementById('discount').innerHTML = -res.discount
                             document.getElementById('total').innerHTML = res.totalAmount
+                            document.getElementById('discount').innerHTML = res.discount
+                            document.getElementById('couponAmount').value = res.discount
+
                         } else {
                             console.log(res);
                             Swal.fire({
