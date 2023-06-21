@@ -1,5 +1,6 @@
 const orderSchema = require('../models/ordermodels');
 const addressSchema = require('../models/addressmodel');
+const shortid = require('shortid');
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -37,8 +38,12 @@ module.exports = {
             if(order.couponAmount){
                 couponAmount=order.couponAmount||0
             }
+             
+            const orderid = shortid.generate();  
+
 
             let ordered = new orderSchema({
+                orderId:orderid,
                 user: userId,
                 address: addressId,
                 orderDate: date,
@@ -81,19 +86,20 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const userOrderDetails = await orderSchema.aggregate([
                 {
-                    $match: { user: new ObjectId(userId) }
+                  $match: { user: new ObjectId(userId) },
                 },
                 {
-                    $lookup:{
-                        from:'addresses',
-                        localField:'address',
-                        foreignField:'address._id',
-                        as:'addressLookedup'
-                    }
+                  $lookup: {
+                    from: 'addresses',
+                    localField: 'address',
+                    foreignField: 'address._id',
+                    as: 'addressLookedup',
+                  },
                 },
-              
-                
-            ])
+                {
+                  $sort: { createdAt: -1 }, // Sort by the "createdAt" field in descending order
+                },
+              ]); 
 
 
             resolve(userOrderDetails)

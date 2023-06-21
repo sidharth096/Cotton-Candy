@@ -49,13 +49,13 @@
                                     <%= i+1 %>
                                 </td>
                                 <td><b>
-                                        <%= sales[i]._id %>
+                                        <%= sales[i].orderId %>
                                     </b></td>
                                 <td>
                                     <%= sales[i].userDetails[0].name %>
                                 </td>
                                 <td>
-                                    <%= sales[i].orderDate %>
+                                    <%= sales[i].orderDate.toISOString().split('T')[0] %>
                                 </td>
                                 <td>
                                     <%= sales[i].paymentMethod %>

@@ -24,8 +24,10 @@ router.get('/coupen',admincheck,admincontroller.coupen)
 router.get('/offer',admincheck,admincontroller.offer)
 router.get('/sales-report-page',admincheck,admincontroller.salesReportPage);
 router.get('/logout',admincontroller.logout)
+router.get('/sales-report-page',admincheck,admincontroller.salesReportPage);
+router.get('/banner',admincheck,admincontroller.bannerpage)
 
-
+ 
 
 
 router.put('/blockuser/:id',admincheck,admincontroller.blockuser)
@@ -52,6 +54,8 @@ router.post('/editproductpost/:id',admincontroller.editproductpost)
 router.post('/add-coupen',admincheck,admincontroller.addCoupen)
 router.post('/add-offer',admincheck,admincontroller.addOffer)
 router.post('/getReport',admincheck,admincontroller.getReport)
+router.post('/addBanner',admincheck,admincontroller.addBanner)
+// router.post('/addBanner',admincheck,multer.upload.single('Image'),admincontroller.addBanner)
 
 
 

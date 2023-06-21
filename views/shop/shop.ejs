@@ -200,7 +200,63 @@
 <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%> <%
 }else{%> <%-include('../partials/userheader')-%> <% } %>
 
-<!-- Breadcrumb Section Begin -->
+
+
+
+ <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <% var username=username || '' ; %>
+                <% if (!username) { %>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Sign up</a>
+                <% } %>
+            </div>
+         
+            
+        </div>
+        <div class="offcanvas__nav__option">
+      
+            
+            <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                <% if (username&&wishlistcount) { %>
+                    <div class="tip">
+                  <span id="wishlistCount">
+                    <%= wishlistcount %>
+                  </span>  
+                  </div>
+                  <% } %>
+            <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+                <% if (username&&cartCount) { %>
+                    <div class="tip">
+                  <span id="cartCount">
+                    <%= cartCount %>
+                  </span>  
+                  </div>
+                  <% } %>
+                 
+            </a>
+         
+            <div>
+               
+                
+            </div>
+           
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
 <section class="breadcrumb-option">
   <div class="container">
     <div class="row">
@@ -225,9 +281,9 @@
       <div class="col-lg-3">
         <div class="shop__sidebar">
           <div class="shop__sidebar__search">
-            <form action="/search" method="get">
-              <input type="text" name="query" placeholder="Search..." />
-              <button type="submit"><span class="icon_search"></span></button>
+            <form >
+              <input type="text"  id="searchInput" placeholder="Search..." />
+              <button type="submit" id="searchButton"><span class="icon_search"></span></button>
             </form>
           </div>
           <div class="shop__sidebar__accordion">
@@ -404,7 +460,7 @@
                             id="balck"
                             name="balck"
                           />
-                          balck
+                          <a href="#"> balck</a>
                         </li>
                         <li>
                           <input
@@ -414,7 +470,7 @@
                             id="pricerange2"
                             name="category"
                           />
-                          blue
+                          <a href="#"> blue</a>
                         </li>
                         <li>
                           <input
@@ -424,7 +480,7 @@
                             id="pricerange3"
                             name="category"
                           />
-                          white
+                          <a href="#">white</a>
                         </li>
                         <li>
                           <input
@@ -434,7 +490,7 @@
                             id="pricerange4"
                             name="category"
                           />
-                          green
+                          <a href="#">green</a>
                         </li>
                         <li>
                           <input
@@ -444,7 +500,7 @@
                             id="pricerange5"
                             name="category"
                           />
-                          red
+                          <a href="#">red</a>
                         </li>
                         <li>
                           <input
@@ -454,7 +510,7 @@
                             id="pricerange6"
                             name="category"
                           />
-                          yellow
+                          <a href="#">yellow</a>
                         </li>
                       </ul>
                     </div>
@@ -496,7 +552,7 @@
                  
                     <li>
                       <a
-                        href="#"
+                        
                         data-value="<%= product._id%>"
                         class="add-produtToWishlist"
                         ><img src="img/icon/heart.png" alt="" />
@@ -794,13 +850,12 @@
               style="
                 display: block;
                 margin-left: auto;
-                margin-right: auto;
                 width: 80%;
               "
               src="img/product-empty.jpg"
-              alt="cart empty"
+              alt="product empty"
             />
-            <h4>No Product</h4>
+            <h4>No itms Found!</h4>
         </div>
             `;
             productList.append(noProductsHtml);
@@ -811,6 +866,94 @@
         },
       });
     });
+    
+
+   $(document).ready(function () {
+  // Search button click event
+   $("#searchButton").click(function (event) {
+    console.log("hai");
+    event.preventDefault(); // Prevent the default form submission
+
+    // Retrieve the search query
+    var searchQuery = $("#searchInput").val().trim();
+    console.log(searchQuery);
+
+    // Create the data object to send via AJAX
+    var data = {
+      query: searchQuery,
+    };
+
+    // Send the search query to the server-side for processing
+    $.ajax({
+      url: "/productSearch", // Replace with the URL of your server-side search route
+      type: "POST",
+      data: data,
+      success: function (response) {
+        // Handle the response from the server
+        console.log("Search results received:", response);
+        // Update the UI with the search results
+        var productList = $("#productListCurrent");
+        productList.empty(); // Empty the existing products
+
+        // Check if the response contains search results
+        if (response.length > 0) {
+          // Loop through the search results and append them to the product list
+          response.forEach(function (product) {
+            var productHtml = `
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="product__item">
+                  <a href="/productdetail/${product._id}">
+                    <div class="product__item__pic set-bg">
+                      <img src="uploads/${product.productimage[3]}" alt="">
+                      ${product.productoffer ? '<span class="label">offer</span>' : ''}
+                      <ul class="product__hover">
+                        <li><a href="#" data-value="${product._id}" class="add-produtToWishlist"><img src="img/icon/heart.png" alt=""></a></li>
+                        <li class="cartimg"><a type="button" data-pro="${product._id}" class="cartIncrement add-cart"><img src="img/shopping-cart.png" alt=""></a></li>
+                      </ul>
+                    </div>
+                  </a>
+                  <div class="product__item__text">
+                    <h5>${product.productname}</h5>
+                    <div>
+                      <span class="price">&#x20B9;${product.productpromotionalprice}</span>
+                      <span>&#x20B9;${product.productregularprice}</span>
+                    </div>
+                    <p class="description">${product.productdescription}</p>
+                    ${
+                      product.productquantity > 0
+                        ? '<div class="badge text-success">In stock</div>'
+                        : '<div class="badge text-danger">Out of stock</div>'
+                    }
+                  </div>
+                </div>
+              </div>
+            `;
+
+            productList.append(productHtml);
+          });
+        } else {
+          var noProductsHtml = `
+            <div class="text-center">
+              <img
+                style="display: block; margin-left: auto; width: 80%;"
+                src="img/product-empty.jpg"
+                alt="product empty"
+              />
+              <h4>No items Found!</h4>
+            </div>
+          `;
+          productList.append(noProductsHtml);
+        }
+      },
+      error: function () {
+        console.log("Error occurred while performing the search!");
+      },
+    });
+  });
+});
+
+
+
 
     // Function to retrieve selected values based on the provided selector
     function getSelectedValues(selector) {

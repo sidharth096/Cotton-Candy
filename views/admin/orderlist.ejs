@@ -51,8 +51,8 @@
                                 <% orders.forEach (function(order) {%>
                                 <tr>
                                     <td><%=order.userDetails[0].name%></td>
-                                    <td><%=order._id %></td>
-                                    <td><%=order.orderDate.toISOString().split('T') %></td>
+                                    <td><%=order.orderId %></td>
+                                    <td><%=order.orderDate.toISOString().split('T')[0]  %></td>
                                     <td>₹ <%=order.totalAmount %></td>
                                     <td><%=order.paymentMethod %></td>
                                     <td> 

@@ -20,13 +20,12 @@
     router.get('/shoppingcart',authentication,usercontroller.shoppingcart)
     router.get('/checkout',authentication,usercontroller.checkout)
     router.get('/productdetail/:id',usercontroller.productdetail)
-
-    router.get('/orderSuccess',usercontroller.orderSuccess)
-    router.get('/orderList',usercontroller.orderList)
-    router.get('/orderdetailsOf-user/:id',authentication,usercontroller.orderdetailsOfuser)
     router.get('/userProfile',authentication,usercontroller.userProfile)
+
+    router.get('/orderSuccess',authentication,usercontroller.orderSuccess)
+    router.get('/orderList',authentication,usercontroller.orderList)
+    router.get('/orderdetailsOf-user/:id',authentication,usercontroller.orderdetailsOfuser)
     router.put('/cancelOrder/:id',authentication,usercontroller.cancelOrder)
-    router.get('/search',usercontroller.search)
     router.get('/searchUser',usercontroller.searchUser)
     router.put('/ReturnOrder/:id',authentication, usercontroller.ReturnOrder)
     router.get('/wishlist',authentication,usercontroller.wishlist);
@@ -35,7 +34,7 @@
 
     
 
-
+    router.post('/productSearch',usercontroller.productSearch)
     router.post('/signup',usercontroller.signuppost )
     router.post('/login',usercontroller.loginpost )
     router.post('/checkotp',usercontroller.checkotp )
@@ -50,9 +49,9 @@
     router.post('/addToCart',authentication,usercontroller.addToCart)
     router.post('/verify-payment',authentication,usercontroller.verifypayment)
     router.post('/apply-coupon',authentication,usercontroller.applyCoupon)
-    router.post('/add-to-wishList',usercontroller.addToWishList);
+    router.post('/add-to-wishList',authentication,usercontroller.addToWishList);
     router.post('/productFiltering',usercontroller.productFiltering);
-    router.put('/remove-from-wishList/:id',usercontroller.removeFromWishList);
+    router.put('/remove-from-wishList/:id',authentication,usercontroller.removeFromWishList);
     
      
     //categories filtering

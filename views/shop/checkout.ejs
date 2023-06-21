@@ -80,7 +80,7 @@
                                      <% if(address.status==true){ %>
                                         <%let i=0 %>
                                      <div class="card-body">
-                                        <div class="form-check col-md-12 ">
+                                        <div class="form-check col-md-10 ">
 
                                          
 
@@ -92,16 +92,16 @@
                                                         <% if(i===0) { %> checked <% } %>>
 
 
-                                                        <label class="form-check-label" for="address1">
-                                                            <address>
+                                                        <label class="form-check-label d-flex align-items-center" for="address1">
+                                                            <div style="display: flex;">
+                                                              <address style="vertical-align: middle;">
                                                                 <%=address.name%>,<%=address.address %>
-                                                                        ,<%=address.city%>,<%=address.state %>
-                                                                                <br>
-                                                                                <%=address.phone %>
-                                                            </address>
-
-                                                        </label>
-
+                                                                    ,<%=address.city%>,<%=address.state %>
+                                                                        <br>
+                                                                        <%=address.phone %>
+                                                              </address>
+                                                            </div>
+                                                          </label>
                                                        
 
 

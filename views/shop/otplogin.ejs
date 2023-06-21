@@ -11,6 +11,25 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
   <title>Cotton candy</title>
+  <style>
+      body {
+    background-image: url('/img/login-page-background.jpg');
+    background-position:top center; /* Adjust the horizontal and vertical position of the image */
+    background-size: cover; /* Scale the image to cover the entire background */
+    color: #fcfdff;
+    
+  }
+  span {
+  display: block; /* Ensures the span takes up the full width */
+  color: red; /* Sets the text color to red */
+  font-weight: bold; /* Makes the text bold */
+  margin-top: 0px;
+  font-size: 16px; /* Adds a margin at the top for spacing */
+}
+  a{
+            text-decoration: none;
+        }
+  </style>
 </head>
 
 <body>
@@ -18,8 +37,8 @@
     <div class="container py-4 mt-5">
       <div class="row justify-content-center align-items-center ">
         <div class="col-md-6 col-lg-5 ">
-          <h1 class="font-weight-bold text-5 mb-0 mt-1 text-center">Cotton Candy</h1>
-          <h2 class="font-weight-bold text-5 mb-0 mt-2 text-center">OTP Login</h2>
+          <h1 class="font-weight-bold text-5 mb-0 mt-1 text-center text-light">Cotton Candy</h1>
+          <h2 class="font-weight-bold text-5 mb-0 mt-2 text-center text-light">OTP Login</h2>
           <% var msg=msg || '' ; %>
           <% if (msg) { %>
             <span class="text-danger font-weight-bold text-center ">
@@ -36,7 +55,7 @@
                   <span class="text-color-danger">*</span></label>
                 <input id="phonenumber" type="text" value="" name="phonenumber" class="form-control form-control-lg text-4" />
               </div>
-              <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="phonenumberError"></span>
+              <span class="text-danger d-none"  id="phonenumberError"></span>
             </div>
             <div class="row">
               <div class="form-group col">

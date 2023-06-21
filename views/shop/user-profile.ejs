@@ -12,7 +12,62 @@
     <%-include('../partials/userheader')-%>
 <% } %>
  
+  
+
+  <!-- Page Preloder -->
+  <div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__option">
+        <div class="offcanvas__links">
+            <% var username=username || '' ; %>
+            <% if (!username) { %>
+                <a href="/login">Login</a>
+                <a href="/signup">Sign up</a>
+            <% } %>
+        </div>
+     
+        
+    </div>
+    <div class="offcanvas__nav__option">
+  
+        
+        <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+            <% if (username&&wishlistcount) { %>
+                <div class="tip">
+              <span id="wishlistCount">
+                <%= wishlistcount %>
+              </span>  
+              </div>
+              <% } %>
+        <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+            <% if (username&&cartCount) { %>
+                <div class="tip">
+              <span id="cartCount">
+                <%= cartCount %>
+              </span>  
+              </div>
+              <% } %>
+             
+        </a>
+     
+        <div>
+           
             
+        </div>
+       
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__text">
+        <p>Free shipping, 30-day return or refund guarantee.</p>
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+
    
 <section class="pt-150 pb-150">
     <div class="container">
@@ -30,12 +85,7 @@
                                         href="#orders" role="tab" aria-controls="orders"
                                         aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                 </li>
-                                <!-- <li class="nav-item">
-                                    <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
-                                        href="#track-orders" role="tab" aria-controls="track-orders"
-                                        aria-selected="false"><i
-                                            class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
-                                </li> -->
+                             
                                 <li class="nav-item">
                                     <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#Address"
                                         role="tab" aria-controls="address" aria-selected="true"><i
@@ -46,6 +96,12 @@
                                         href="#account-detail" role="tab" aria-controls="account-detail"
                                         aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="track-wallet-tab" data-bs-toggle="tab"
+                                        href="#track-wallet" role="tab" aria-controls="account-detail"
+                                        aria-selected="true"><i class="fi-rs-shopping-cart mr-10"></i>Wallet</a>
+                                </li>
+                               
                                 <!-- <li class="nav-item">
                                     <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
                                 </li> -->
@@ -70,80 +126,88 @@
 
 
 
-                            <div class="tab-pane fade active show" id="orders" role="tabpanel"
-                                aria-labelledby="orders-tab">
-                                <div class="card ">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">Your Orders</h5>
-                                    </div>
-                                    
-                                    <% if (orders.length!=0) { %>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                
-                                        
-                                                <table class="table">
+                            <div class="tab-pane fade active show" id="orders"
+                            role="tabpanel" aria-labelledby="orders-tab">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Your Orders</h5>
+                                </div>
 
-                                                    <thead>
+                                <% if (orders.length!=0) { %>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
 
+
+                                            <table class="table">
+
+                                                <thead>
+
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <!-- <th>address</th> -->
+                                                        <th>Total</th>
+                                                        <th>PaymentMethod</th>
+                                                        <th>OrderStatus</th>
+                                                        <th>Action</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% orders.forEach(order=>{%>
                                                         <tr>
-                                                            <th>Date</th>
-                                                            <!-- <th>address</th> -->
-                                                            <th>Total</th>
-                                                            <th>PaymentMethod</th>
-                                                            <th>OrderStatus</th>
-                                                            <th>Action</th>
+                                                            <td>
+                                                                <%=order.orderDate%>
+                                                            </td>
 
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <% orders.forEach(order=>{%>
-                                                            <tr>
-                                                                <td>
-                                                                    <%=order.orderDate.toISOString().split('T')[0]%>
-                                                                </td>
-
-                                                                <td>
-                                                                    <%=order.totalAmount %>
-                                                                </td>
-                                                                <td>
-                                                                    <%=order.paymentMethod%>
-                                                                </td>
-                                                                <td>
-                                                                    <% if(order.orderStatus=='placed') {%>
-                                                                        <span class="badge rounded-pill alert-success text-success">
-                                                                            <%=order.orderStatus %>
+                                                            <td>
+                                                                <%=order.totalAmount %>
+                                                            </td>
+                                                            <td>
+                                                                <%=order.paymentMethod%>
+                                                            </td>
+                                                            <td>
+                                                                <% if(order.orderStatus=='placed'
+                                                                    ) {%>
+                                                                    <span
+                                                                        class="badge rounded-pill alert-success text-success">
+                                                                        <%=order.orderStatus
+                                                                            %>
+                                                                    </span>
+                                                                    <% }else if
+                                                                        (order.orderStatus=='Cancelled'
+                                                                        ) { %>
+                                                                        <span
+                                                                            class="badge rounded-pill alert-danger text-danger">
+                                                                            <%= order.orderStatus
+                                                                                %>
                                                                         </span>
-                                                                        <% }else if (order.orderStatus=='Cancelled' )  { %>
+                                                                        <% }else{ %>
                                                                             <span
-                                                                                class="badge rounded-pill alert-danger text-danger">
-                                                                                <%= order.orderStatus %>
+                                                                                class="badge rounded-pill alert-warning text-warning">
+                                                                                <%= order.orderStatus
+                                                                                    %>
                                                                             </span>
-                                                                            <% }else{ %>
-                                                                                <span
-                                                                                    class="badge rounded-pill alert-warning text-warning">
-                                                                                    <%= order.orderStatus %>
-                                                                                </span>
-                            
+
                                                                             <% } %>
-                                                                </td>
-                                                                <td><a href="/orderdetailsOf-user/<%=order._id%>"
-                                                                        class="btn-small d-block">View</a></td>
-                                                            </tr>
+                                                            </td>
+                                                            <td><a href="/order-detailes/<%=order._id%>"
+                                                                    class="btn-small d-block">View</a>
+                                                            </td>
+                                                        </tr>
 
-                                                            <% }) %>
-                                                    </tbody>
+                                                        <% }) %>
+                                                </tbody>
 
-                                                </table>
-                                            </div>
+                                            </table>
                                         </div>
+                                    </div>
 
                                     <% } else{ %>
 
                                         <h6>No orders</h6>
-                                     <% } %>
-                                </div>
-                            </div>
+                                        <% } %>
+                                 </div>
+                              </div>
 
 
 
@@ -404,6 +468,24 @@
                                     </div> -->
                                 </div>
                             </div>
+
+                            <div class="tab-pane fade" id="track-wallet" role="tabpanel"
+                                                    aria-labelledby="account-detail-tab">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Wallet</h5>
+                                                        </div>
+                                                        <div class="card-body">
+
+                                                            <td>
+                                                                <p>wallet balance: <%= walletBalance %></p>
+                                                            </td>
+
+                                                            <!-- <p>New York</p> -->
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                         </div>
                     </div>
                 </div>

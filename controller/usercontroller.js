@@ -37,18 +37,11 @@ module.exports = {
             // if(req.session.user){
                 let username= req.session.userid.name
                 let userId= req.session.userid._id
-                let products = await product.find({ productdeactive: { $eq: false } })
+                let products = await product.find({ productdeactive: { $eq: false } }).sort({ _id: -1 }) .limit(8); 
                 wishlistcount = await wishlisthelper.getWishListCount(userId);
                 cartCount = await userhelper.getCartCount(userId);
-                console.log("aaa");
-                console.log(wishlistcount);
-                console.log(cartCount);
                 res.render('shop/home.ejs',{username,products,wishlistcount,cartCount})
                 
-            // }
-            // else{
-            //     res.render('shop/home.ejs')
-            // }
         } catch (err) {
             console.error(err)
         }
@@ -56,11 +49,11 @@ module.exports = {
     landingpage:async(req,res) =>{
         
         try{
-          let products = await product.find({ productdeactive: { $eq: false } })
-            res.render('shop/home.ejs',{products})
+          let products = await product.find({ productdeactive: { $eq: false } }).sort({ _id: -1 }) .limit(8); 
+           res.render('shop/home.ejs',{products})
         }
         catch{
-            console.error(err)
+          res.render('error')
         }
     },
     userlogin: async (req, res) => {
@@ -475,7 +468,7 @@ module.exports = {
     //     })
     // }
     changeQuantity:async(req,res,next)=>{
-        console.log(req.body);
+
         console.log("fff");
         let userid=req.session.userid
      
@@ -490,8 +483,7 @@ module.exports = {
        
       },
   addAddress:async(req,res)=>{
-    console.log("xkfksdk");
-    console.log(req.body);
+
     let userId=req.session.userid._id
     console.log("================================");
     console.log(userId);
@@ -678,24 +670,6 @@ orderList:async(req,res)=>{
   },
 
 
-//  orderdetailsOfuser:async(req,res)=>{
-//     try {
-//        let orderid=req.params.id 
-//        console.log("asasasasas");
-//        console.log(orderid);
-//        let useraddress= await orderhelper.getOrderedUserDetailsAndAddress(orderid)
-//        let orderdetailes=await orderhelper.getOrderedProductsDetails(orderid)
-//        console.log("alakaalakaka");
-//        console.log(orderdetailes);
-//        console.log("ssssssssssss");
-//        console.log(product);
-
-//        res.render('shop/orderdeatils-user',{orderdetailes,orderid})
-//     } catch (error) {
-        
-//     }
-
-// },
 orderdetailsOfuser: async (req, res) => {
   try {
     console.log("sidhart");
@@ -786,7 +760,6 @@ verifypayment: async (req, res) => {
   },
 userProfile:async(req,res)=>{
     try {
-      console.log("aa");
       var userId= req.session.userid._id
       if(req.session.user){ 
         var username= req.session.userid.name||null
@@ -794,14 +767,10 @@ userProfile:async(req,res)=>{
             var cartCount = await userhelper.getCartCount(userId);
        }
         let user=req.session.userid
-        console.log(user)
-        // let userId=req.session.userid._id
-        console.log(userId);
         let address=await addressModal.find({user:req.session.userid._id})
         const orders = await orderhelper.getAllOrderDetailsOfAUser(userId)
-        console.log("vbvbvb");
-        console.log(orders);
-        res.render('shop/user-profile',{orders,username,address,user,wishlistcount,cartCount})
+        let walletBalance=await walletHelper.walletBalance(userId)
+        res.render('shop/user-profile',{orders,username,address,user,wishlistcount,cartCount,walletBalance})
     } catch (error) {
         
     }
@@ -859,23 +828,23 @@ cancelOrder:async(req,res)=>{
           
       }
  },
- search: async (req, res) => {
+
+
+productSearch: async (req, res) => {
   try {
+    const searchQuery = req.body.query;
 
-    
-    const query = req.query.query;
-    console.log(query);
-    // Perform the search query using the provided search term
-    const products = await product.find({ productname: { $regex:new RegExp('^' + query, 'i') }}).lean();
-    console.log("fff");
-    console.log(products);
-    res.redirect('/shop?array=' + encodeURIComponent(JSON.stringify(products)));
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
+    const searchResults = await product.find({ productname: { $regex:new RegExp('^' + searchQuery, 'i') }}).lean();
 
+    console.log(searchResults);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Error occurred while performing the search:', error);
+    res.status(500).send('Failed to perform the search');
+  }
 },
+
+
 searchUser: async (req, res) => {
   try {
 
@@ -977,7 +946,8 @@ productFiltering: async (req, res) => {
 
     // Build the filter object based on the provided data
     const filter = {};
-
+    filter.productdeactive=false
+    
     if (categories && categories !== "") {
       filter.productcategory = categories;
     }
@@ -997,9 +967,11 @@ productFiltering: async (req, res) => {
     if (size && size !== "") {
       filter.productsize = size;
     }
+    
 
     // Find products based on the filter object
     const filteredProducts = await product.find(filter);
+   
 
     console.log(filteredProducts);
 

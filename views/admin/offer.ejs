@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/add-offer" method="post" >
+                            <form >
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
                                     <input type="text" placeholder="Type here" name="name" class="form-control" id="name" />
@@ -36,7 +36,7 @@
                                     <input type="date" placeholder="Type here" name="endDate"  class="form-control" id="End-date" />
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-primary" type="btn" onclick="addOffer()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -130,6 +130,60 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
+
+function addOffer() {
+  // Get the form data
+  const formData = {
+    name: $('#name').val(),
+    discount: $('#Discount').val(),
+    category: $('select[name="category"]').val(),
+    endDate: $('#End-date').val()
+  };
+
+  // Check if any form field is empty
+  const isFormEmpty = Object.values(formData).some(value => value.trim() === '');
+  if (isFormEmpty) {
+    // Show an error message using SweetAlert
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Please fill in all the fields!',
+    });
+    return; // Stop further execution
+  }
+
+  // Send the AJAX request
+  $.ajax({
+    url: '/admin/add-offer',
+    type: 'POST',
+    data: formData,
+    success: function(response) {
+      // Handle the success response
+      console.log(response);
+      // Show a success message using SweetAlert
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Offer has been added.',
+      }).then(() => {
+        // Redirect to the "/admin/offer" page
+        window.location.href = '/admin/offer';
+      });
+    },
+    error: function(error) {
+      // Handle the error response
+      console.error(error);
+    }
+  });
+}
+
+// Attach the event listener to the form submission
+$('form').on('submit', function(event) {
+  event.preventDefault(); // Prevent the form from submitting normally
+  addOffer(); // Call the addOffer function
+});
+
+
  function deleteOffer(offerId) {
    const url2 = `/admin/deleteOffer/${offerId}`;
    Swal.fire({

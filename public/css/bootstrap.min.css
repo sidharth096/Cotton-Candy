@@ -67,10 +67,11 @@ body {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
+    color: #000000;
     text-align: left;
     background-color: #fff
 }
+
 
 [tabindex="-1"]:focus:not(:focus-visible) {
     outline: 0 !important
@@ -1567,7 +1568,8 @@ pre code {
         -ms-flex: 0 0 41.666667%;
         flex: 0 0 41.666667%;
         max-width: 41.666667%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+
     }
 
     .col-lg-6 {
@@ -5269,8 +5271,8 @@ input[type=submit].btn-block {
     min-height: 1px;
     padding: 1.25rem;
     display: flex;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 .card-title {
@@ -10221,7 +10223,8 @@ button.bg-dark:hover {
     .mb-lg-0,
     .my-lg-0 {
         margin-bottom: 0 !important;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+
     }
 
     .ml-lg-0,

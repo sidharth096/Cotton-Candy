@@ -7,9 +7,10 @@ const product = require("../models/productmodel");
 const orderModel = require("../models/ordermodels");
 const Coupon = require("../models/coupenmodel");
 const Offer = require("../models/offermodel");
+const banner = require("../models/bannermodal");
 const orderhelper = require("../helpers/orderhelper");
 const admin = require("../models/adminmodel")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const ObjectId = require("mongoose").Types.ObjectId;
 
 dotenv.config();
@@ -124,9 +125,51 @@ resetPassPostAdmin:async(req,res)=>{
 },
 
   adminlogout: async (req, res) => {
-    req.session.admin = false;
-    res.redirect("/admin");
+    try {
+      req.session.admin = false;
+      res.redirect("/admin");
+    } catch (error) {
+      
+    }
+    
   },
+
+  bannerpage:async(req,res)=>{
+   try {
+    console.log("ssss");
+    let Banner= await banner.find()
+    console.log(Banner);
+     res.render('admin/banner.ejs',{Banner})
+   } catch (error) {
+    console.log(error);
+   }
+  },
+  addBanner: async (req, res) => {
+    try {
+      console.log("zzzzzzzzzzzzzzzzzzzzzzzz");
+      console.log(req.body);
+      console.log(req.file);
+      const { Description } = req.body
+      const Image = req.file
+      const name = req.body.name
+      const newBanner = new banner({
+        name: name,
+        Image: Image.filename,
+        Description: Description,
+      })
+      const banner = await newBanner.save()
+      if (banner) {
+        res.send({ message: "banner added" })
+      } else {
+        res.send({ message: "something went worng" })
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(500).render('error', { error });
+    }
+  },
+
+
   userslist: async (req, res) => {
     try {
     

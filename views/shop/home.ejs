@@ -8,7 +8,27 @@
     <%-include('../partials/userheader')-%>
 <% } %>
  
-
+<style>
+    .description{
+    color: #818181;
+    font-size: 12px;
+    line-height: 1.5; 
+    margin-bottom: 0px;
+  }
+  .product__item__text  span {
+    color: #b7b7b7;
+    font-size: 14px;
+    font-weight: 400px;
+    margin-left: 0px;
+    text-decoration: line-through;
+  }
+  span.price{
+      font-weight:bold ;
+      text-decoration: none;
+      color: #000000;
+      font-size: 18px;
+    }
+</style>
 
 
 <body>
@@ -22,23 +42,47 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#"></a>
+                <% var username=username || '' ; %>
+                <% if (!username) { %>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Sign up</a>
+                <% } %>
             </div>
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
-            </div>
+            <% if(username){ %>
+                <div class="header__top__hover">
+                    <span class="text-dark text-brand font-weight-bold"> <%= username %>   <i class="arrow_carrot-down text-dark" ></i></span>
+                    <ul>
+                        <li><a href="/userProfile"class="text-dark" >Account</a ></li>
+                        <li><a href="/logout"class="text-dark" >Logout</a ></li>
+                        
+                    </ul>
+                </div>
+             <% } %> 
+         
+            
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-            <a href="#"><img src="img/icon/heart.png" alt=""></a>
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="price">$0.00</div>
+      
+            
+            <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                <% if (username&&wishlistcount) { %>
+                    <div class="tip">
+                  <span id="wishlistCount">
+                    <%= wishlistcount %>
+                  </span>  
+                  </div>
+                  <% } %>
+            <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+                <% if (username&&cartCount) { %>
+                    <div class="tip">
+                  <span id="cartCount">
+                    <%= cartCount %>
+                  </span>  
+                  </div>
+                  <% } %>
+                 
+            </a>
+         
             <div>
                
                 
@@ -46,6 +90,7 @@
            
         </div>
         <div id="mobile-menu-wrap"></div>
+        
         <div class="offcanvas__text">
             <p>Free shipping, 30-day return or refund guarantee.</p>
         </div>
@@ -165,30 +210,61 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <a href="/productdetail/<%=product._id%>">
-                          <div class="product__item__pic set-bg" >
-                            <img src="uploads/<%= product.productimage[3]%>">
-                            <span class="label">New</span>
+                          <div class="product__item__pic set-bg">
+                            <img src="uploads/<%= product.productimage[3]%>" />
+                            <% if(product.productoffer){%>
+                              <span class="label">offer</span>
+                            <% } %>  
                             <ul class="product__hover">
-                                <li><a href="">
-                                    <img src="img/icon/heart.png"alt=""></a>
-                                </li>
-                                <li class="cartimg"><a
-                                        onclick="cartIncrement('<%=product._id %>')"
-                                        class="add-cart"><img
-                                            src="img/shopping-cart.png" alt="">
-                                    </a>
-                                </li>
+                           
+                              <li>
+                                <a
+                                  href="#"
+                                  data-value="<%= product._id%>"
+                                  class="add-produtToWishlist"
+                                  ><img src="img/icon/heart.png" alt="" />
+                                </a>
+                              </li>
+                              <li class="cartimg">
+                                <a
+                                  type="button"
+                                  data-pro="<%=product._id %>"
+                                  class="cartIncrement add-cart"
+                                  ><img src="img/shopping-cart.png" alt="" />
+                                </a>
+                              </li>
+                            
                             </ul>
                           </div>
                         </a>
+          
                         <div class="product__item__text">
-                            <h6><%=product.productname %></h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                        
-                            <h5>₹<%=product.productpromotionalprice %></h5>
+                          <h5><%=product.productname %></h5>
+          
+                          <div >
+                            
+                             <span class="price">&#x20B9; <%=product.productpromotionalprice %></span> 
+                          
+                              <span > &#x20B9; <%=product.productregularprice %> </span>
                            
+                          </div>
+                         
+                            <p class="description"> <%=product.productdescription %></p>
+                          
+                             <% if (product.productquantity>0) { %>
+                                                  <div
+                                                  class="badge  text-success">
+                                                  In stock  
+                                              </div>
+                                              <% } else { %>
+                                                 <div
+                                                  class="badge  text-danger">
+                                                 Out of stock
+                                             </div>
+                                              <% } %>
+          
                         </div>
-                    </div>
+                      </div>
                 </div>
                 <% }) %>
                 
@@ -204,15 +280,15 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="categories__text">
-                        <h2>Clothings Hot <br /> <span>Shoe Collection</span> <br /> Accessories</h2>
+                        <h2>Clothings Hot <br /> <span>Shirt Collection</span> <br /> Jeans</h2>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="categories__hot__deal">
-                        <img src="img/product-sale.png" alt="">
+                        <img src="img/3.png" alt="">
                         <div class="hot__deal__sticker">
                             <span>Sale Of</span>
-                            <h5>$29.99</h5>
+                            <h5>₹ 999</h5>
                         </div>
                     </div>
                 </div>
@@ -247,7 +323,7 @@
     <!-- Categories Section End -->
 
     <!-- Instagram Section Begin -->
-    <section class="instagram spad">
+    <!-- <section class="instagram spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -270,7 +346,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- Instagram Section End -->
 
     <!-- Latest Blog Section Begin -->
@@ -323,56 +399,111 @@
     <%-include('../partials/userfooter')-%>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        function cartIncrement(productid) {
+        $(document).ready(function () {
+          $(document).on("click", ".cartIncrement", function () {
             console.log("vvvvvvvvvvv");
             // let count = document.querySelector('.cart-count')
             // let val =parseInt(count.textContent)
+            let data = $(this).data("pro");
+            console.log(data);
             $.ajax({
-                url: '/addToCart',
-                data: {
-                    productid: productid
-                },
-                method: 'post',
-                success: (response) => {
-                    if (response.response) {
-                        console.log(response);
-                        // alert('added to cart')
-                        // location.reload()
-                        if (response.limit) {
-                            Swal.fire(
-                                'sorry!',
-                                'sorry you have only buy 10 quantity or product i sout of stock',
-                                'warning'
-                            )
-                        } else {
-
-
-                            // document.querySelector('.cart-count').textContent=val+1
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Product added to cart',
-                                showConfirmButton: false,
-                                timer: 1600
-                            })
-                        }
-                    } else {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'alert',
-                            title: 'Please Login ',
-                            showConfirmButton: false,
-                            timer: 1600
-                        })
-                        setTimeout(() => {
-
-                            window.location = '/login'
-                        }, 1700)
-                    }
+              url: "/addToCart",
+              data: {
+                productid: data,
+              },
+              method: "post",
+              success: (response) => {
+                if (response.response) {
+                  if (response.limit) {
+                    Swal.fire(
+                      "sorry!",
+                      response.msg, 
+                      "warning"
+                    );
+                  } else {
+                    // document.querySelector('.cart-count').textContent=val+1
+                    Swal.fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Product added to cart",
+                      showConfirmButton: false,
+                      timer: 1600,
+                    }).then(() => {
+                      location.reload();
+                    });
+                  }
+                } else {
+                  Swal.fire({
+                    position: "center",
+                    icon: "alert",
+                    title: "Please Login ",
+                    showConfirmButton: false,
+                    timer: 1600,
+                  });
+                  setTimeout(() => {
+                    window.location = "/login";
+                  }, 1700);
                 }
+              },
+            });
+          });
+        });
+      
+      
+        $(document).ready(function () {
+          $(document).on("click", ".add-produtToWishlist", function () {
+           
+            const productId = $(this).data("value");
+            console.log("clicked");
+            console.log("hjjjjjjjjjj", productId);
+            $.ajax({
+              url: "/add-to-wishList",
+              type: "post",
+              data: { productId: productId },
             })
-        }
- </script>
+              .done((res) => {
+                console.log("ssss");
+                console.log(res);
+      
+                if (res.response == true) {
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Product added to Wishlist",
+                    showConfirmButton: false,
+                    timer: 1600,
+                  }).then(() => {
+                    location.reload();
+                  });
+                } else {
+                  if (res.message === "Product already exists in the wishlist.") {
+                    Swal.fire({
+                      position: "center",
+                      icon: "error",
+                      title: "Product already added to Wishlist",
+                      showConfirmButton: false,
+                      timer: 1600,
+                    });
+                  } else {
+                    Swal.fire({
+                      position: "center",
+                      icon: "alert",
+                      title: "Login needed",
+                      showConfirmButton: false,
+                      timer: 1600,
+                    });
+                    setTimeout(() => {
+                      window.location = "/login";
+                    }, 1700);
+                  }
+                }
+              })
+              .fail((err) => {
+                console.log(err);
+              });
+          });
+        });
+      </script>

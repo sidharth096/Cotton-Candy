@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -24,19 +23,46 @@
     <link rel="stylesheet" href="/magiczoomplus/magiczoomplus.css" type="text/css">
 
     <style>
-        #orderdetail{
+        #orderdetail {
             margin-bottom: 5rem;
             margin-left: 10%;
             margin-right: 10%;
             margin-top: 73px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
+        #orderSpecification{
+            background-color: #dfdfdf;
+        }
+        #card-body{
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        @media (max-width: 768px) {
+            #orderdetail {
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #orderdetail {
+                margin-left: 2%;
+                margin-right: 2%;
+                margin-top: 0;
+            }
+        }
+        .order-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
-<% var username = username || '' ; %>
-<% var Wishlistcount = Wishlistcount || 0 ; %>
-<% var cartCount = cartCount || 0 ; %>
+<% var username = username || ''; %>
+<% var Wishlistcount = Wishlistcount || 0; %>
+<% var cartCount = cartCount || 0; %>
 <% if (username) { %>
     <%-include('../partials/userheader', { username, Wishlistcount, cartCount })-%>
 <% } else { %>
@@ -44,55 +70,40 @@
 <% } %>
 
 <body>
-    <div class="container" id="orderdetail">
+   
+    <div class="container p-5" id="orderdetail">
         <div class="mb-20">
-            <h4 class="text-center">Your Orders</h4>
+            <h4 class="text-center order-header">Your Orders</h4>
         </div>
-    <div class="col-md-12">
-        <div class="order_review">
-            <% orderdetailes.forEach(function(product) { %>
-                <div class="card shadow-0 border mt-10">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <img src="/uploads/<%=product.orderedProduct.productimage[0]%>" alt="" />
-                            </div>
-                            <div class="col-md-4 col-sm-3 align-items-center">
-                                <p class="mb-0">
-                                    <%=product.orderedProduct.productname%>...
-                                </p>
+        <div class="col-md-12">
+            <div class="order_review">
+                <div class="card shadow-0 border mt-10" id="orderSpecification">
+                    <div class="card-body " id="card-body">
+                       
+                            <div class="col-md-6 col-sm-6 ">
+                                
+                                <p><strong> OrderId:</strong> <%=orderdetailes[0].orderId %></p>
+                                <p><strong>OrderDate: </strong><%=orderdetailes[0].orderDate.toISOString().split('T')[0] %></p>
+                                <p><strong>PaymentMethod:</strong> <%=orderdetailes[0].paymentMethod %></p>
                                 <p>
-                                    <%=product.orderedProduct.productcategory %>
-                                </p>
-                                <p class="text-muted mb-0 small">
-                                    Qty: <%=product.orderedItems.quantity%>
-                                </p>
-                                <p class="text-muted mb-0 small">
-                                    &#8377; <%=product.orderedProduct.productpromotionalprice%>
-                                </p>
-                            </div>
-                            <div class="col-md-2 col-sm-2 align-items-center">
-                                <p>OrderDate:<%=product.orderDate.toISOString().split('T')[0] %></p>
-                                <p>PaymentMethod:<%=product.paymentMethod %></p>
-                                <p>
-                                    <% if(product.orderStatus=='placed' ) {%> OrderStatus:
+                                    <% if(orderdetailes[0].orderStatus=='placed' ) {%> OrderStatus:
                                     <span class="badge rounded-pill alert-success text-success">
-                                        <%=product.orderStatus%>
+                                        <%=orderdetailes[0].orderStatus%>
                                     </span>
-                                    <% }else if (product.orderStatus=='Cancelled' ) { %>
-                                    OrderStatus:
+                                    <% }else if (orderdetailes[0].orderStatus=='Cancelled' ) { %>
+                                    <strong>OrderStatus:</strong>
                                     <span class="badge rounded-pill alert-danger text-danger">
-                                        <%=product.orderStatus%>
+                                        <%=orderdetailes[0].orderStatus%>
                                     </span>
-                                    <% }else{ %> OrderStatus:
+                                    <% }else{ %><strong>OrderStatus:</strong>
                                     <span class="badge rounded-pill alert-warning text-warning">
-                                        <%=product.orderStatus%>
+                                        <%=orderdetailes[0].orderStatus%>
                                     </span>
                                     <% } %>
                                 </p>
-                                <h5>Total: ₹ <%=product.totalAmount%></h5>
+                                <h5><strong>Total:</strong> ₹ <%=orderdetailes[0].totalAmount%></h5>
                             </div>
-                            <div class="col-md-2 col-sm-2 align-items-center">
+                            <div class="col-md-6 col-sm-6 ">
                                 <p>
                                     <%=address[0].name%><br />
                                     <%=address[0].address%><br />
@@ -103,27 +114,49 @@
                                 </p>
                             </div>
                         </div>
-                        <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1" />
+                        
                     </div>
                 </div>
-            <% }) %>
-            <!-- <div class="bt-1 border-color-1 mt-30 mb-30"></div> -->
+                <% orderdetailes.forEach(function(product) { %>
+                    <div class="card shadow-0 border mt-10">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2">
+                                    <img src="/uploads/<%=product.orderedProduct.productimage[0]%>" alt="" />
+                                </div>
+                                <div class="col-md-4 col-sm-3 align-items-center">
+                                    <p class="mb-0">
+                                        <%=product.orderedProduct.productname%>...
+                                    </p>
+                                    <p>
+                                        <%=product.orderedProduct.productcategory %>
+                                    </p>
+                                    <p class="text-muted mb-0 small">
+                                        Qty: <%=product.orderedItems.quantity%>
+                                    </p>
+                                    <p class="text-muted mb-0 small">
+                                        &#8377; <%=product.orderedProduct.productpromotionalprice%>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1" />
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
     </div>
-
-  
-  </div>
-  <div class="col-md-12 col-sm d-flex justify-content-center mb-5">
-    <% if (orderdetailes[0].orderStatus == 'placed') { %>
-        <button type="button" onclick="cancelOrder('<%=orderid%>')" class="btn btn-dark mr-2">
-            Order Cancel
-        </button>
-    <% } else if (orderdetailes[0].orderStatus == 'delivered') { %>
-        <button onclick="ReturnOrder('<%=orderid%>')" type="button" class="btn btn-danger">
-            Return Order
-        </button>
-    <% } %>
-  </div>
+    <div class="col-md-12 col-sm d-flex justify-content-center mb-5">
+        <% if (orderdetailes[0].orderStatus == 'placed') { %>
+            <button type="button" onclick="cancelOrder('<%=orderid%>')" class="btn btn-dark mr-2">
+                Order Cancel
+            </button>
+        <% } else if (orderdetailes[0].orderStatus == 'delivered') { %>
+            <button onclick="ReturnOrder('<%=orderid%>')" type="button" class="btn btn-danger">
+                Return Order
+            </button>
+        <% } %>
+    </div>
 
     <%-include('../partials/userfooter')-%>
 

@@ -355,7 +355,12 @@ module.exports = {
       const productId=body.product
       const cartId=body.cart
       const count=body.count
-
+      let Product=await product.findById(productId)
+      let productquantity=Product.productquantity
+      console.log("////////////////");
+      console.log(Product);
+      console.log(productquantity);
+      console.log(body.quantity_);
       return new Promise((resolve,reject)=>{
         if (body.count == -1 && body.quantity == 1) {
           Cart
@@ -367,6 +372,10 @@ module.exports = {
               resolve({response:response,remove:true});
             });
         }
+       else if(productquantity==body.quantity&& body.count==1){
+          resolve({response:response,limit:true});
+
+        }
      
         else{
           Cart.updateOne({_id:cartId,'products.productId':productId},{ $inc:{'products.$.quantity':count}}).then((response)=>{
@@ -405,13 +414,7 @@ module.exports = {
         return { status: false, message: "cart not found" };
       }
       },
-    checkout:async(body)=>{
-      try {
-       
-      } catch (error) {
-        
-      }
-    },
+    
     addAddress:async(body,userId)=>{
       console.log(userId);
       

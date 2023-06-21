@@ -1,0 +1,154 @@
+<%-include('../partials/adminheader')-%>
+
+<style>
+    .square-image {
+        width: 150px;
+        height: 80px;
+        object-fit: cover;
+    }
+</style>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Banner</h2>
+
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <article class="itemlist">
+                    <table class="table table-hover" id="couponTable">
+                        <thead>
+                            <tr class="text-left">
+                                <th>No</th>
+                                <th>Banner Image</th>
+                                <th>Banner Name</th>
+                                <th>Banner Description</th>
+                                <th>Delete</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% Banner.forEach((banner) => { %>
+                              <% let count=1 %>
+                            
+                                <tr class="text-left">
+                                    <td width="15%" class="text-center">
+                                       <%=count %>
+                                       
+                                    </td>
+                                    <td width="20%">
+                                      <!-- Coupon Name -->
+                                        <a href="/" data-bs-toggle="tooltip" data-bs-placement="top" title="click to see Banner">
+                                            <img src="/<%=banner.Image %>" alt="" srcset="">
+                                        </a>
+                                    </td>
+                                    <td width="20%" class="text-center">
+                                       <!-- Coupon Code -->
+                                        <%= banner.name %>
+                                    </td>
+                                    <td width="10%">
+                                        <!-- Discount Amount -->
+                                        <%= banner.Description %>
+                                    </td>
+                                    
+                                    <td width="10%">
+                                        <button class="btn btn-danger">Delete</button>    
+                                    </td>
+                                </tr>
+                                 <% count++ %>
+                                <% }) %>
+                            
+    
+                        </tbody>
+                    </table> 
+                </article> <!-- itemlist  .// -->
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Add New Banner</h4>
+                    </div>
+                    <div class="card-body">
+                    <form id="myForm" action="/admin/addaBanner" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Banner Name</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="name"
+                                    id="product_name" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Banner description</label>
+                                <textarea placeholder="Type here" class="form-control" name="Description" rows="4"></textarea required>
+                            </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Media</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img src="asset/imgs/theme/upload.svg" alt="">
+                                    <input class="form-control" type="file" name="productimage" required >
+                                </div>
+                            </div>
+                        </div> 
+                          <div>
+                            <button type="submit" class="btn btn-primary btn-lg rounded">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+    </div>   
+   
+</section>
+
+<%-include('../partials/adminfooter')-%>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- <script>
+    $('#myForm').submit(function (event) {
+        event.preventDefault(); 
+        console.log(":aa")
+        ;;// Prevent the default form submission
+        var formData = new FormData(this); 
+        console.log(formData)// Create a new FormData object
+        $.ajax({
+            url: '/admin/addBanner',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.message == "banner added") {
+                    Swal.fire({
+                        title: "Success",
+                        text: "Banner is added",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: response.message,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    })
+                }
+
+
+            },
+
+        });
+    });
+</script>
+ -->

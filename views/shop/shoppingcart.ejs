@@ -4,6 +4,63 @@
 }else{%> <%-include('../partials/userheader')-%> <% } %>
 
 <!-- Breadcrumb Section Begin -->
+
+
+<!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <% var username=username || '' ; %>
+                <% if (!username) { %>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Sign up</a>
+                <% } %>
+            </div>
+         
+            
+        </div>
+        <div class="offcanvas__nav__option">
+      
+            
+            <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                <% if (username&&wishlistcount) { %>
+                    <div class="tip">
+                  <span id="wishlistCount">
+                    <%= wishlistcount %>
+                  </span>  
+                  </div>
+                  <% } %>
+            <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+                <% if (username&&cartCount) { %>
+                    <div class="tip">
+                  <span id="cartCount">
+                    <%= cartCount %>
+                  </span>  
+                  </div>
+                  <% } %>
+                 
+            </a>
+         
+            <div>
+               
+                
+            </div>
+           
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+
 <section class="breadcrumb-option">
   <div class="container">
     <div class="row">
@@ -196,56 +253,12 @@
 </section>
 <!-- Shopping Cart Section End -->
 
-<%-include('../partials/userfooter')-%> // //
-<script>
-  //    function changeQuantity(productId, cartid, count){
+<%-include('../partials/userfooter')-%>
 
-  //    console.log("hjhjh");
-  //     $.ajax({
-  //       url: "/change-product-quantity",
-  //       data: {
-  //         product: productId,
-  //         cart: cartid,
-  //         count: count,
-  //       },
-  //       method: "post",
-  //       success: (response) => { },
-  //     });
-  //   }
-  //
-</script>
 
-//
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-//
-<script>
-  //   function changeQuantity(productId, cartId, count) {
-  //     console.log("hjhjh");
-  //      var quantity=document.getElementById("qualityOFproduct").textContent;
-  //      quantity=parseInt(quantity)
-  //      console.log(quantity,'quality')
-
-  //     $.ajax({
-  //       url: "/change-product-quantity",
-  //       data: {
-  //         product: productId,
-  //         cart: cartId,
-  //         count: count,
-  //       },
-  //       method: "post",
-  //       success: function (response) {
-  //         document.getElementById("qualityOFproduct").textContent=quantity+count
-
-  //       },
-  //       error: function (xhr, status, error) {
-  //         // handle any errors here
-  //         console.error(error);
-  //       }
-  //     });
-  //   }
-  //
-</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -269,12 +282,13 @@
               window.location.reload();
             }
           );
-        } else if (response.response.response) {
+        } else if (response.response.limit) {
+          console.log("fff");
           Swal.fire(
             "Stock limit!",
             "product not available more quantity.",
-            "success"
-          ).then();
+            "warning"
+          )
         } else {
           console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
           console.log(response.total);
