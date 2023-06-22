@@ -1,101 +1,117 @@
 ﻿<!-- <!DOCTYPE html>
 <html class="no-js" lang="en"> -->
-    <% var username=username || '' ; %>
+<% var username=username || '' ; %>
     <% var Wishlistcount=Wishlistcount|| 0 ; %>
-    <% var cartCount=cartCount|| 0 ; %>
-    <% if (username) { %>
-        <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%>
-    
-     <% }else{%>
-        <%-include('../partials/userheader')-%>
-    <% } %>
-     
+        <% var cartCount=cartCount|| 0 ; %>
+            <% if (username) { %>
+                <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%>
+
+                    <% }else{%>
+                        <%-include('../partials/userheader')-%>
+                            <% } %>
 
 
-<head>
-    <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-  
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
-   
-    <link rel="stylesheet" href="assets/css/main.css">
-</head> 
 
-                    <div class="col-md-12">
-                        <div class="order_review">
-                            <div class="mb-20">
-                                <h4>Your Orders</h4>
-                            </div>
-                            <div class="table-responsive order_table text-center">
-                                <table class="table">
-                                    <thead> 
-                                        <tr>
-                                            <th colspan="2">Product</th>
-                                            
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      
-                                         <% for(let i=0;i<orders.length;i++){ %>   
-                                         <tr>
-                                             <td class="image product-thumbnail"><img src="/uploads/<%=orders[i].orderedProduct.productimage[0]%>" alt="#"></td>
-                                             <td>
-                                               <h5><a href="#"><%=orders[i].orderedProduct.productname%></a></h5> Qty:<span class="product-qty"><%=orders[i].orderedItems.quantity %></span>
-                                             </td>
-                                             <td>
-                                                <% if(orders[i].orderedProduct.coupon ){  %>
-                                                
-                                                  discount:<%=orders[i].orderedProduct.coupon%>
-                                                <% } %>
-                                                  <%=orders[i].orderedProduct.productpromotionalprice%>
-                                            </td>
-                                          </tr>  
-                                        <% } %>
-                                        <tr> 
-                                            <th>SubTotal</th>
-                                            <td class="product-subtotal" colspan="2">₹<%=total%></td>
-                                        </tr>
-                                        
-                                        
-                                        <!-- <tr>
+                                <head>
+                                    <meta charset="utf-8">
+                                    <title>Evara - eCommerce HTML Template</title>
+                                    <meta http-equiv="x-ua-compatible" content="ie=edge">
+                                    <meta name="description" content="">
+                                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                                    <meta property="og:title" content="">
+                                    <meta property="og:type" content="">
+                                    <meta property="og:url" content="">
+                                    <meta property="og:image" content="">
+
+                                    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+
+                                    <link rel="stylesheet" href="assets/css/main.css">
+                                    <style>
+                                         #orderdetail {
+                                             margin-bottom: 5rem;
+                                             margin-left: 10%;
+                                             margin-right: 10%;
+                                             margin-top: 73px;
+                                             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                                          }
+                                    </style>
+                                </head>
+                                <div class="container p-5" id="orderdetail">
+                                    <div class="col-md-12">
+                                        <div class="order_review">
+                                            <div class="mb-20">
+                                                <h4>Your Orders</h4>
+                                            </div>
+                                            <div class="table-responsive order_table text-center">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">Product</th>
+
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <% for(let i=0;i<orders.length;i++){ %>
+                                                            <tr>
+                                                                <td class="image product-thumbnail"><img
+                                                                        src="/uploads/<%=orders[i].orderedProduct.productimage[0]%>"
+                                                                        alt="#"></td>
+                                                                <td>
+                                                                    <h5><a href="#">
+                                                                            <%=orders[i].orderedProduct.productname%>
+                                                                        </a></h5> Qty:<span class="product-qty">
+                                                                        <%=orders[i].orderedItems.quantity %>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <% if(orders[i].orderedProduct.coupon ){ %>
+
+                                                                        discount:<%=orders[i].orderedProduct.coupon%>
+                                                                            <% } %>
+                                                                                <%=orders[i].orderedProduct.productpromotionalprice%>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                                                <tr>
+                                                                    <th>SubTotal</th>
+                                                                    <td class="product-subtotal" colspan="2">₹<%=total%>
+                                                                    </td>
+                                                                </tr>
+
+
+                                                                <!-- <tr>
                                             <th>Shipping</th>
                                             <td colspan="2"><em>Free Shipping</em></td>
                                         </tr>
                                         <tr> -->
-                                            <!-- <th>Total</th>
+                                                                <!-- <th>Total</th>
                                             <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$280.00</span></td>
                                         </tr> -->
-                                       
-                                    </tbody>
-                                </table>
-                                <div>
-                                    <button onclick="window.location=' /orderlist'"
-                                    class="btn btn-outline-primary rounded">go to
-                                    orders</button>
-                                 </div>
-                            </div>
-                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                         
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-   
-    <!-- Preloader Start -->
-    <%-include('../partials/userfooter')-%>
-    <!-- Vendor JS-->
-    <!-- <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+
+                                                    </tbody>
+                                                </table>
+                                                <div>
+                                                    <button onclick="window.location=' /orderlist'"
+                                                        class="btn btn-outline-primary rounded">go to
+                                                        orders</button>
+                                                         
+                                                </div>
+                                            </div>
+                                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                               
+
+
+                                <!-- Preloader Start -->
+                                <%-include('../partials/userfooter')-%>
+                                    <!-- Vendor JS-->
+                                    <!-- <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
     <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>

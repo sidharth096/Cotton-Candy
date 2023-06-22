@@ -73,7 +73,7 @@
                         <h4>Add New Banner</h4>
                     </div>
                     <div class="card-body">
-                    <form id="myForm" action="/admin/addaBanner" enctype="multipart/form-data">
+                    <form id="myForm" action="/admin/addaBanner" method="post" enctype="multipart/form-data">
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Banner Name</label>
                                 <input type="text" placeholder="Type here" class="form-control" name="name"
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                         </div> 
-                          <div>
+                        <div>
                             <button type="submit" class="btn btn-primary btn-lg rounded">Add</button>
                         </div>
                     </form>
