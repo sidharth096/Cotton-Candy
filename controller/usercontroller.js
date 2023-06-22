@@ -615,7 +615,7 @@ placeOrder : async (req, res) => {
   
   orderSuccess: async (req, res) => {
     try {
-      console.log("ssss");
+     // console.log("ssss");
       const orderid = req.query.id;
       console.log(orderid);
       let  userId = req.session.userid._id;
@@ -626,11 +626,11 @@ placeOrder : async (req, res) => {
         const order = await  orderModel.findById(orderid)
         let orders=await orderhelper.getOrderedProductsDetails(orderid)
        
-       console.log("ddd");
-      console.log(order);
-      console.log("ppp");
-      console.log("ffp");
-      console.log(orders);
+      //  console.log("ddd");
+      // console.log(order);
+      // console.log("ppp");
+      // console.log("ffp");
+      // console.log(orders);
       
     
       let total=order.totalAmount
