@@ -687,7 +687,7 @@ orderdetailsOfuser: async (req, res) => {
    
     console.log("5555555555444444");
     console.log(orderdetailes);
-    res.render("shop/orderdeatils-user", {
+    res.render("shop/orderdetails-user", {
       orderdetailes,
       address,
       orderid,
