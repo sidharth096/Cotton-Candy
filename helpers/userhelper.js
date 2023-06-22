@@ -29,7 +29,6 @@ dotenv.config();
 module.exports = {
   dosignup: async (req,res)=> {
 
-    // console.log(user.find());
     return new Promise(async (resolve, reject)=> {
       try {
         user.findOne({ email: body.email }).then(async(oldUser, err) => {
@@ -43,7 +42,6 @@ module.exports = {
             else {
 
               req.session.signupdata=req.body
-              console.log(req.session.signupdata);
               let otpsend=await validatehelper.checkotpSignup(req.body.mobile)
 
               if(otpsend.status==true){
@@ -51,8 +49,7 @@ module.exports = {
 
                 res.render('shop/verifyotpsignup.ejs',{phonenumber} )
                 
-              }
-             
+              }             
           
             }
 
@@ -75,7 +72,6 @@ module.exports = {
           } else {
 
             if (validUser) {
-              // if (true) {
               bcrypt.compare(body.password, validUser.password).then((isPasswordMatch, err) => {
                 if (err) {
                   reject(err);
@@ -83,16 +79,11 @@ module.exports = {
                   if (isPasswordMatch) {
                     resolve({ status: true, user: validUser });
                   } else {
-                    console.log("Login Failed");
                     let msg = "Incorrect password"
                     resolve({ status: false, msg });
                   }
                 }
               });
-              // } else {
-              //   console.log("User account is not active.");
-              //   resolve({ status: false });
-              // }
             } else {
               console.log("No User Found!");
               let msg = "Email does not exist"
@@ -117,14 +108,12 @@ module.exports = {
           }
           else {
             if (validuser) {
-              console.log(validuser);
               twilioFunctions.generateOTP(validuser.phonenumber);
               // const msg1 = "OTP SENT!!";
               let msg = "otp send"
               resolve({ status: true, validuser, msg })
 
             } else {
-              console.log("no user");
               let msg = "User not registered"
               resolve({ status: false, msg });
             }
@@ -148,7 +137,6 @@ module.exports = {
           }
           else {
             if (validuser) {
-              console.log(validuser);
               twilioFunctions.generateOTP(validuser.phonenumber);
               // const msg1 = "OTP SENT!!";
               let msg = "otp send"
@@ -181,11 +169,7 @@ module.exports = {
       }).then(async (verificationChecks) => {
         if (verificationChecks.status === "approved") {
           let user1 = await user.findOne({ phonenumber: phonenumber });
-          // if (!user1) {
-          //   console.error(`User not found with phone number ${phonenumber}`);
-          //   res.render("shop/verifyotp", { msg2: "User not registered", phone: phonenumber });
-          // } else {
-          console.log(`User ${user1._id} logged in with phone number ${phonenumber}`);
+
           req.session.user = true
           req.session.userid = user1
           res.redirect("/");
@@ -214,7 +198,6 @@ module.exports = {
         if (verificationChecks.status === "approved") {
           let user1 = await user.findOne({ phonenumber: phonenumber });
 
-          console.log(`User ${user1._id} logged in with phone number ${phonenumber}`);
 
           res.render('shop/changepassword.ejs', { user1 })
         }
@@ -268,7 +251,6 @@ module.exports = {
       }
       let productId=body.productid
       const productdetail = await product.findById(productId);
-      console.log(productdetail);
       if (!productdetail) {
         throw new Error("Product not found");
       }
@@ -289,15 +271,13 @@ module.exports = {
         
         
       }
-      console.log("kkku");
+
       const cart = await Cart.findOneAndUpdate(
         { user: userId, "products.productId": { $ne: productId } },
         { $push: { products: { productId, quantity: 1 } } },
         { new: true }
       );
  
-
-      console.log(added);
       if (!cart && !added) {
     
         await Cart.updateOne(
@@ -320,18 +300,18 @@ module.exports = {
     try {
 
       const userProduct = await product.findById(productId);
-      console.log(userProduct);
+
       if (!userProduct) {
         return { status: false, message: "product not found" };
       }
 
       const cart = await Cart.findOne({ user: userId });
-      console.log(cart);
+
       if (cart) {
         const itemIndex = cart.products.findIndex((item) =>
           item.productId.equals(productId)
         );
-        console.log(itemIndex);
+
         if (itemIndex > -1) {
           cart.products.splice(itemIndex, 1);
           await cart.save();
@@ -357,10 +337,6 @@ module.exports = {
       const count=body.count
       let Product=await product.findById(productId)
       let productquantity=Product.productquantity
-      console.log("////////////////");
-      console.log(Product);
-      console.log(productquantity);
-      console.log(body.quantity_);
       return new Promise((resolve,reject)=>{
         if (body.count == -1 && body.quantity == 1) {
           Cart
@@ -392,9 +368,7 @@ module.exports = {
     },
     getCartTotal: async(userId)=>{
       try {
-        console.log("sidharth");
         const cart = await Cart.findOne({ user: userId }).populate('products.productId')
-        console.log(cart);
         if (!cart) {
           return { status: false, message: "cart not found" };
         }
@@ -406,8 +380,6 @@ module.exports = {
 
         });
         total=parseInt(total)
-        console.log("aaalo");
-        console.log(total);
         return total;
       } catch (error) {
         console.error(error);
@@ -416,9 +388,6 @@ module.exports = {
       },
     
     addAddress:async(body,userId)=>{
-      console.log(userId);
-      
-
 
       await addressModal.create({
           name:body.name,
@@ -441,7 +410,6 @@ module.exports = {
       try {
  
         let addressid = body;
-        console.log(addressid);
         let address=await addressModal.findById(addressid);
         address.status=false
         address.save()
@@ -452,8 +420,6 @@ module.exports = {
 
       let addressId=body.address_id
       const cart = await Cart.findOne({ user: userId }).populate('products.productId')
-      // const adrs = await addressModal.findOne({ user: userId })
-      //   console.log(adrs);
       const adrs = await addressModal.aggregate([
         {
           $match:{user:new ObjectId(userId)}
@@ -465,11 +431,6 @@ module.exports = {
        }
       ])
 
-  console.log("kka");
-  console.log(adrs[0]);
-  console.log(cart);
-  console.log(total);  
-  console.log(body.payment_method);
   let orderstatus = body.payment_method == 'COD' ? 'confirmed' : 'pending';  
   await orderModal.updateOne(
     { user: userId }, // The filter to find the document to update (matching the "user" field with the userId)
@@ -499,41 +460,6 @@ module.exports = {
       { new: true })
    },
 
-//    generateRazorpay:async(order,total)=>{
-//     try {
-//       console.log("yes");
-//       console.log(order);
-//       console.log(total);
-
-//       // instance.orders.create({
-//       //   amount: total,
-//       //   currency: "INR",
-//       //   receipt: "order",
-//       //   notes: {
-//       //     key1: "value3",
-//       //     key2: "value2"
-//       //   }
-//       // }).then(response)
-//       // console.log("ddd:",response);
-
-
-
-
-// var options = {
-//   amount: total,  // amount in the smallest currency unit
-//   currency: "INR",
-//   receipt:""+order
-// };
-// const order =await instance.orders.create(options) 
-//   console.log(order);
-//   console.log("bbb");
-//   return order;
-
-//     } catch (error) {
-      
-//     }
-//    }
-
 
 generaterazorpay:async(orderId,totalAmount)=>{
 
@@ -546,10 +472,8 @@ generaterazorpay:async(orderId,totalAmount)=>{
       currency: "INR",
       receipt: ""+orderId
     };
-    console.log("adadad");
+
     const order = await instance.orders.create (options) 
-      console.log(order);
-      console.log("555555");
       return order;
     
   } catch (error) {

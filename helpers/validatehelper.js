@@ -13,10 +13,8 @@ module.exports={
   
 
 checkotpSignup: function (phonenumber) {
-    console.log("5");
     return new Promise((resolve, reject) => {
       try {
-        console.log("6");
         twilioFunctions.generateOTP(phonenumber);
         let msg = "OTP sent";
         resolve({ status: true, msg });
@@ -28,14 +26,11 @@ checkotpSignup: function (phonenumber) {
   
 
 verifyOTPSignup: async (req, res) => {
-    console.log("9");
-    console.log(req.body);
     const otp =
       req.body.otp1 + req.body.otp2 + req.body.otp3 + req.body.otp4 + req.body.otp5;
-    console.log("10");
+
     const phonenumber = req.body.phone;
-    console.log(phonenumber);
-    console.log(req.session.signupdata);
+
     let body =req.session.signupdata
   
     try {
@@ -45,19 +40,17 @@ verifyOTPSignup: async (req, res) => {
           to: `+91${phonenumber}`,
           code: otp
         });
-        console.log("11");
-  
+
       if (verificationChecks.status === 'approved') {
-        console.log(req.session.signupdata);
+
         const saltRounds = 10;
         const password = body.password;
-        console.log("12");
+
         try {
           if (!password) {
             throw new Error('No password provided');
           }
-          console.log("13");
-          console.log(body);
+
           const hashedPassword = await bcrypt.hash(password, saltRounds);
           console.log(hashedPassword);
           const newUser = new user({
@@ -73,7 +66,7 @@ verifyOTPSignup: async (req, res) => {
           req.session.userid = savedUser;
           res.redirect('/home');
         } catch (error) {
-          console.error(error);
+
           res.render('catchError', { message: error.message });
         }
       } else {

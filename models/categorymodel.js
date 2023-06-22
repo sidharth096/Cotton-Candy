@@ -6,13 +6,7 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-//   categorydescription: {
-//     type: String,
-//   },
-//   islisted: {
-//     type: Boolean,
-//     default: true,
-//   },
+
 });
 
 const category = mongoose.model('category', categorySchema);

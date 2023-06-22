@@ -9,16 +9,13 @@ const Coupon = require("../models/coupenmodel");
 const Offer = require("../models/offermodel");
 const banner = require("../models/bannermodal");
 const orderhelper = require("../helpers/orderhelper");
-const admin = require("../models/adminmodel")
-const bcrypt = require('bcrypt');
+const admin = require("../models/adminmodel");
+const bcrypt = require("bcrypt");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 dotenv.config();
 
 module.exports = {
-
-
-
   adminlogin: async (req, res) => {
     try {
       if (req.session.admin) {
@@ -30,8 +27,6 @@ module.exports = {
       console.error(err);
     }
   },
-
-  
 
   adminpanel: async (req, res) => {
     try {
@@ -59,141 +54,110 @@ module.exports = {
   adminpostlogin: async (req, res) => {
     try {
       admin.findOne({ username: req.body.email }).then((validuser, err) => {
-
         if (err) {
-          reject(err)
-        }
-        else {
+          reject(err);
+        } else {
           if (validuser) {
-            console.log(validuser);
-            bcrypt.compare(req.body.password, validuser.password).then((isPasswordMatch, err) => {
-              if (err) {
-                reject(err);
-              } else {
-                if (isPasswordMatch) {
-                  req.session.admin = true;
-                   res.redirect("/admin/adminpanel");
+            bcrypt
+              .compare(req.body.password, validuser.password)
+              .then((isPasswordMatch, err) => {
+                if (err) {
+                  reject(err);
                 } else {
-                  let msg = "Incorrect password"
-                  res.render("admin/adminlogin.ejs", { msg });;
+                  if (isPasswordMatch) {
+                    req.session.admin = true;
+                    res.redirect("/admin/adminpanel");
+                  } else {
+                    let msg = "Incorrect password";
+                    res.render("admin/adminlogin.ejs", { msg });
+                  }
                 }
-              }
-            });
-
+              });
           } else {
             let msg = "Invalid email ";
             res.render("admin/adminlogin.ejs", { msg });
           }
-
         }
-      })
-    
+      });
     } catch (error) {}
   },
 
-  forgotpassAdmin: async(req, res) => {
+  forgotpassAdmin: async (req, res) => {
     res.render("admin/forgotadmin.ejs");
   },
 
-  checkotpForgot:(req,res)=>{
-      
+  checkotpForgot: (req, res) => {
     adminhelper.checkotpForgot(req.body).then((response) => {
-        if(response.status){
-            let phonenumber=response.validuser.phonenumber
-            console.log(response.msg);
-            res.render('admin/verifyotpforgotAdmin.ejs',{phonenumber} )
-        }else{
-            console.log(response.msg);
-            let msg=response.msg
-            res.render('admin/forgotadmin.ejs',{msg})
-
-           
-        }
-    })
-},
-resetPassPostAdmin:async(req,res)=>{
-  try {
-      console.log("======================b=============");
-      let adminid=req.params.id
-      console.log(adminid);
-      adminhelper.resetpasspostAdmin(req.body,adminid).then((response)=>{
-          res.redirect('/admin')
-      })
-  } catch (error) {
-      
-  }
-},
+      if (response.status) {
+        let phonenumber = response.validuser.phonenumber;
+        res.render("admin/verifyotpforgotAdmin.ejs", { phonenumber });
+      } else {
+        let msg = response.msg;
+        res.render("admin/forgotadmin.ejs", { msg });
+      }
+    });
+  },
+  resetPassPostAdmin: async (req, res) => {
+    try {
+      let adminid = req.params.id;
+      adminhelper.resetpasspostAdmin(req.body, adminid).then((response) => {
+        res.redirect("/admin");
+      });
+    } catch (error) {}
+  },
 
   adminlogout: async (req, res) => {
     try {
       req.session.admin = false;
       res.redirect("/admin");
-    } catch (error) {
-      
-    }
-    
+    } catch (error) {}
   },
 
-  bannerpage:async(req,res)=>{
-   try {
-    console.log("ssss");
-    let Banner= await banner.find()
-    console.log(Banner);
-     res.render('admin/banner.ejs',{Banner})
-   } catch (error) {
-    console.log(error);
-   }
+  bannerpage: async (req, res) => {
+    try {
+      let Banner = await banner.find();
+      res.render("admin/banner.ejs", { Banner });
+    } catch (error) {}
   },
   addBanner: async (req, res) => {
     try {
-      console.log("zzzzzzzzzzzzzzzzzzzzzzzz");
-      console.log(req.body);
-      console.log(req.file);
-      const { Description } = req.body
-      const Image = req.file
-      const name = req.body.name
+      const { Description } = req.body;
+      const Image = req.file;
+      const name = req.body.name;
       const newBanner = new banner({
         name: name,
         Image: Image.filename,
         Description: Description,
-      })
-      const banner = await newBanner.save()
+      });
+      const banner = await newBanner.save();
       if (banner) {
-        res.send({ message: "banner added" })
+        res.send({ message: "banner added" });
       } else {
-        res.send({ message: "something went worng" })
+        res.send({ message: "something went worng" });
       }
     } catch (error) {
-      console.log(error)
-      res.status(500).render('error', { error });
+      console.log(error);
+      res.status(500).render("error", { error });
     }
   },
 
-
   userslist: async (req, res) => {
     try {
-    
-      let users = await user
-        .find()
-        .sort({ createdAt: -1 })
-     
-      res.render("admin/userslist.ejs", { users});
+      let users = await user.find().sort({ createdAt: -1 });
+
+      res.render("admin/userslist.ejs", { users });
     } catch (error) {}
-  }, 
+  },
 
   viewuser: async (req, res) => {
     let userid = req.params.id;
-    console.log(userid);
-    console.log("asas");
     let userdetails = await user.findById(userid);
-    console.log(userdetails);
     res.render("admin/viewuser.ejs", { userdetails });
   },
 
   categories: async (req, res) => {
     try {
       let categories = await category.find();
-      console.log(categories);7
       res.render("admin/product-categories.ejs", { categories });
     } catch (err) {
       console.error(err);
@@ -203,9 +167,7 @@ resetPassPostAdmin:async(req,res)=>{
   addcategory: (req, res) => {
     try {
       adminhelper.addCategories(req.body).then((response) => {
-        console.log(response);
         res.json(response);
-        // res.redirect("/admin/categories")
       });
     } catch (err) {
       console.error(err);
@@ -213,21 +175,15 @@ resetPassPostAdmin:async(req,res)=>{
   },
   productlist: async (req, res) => {
     try {
-      
+      let products = await product.find().sort({ createdAt: -1 });
 
-      let products = await product
-        .find()
-        .sort({ createdAt: -1 })
-        
-
-      res.render("admin/product-list.ejs", { products,});
+      res.render("admin/product-list.ejs", { products });
     } catch (err) {
       console.error(err);
     }
   },
   addproduct: async (req, res) => {
     try {
-
       let categories = await category.find();
       res.render("admin/addproduct.ejs", { categories });
     } catch (error) {
@@ -236,9 +192,7 @@ resetPassPostAdmin:async(req,res)=>{
   },
   addproductpost: async (req, res) => {
     try {
-      console.log("fff");
       let images = req.files;
-      console.log("sss");
       adminhelper.addproduct(req.body, images).then((response) => {
         res.redirect("/admin/productlist");
       });
@@ -362,12 +316,10 @@ resetPassPostAdmin:async(req,res)=>{
       const totalCount = await orderModel.countDocuments();
       const startIndex = (page - 1) * count;
       const totalPages = Math.ceil(totalCount / count);
-
-      // Generate a random offset based on the total count and the page size
       const randomOffset = Math.floor(Math.random() * (totalCount - count));
       const endIndex = Math.min(count, totalCount - startIndex);
       const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
+        totalCount: totalCount,
         totalPages: totalPages,
         page: page,
         count: count,
@@ -379,15 +331,7 @@ resetPassPostAdmin:async(req,res)=>{
       res.render("admin/orderlist.ejs", { orders, pagination });
     } catch (error) {}
   },
-  //  orderDetailadmin:async(req,res)=>{
-  //     try {
-  //    console.log("hhh");
-  //       res.render('admin/orderdetailadmin')
 
-  //     } catch (error) {
-
-  //     }
-  //  },
   orderDetailadmin: async (req, res) => {
     let orderId = req.params.id;
 
@@ -480,33 +424,19 @@ resetPassPostAdmin:async(req,res)=>{
   },
   addCoupen: async (req, res) => {
     try {
-      let couponAmount=parseInt(req.body.couponAmount)
-      console.log("fgdf");
-      console.log(req.body);
-      console.log(couponAmount);
-      if(couponAmount<50||couponAmount>500){
-        
-        res.json({status:false})
+      let couponAmount = parseInt(req.body.couponAmount);
+      if (couponAmount < 50 || couponAmount > 500) {
+        res.json({ status: false });
+      } else {
+        adminhelper.addCoupon(req.body).then((response) => {
+          res.json({ status: true });
+        });
       }
-      else{
-        console.log("keenju");
-         adminhelper.addCoupon(req.body).then((response)=>{
-          console.log("bnnbbbbn");
-          console.log(response);
-          res.json({status:true})
-         });
-       
-      }
-   
-    } catch (error) {}
-  },
+    } catch (error) {}
+  },
   salesReportPage: async (req, res) => {
     const sales = await orderhelper.getAllDeliveredOrders();
 
-    // sales.forEach((order)=>{
-    //   order.orderDate=dateFormat(order.orderDate)
-    //   // order.totalAmount=dateFormat(order.totalAmount)
-    // })
     res.render("admin/salesreport", { sales });
   },
 
@@ -533,23 +463,6 @@ resetPassPostAdmin:async(req,res)=>{
 
   offer: async (req, res) => {
     try {
-      //       const count = parseInt(req.query.count) || 3;
-      //       const page = parseInt(req.query.page) || 1;
-      //       const totalCount = await  product.countDocuments();
-      //       const startIndex = (page - 1) * count;
-      //       const totalPages = Math.ceil(totalCount / count);
-
-      //       // Generate a random offset based on the total count and the page size
-      //       const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      //       const endIndex = Math.min(count, totalCount - startIndex);
-      //       const pagination = {
-      //         totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-      //         totalPages: totalPages,
-      //         page: page,
-      //         count: count,
-      //         startIndex: startIndex,
-      //         endIndex: endIndex,
-      //       };
       let Category = await category.find();
       let offer = await Offer.find();
       console.log("aaa");
@@ -564,8 +477,9 @@ resetPassPostAdmin:async(req,res)=>{
       adminhelper.addOffer(req.body);
       res.redirect("/admin/offer");
     } catch (error) {}
-  }, 
+  },
 };
+
 // convert a number to a indian currency format
 function currencyFormat(amount) {
   return Number(amount).toLocaleString("en-in", {

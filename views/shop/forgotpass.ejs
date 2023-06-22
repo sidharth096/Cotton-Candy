@@ -47,6 +47,65 @@
   </style>
 </head>
 <%-include('../partials/userheader')-%>
+ <!-- Offcanvas Menu Begin -->
+ <div class="offcanvas-menu-overlay"></div>
+ <div class="offcanvas-menu-wrapper">
+     <div class="offcanvas__option">
+         <div class="offcanvas__links">
+             <% var username=username || '' ; %>
+             <% if (!username) { %>
+                 <a href="/login">Login</a>
+                 <a href="/signup">Sign up</a>
+             <% } %>
+         </div>
+         <% if(username){ %>
+             <div class="header__top__hover">
+                 <span class="text-dark text-brand font-weight-bold"> <%= username %>   <i class="arrow_carrot-down text-dark" ></i></span>
+                 <ul>
+                     <li><a href="/userProfile"class="text-dark" >Account</a ></li>
+                     <li><a href="/logout"class="text-dark" >Logout</a ></li>
+                     
+                 </ul>
+             </div>
+          <% } %> 
+      
+         
+     </div>
+     <div class="offcanvas__nav__option">
+   
+         
+         <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+             <% if (username&&wishlistcount) { %>
+                 <div class="tip">
+               <span id="wishlistCount">
+                 <%= wishlistcount %>
+               </span>  
+               </div>
+               <% } %>
+         <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+             <% if (username&&cartCount) { %>
+                 <div class="tip">
+               <span id="cartCount">
+                 <%= cartCount %>
+               </span>  
+               </div>
+               <% } %>
+              
+         </a>
+      
+         <div>
+            
+             
+         </div>
+        
+     </div>
+     <div id="mobile-menu-wrap"></div>
+     
+     <div class="offcanvas__text">
+         <p>Free shipping, 30-day return or refund guarantee.</p>
+     </div>
+ </div>
+ <!-- Offcanvas Menu End -->
 <section class="breadcrumb-option-extra p-0">
   <div class="container ">
     <div class="row">

@@ -301,7 +301,7 @@
                 >
                   <div class="card-body">
                     <div class="shop__sidebar__categories">
-                      <ul class="nice-scroll">
+                      <ul>
                         <% categories.forEach(function(category) { %>
                         <li>
                           <input
@@ -311,9 +311,9 @@
                             id="category-<%=category.categoryname%>"
                             name="category"
                           />
-                          <a href="/category/<%=category.categoryname%>">
-                            <%=category.categoryname %>
-                          </a>
+                         
+                           <a href="#"><%=category.categoryname %></li>
+                         
                         </li>
                         <% }); %>
                       </ul>

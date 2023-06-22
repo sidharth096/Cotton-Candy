@@ -3,7 +3,6 @@
     const usercontroller=require('../controller/usercontroller')
     const userhelper=require('../helpers/userhelper')
     const validatehelper=require('../helpers/validatehelper')
-    const categorycontroller=require('../controller/categorycontroller')
     const {userauthentication,authentication}=require('../middleware/session')
 
     /* GET home page. */
@@ -54,8 +53,6 @@
     router.put('/remove-from-wishList/:id',authentication,usercontroller.removeFromWishList);
     
      
-    //categories filtering
-    router.get('/category/:id',categorycontroller.category)
    
     module.exports = router;
  

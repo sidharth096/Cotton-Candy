@@ -32,6 +32,65 @@
  
 
     <!-- Breadcrumb Section Begin -->
+     <!-- Offcanvas Menu Begin -->
+     <div class="offcanvas-menu-overlay"></div>
+     <div class="offcanvas-menu-wrapper">
+         <div class="offcanvas__option">
+             <div class="offcanvas__links">
+                 <% var username=username || '' ; %>
+                 <% if (!username) { %>
+                     <a href="/login">Login</a>
+                     <a href="/signup">Sign up</a>
+                 <% } %>
+             </div>
+             <% if(username){ %>
+                 <div class="header__top__hover">
+                     <span class="text-dark text-brand font-weight-bold"> <%= username %>   <i class="arrow_carrot-down text-dark" ></i></span>
+                     <ul>
+                         <li><a href="/userProfile"class="text-dark" >Account</a ></li>
+                         <li><a href="/logout"class="text-dark" >Logout</a ></li>
+                         
+                     </ul>
+                 </div>
+              <% } %> 
+          
+             
+         </div>
+         <div class="offcanvas__nav__option">
+       
+             
+             <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                 <% if (username&&wishlistcount) { %>
+                     <div class="tip">
+                   <span id="wishlistCount">
+                     <%= wishlistcount %>
+                   </span>  
+                   </div>
+                   <% } %>
+             <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+                 <% if (username&&cartCount) { %>
+                     <div class="tip">
+                   <span id="cartCount">
+                     <%= cartCount %>
+                   </span>  
+                   </div>
+                   <% } %>
+                  
+             </a>
+          
+             <div>
+                
+                 
+             </div>
+            
+         </div>
+         <div id="mobile-menu-wrap"></div>
+         
+         <div class="offcanvas__text">
+             <p>Free shipping, 30-day return or refund guarantee.</p>
+         </div>
+     </div>
+     <!-- Offcanvas Menu End -->
     <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
@@ -330,37 +389,6 @@
     <!-- Footer Section Begin -->
     <%-include('../partials/userfooter')-%>
 
-        <!-- <script>
-        // Assuming you have a form with the id "myForm" in your HTML
-
-// jQuery code to handle the form submission
-  $(document).ready(function() {
-  // Event handler for form submission
-  $('#orderForm').submit(function(event) {
-    // Prevent the default form submission behavior
-    event.preventDefault();
-
-    // Serialize the form data
-    var formData = $(this).serialize();
-
-    // Send an AJAX request
-    $.ajax({
-      type: 'POST', // Use POST method to submit the form data
-      url: '/placeOrder', // Replace 'submit.php' with the actual URL to handle the form submission on the server
-      data: formData, // Pass the serialized form data
-      success: function(response) {
-        // Handle the successful form submission
-        console.log(response); // You can do something with the response from the server
-      },
-      error: function(xhr, status, error) {
-        // Handle any errors that occurred during the AJAX request
-        console.error(error);
-      }
-    });
-  });
-});
-
-    </script> -->
 
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -556,10 +584,7 @@
                             console.log("hello");
                             console.log(res);
                             console.log(res.totalAmount);
-                            // document.getElementById('couponApplyFail').classList.add('d-none')
-                            // document.getElementById('couponApplySuccess').classList.remove('d-none')
-                            // document.getElementById('couponApplySuccess').innerHTML = res.message
-                            // document.getElementById('discount').innerHTML = -res.discount
+
                             document.getElementById('total').innerHTML = res.totalAmount
                             document.getElementById('discount').innerHTML = res.discount
                             document.getElementById('couponAmount').value = res.discount
@@ -573,9 +598,7 @@
                                 showConfirmButton: false,
                                 timer: 1600
                             })
-                            // document.getElementById('couponApplySuccess').classList.add('d-none')
-                            // document.getElementById('couponApplyFail').classList.remove('d-none')
-                            // document.getElementById('couponApplyFail').innerHTML = res.message
+
 
 
                         }

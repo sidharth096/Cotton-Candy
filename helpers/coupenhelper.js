@@ -22,9 +22,6 @@ module.exports={
                     discount= currencyFormat(discount)
                     totalAmount= currencyFormat(totalAmount)
 
-                    console.log(discount);
-                    console.log(totalAmount);
-        
                     resolve({  status: true,totalAmount,discount, message: "coupn added successfully" })
                 } else {
                     resolve({ status: false, message: "Coupon code already used" })
