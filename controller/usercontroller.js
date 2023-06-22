@@ -615,14 +615,14 @@ placeOrder : async (req, res) => {
   
   orderSuccess: async (req, res) => {
     try {
-      const user = req.session.userid;
+      console.log("ssss");
       const orderid = req.query.id;
       console.log(orderid);
-      const userId = req.session.userid._id;
+      let  userId = req.session.userid._id;
       if(req.session.user){ 
         var username= req.session.userid.name||null
       }
-     
+      
         const order = await  orderModel.findById(orderid)
         let orders=await orderhelper.getOrderedProductsDetails(orderid)
        
@@ -632,17 +632,12 @@ placeOrder : async (req, res) => {
       console.log("ffp");
       console.log(orders);
       
-      // console.log(Cart);
-      // if(Cart){
-      //   product = Cart.products
-      // }
-      // console.log("ttttttt");
-      // console.log(product);
+    
       let total=order.totalAmount
      
       console.log(total);
       await userhelper.clearCart(userId);   
-      // var userId= req.session.userid._id
+      
       var wishlistcount = await wishlisthelper.getWishListCount(userId);
       var cartCount = await userhelper.getCartCount(userId);
         res.render("shop/ordersuccess.ejs",{orders,total,wishlistcount,cartCount,username});
