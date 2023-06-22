@@ -640,8 +640,8 @@ placeOrder : async (req, res) => {
       
       var wishlistcount = await wishlisthelper.getWishListCount(userId);
       var cartCount = await userhelper.getCartCount(userId);
-       // res.render("shop/ordersuccess.ejs",{orders,total,wishlistcount,cartCount,username});
-       res.redirect("/")
+       res.render("shop/orderSuccess.ejs",{orders,total,wishlistcount,cartCount,username});
+      
     } catch (error) {}
   },
 orderList:async(req,res)=>{
