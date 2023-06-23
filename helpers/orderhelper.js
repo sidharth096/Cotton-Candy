@@ -122,7 +122,7 @@ module.exports = {
             $lookup: {
               from: "addresses",
               localField: "address",
-              foreignField: "address._id",
+              foreignField: "_id",
               as: "userAddress",
             },
           },
@@ -131,7 +131,9 @@ module.exports = {
               user: 1,
               totalAmount: 1,
               paymentMethod: 1,
-              address: "$userAddress",
+              address:{
+                $arrayElemAt: ["$userAddress", 0]
+              }
             },
           },
         ])

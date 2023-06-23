@@ -63,14 +63,6 @@ const productSchema = new mongoose.Schema({
   },
 
 
-  
-//   productstatus: {
-//     type: Boolean,
-//     default: true,
-//   },
-//   productquantity: {
-//     type: Number,
-//   },
 
   
 });

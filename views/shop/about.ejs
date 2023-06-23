@@ -7,6 +7,54 @@
 <% } %>
 
     <!-- Breadcrumb Section Begin -->
+     <!-- Offcanvas Menu Begin -->
+     <div class="offcanvas-menu-overlay"></div>
+     <div class="offcanvas-menu-wrapper">
+         <div class="offcanvas__option">
+             <div class="offcanvas__links">
+                 <% var username=username || '' ; %>
+                 <% if (!username) { %>
+                     <a href="/login">Login</a>
+                     <a href="/signup">Sign up</a>
+                 <% } %>
+             </div>
+          
+             
+         </div>
+         <div class="offcanvas__nav__option">
+       
+             
+             <a href="/wishlist"><img src="/img/icon/heart.png" alt="">
+                 <% if (username&&wishlistcount) { %>
+                     <div class="tip">
+                   <span id="wishlistCount">
+                     <%= wishlistcount %>
+                   </span>  
+                   </div>
+                   <% } %>
+             <a href="/shoppingcart"><img src="/img/icon/cart.png" alt=""> 
+                 <% if (username&&cartCount) { %>
+                     <div class="tip">
+                   <span id="cartCount">
+                     <%= cartCount %>
+                   </span>  
+                   </div>
+                   <% } %>
+                  
+             </a>
+          
+             <div>
+                
+                 
+             </div>
+            
+         </div>
+         <div id="mobile-menu-wrap"></div>
+         <div class="offcanvas__text">
+             <p>Free shipping, 30-day return or refund guarantee.</p>
+         </div>
+     </div>
+     <!-- Offcanvas Menu End -->
     <section class="breadcrumb-option">
         <div class="container">
             <div class="row">

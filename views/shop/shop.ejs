@@ -1,3 +1,5 @@
+
+<head>
 <style>
   p,
   li,
@@ -195,6 +197,8 @@
       font-size: 18px;
     }
 </style>
+  
+</head>
 <% var username=username || '' ; %> <% var Wishlistcount=Wishlistcount|| 0 ; %>
 <% var cartCount=cartCount|| 0 ; %> <% if (username) { %>
 <%-include('../partials/userheader',{username,Wishlistcount,cartCount})-%> <%
@@ -708,8 +712,6 @@
     $(document).on("click", ".add-produtToWishlist", function () {
      
       const productId = $(this).data("value");
-      console.log("clicked");
-      console.log("hjjjjjjjjjj", productId);
       $.ajax({
         url: "/add-to-wishList",
         type: "post",

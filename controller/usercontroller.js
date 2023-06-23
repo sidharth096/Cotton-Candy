@@ -494,7 +494,9 @@ orderdetailsOfuser: async (req, res) => {
     }
 
     
-    // let orderaddress = await orderHepler.getOrderedUserDetailsAndAddress(orderid);
+    let orderaddress = await orderHepler.getOrderedUserDetailsAndAddress(orderid);
+    console.log("aaa");
+    console.log(orderaddress);
     let address=await addressModal.find({user:req.session.userid._id})
     let orderdetailes = await orderHepler.getOrderedProductsDetails(orderid);
  
@@ -504,7 +506,8 @@ orderdetailsOfuser: async (req, res) => {
       orderid,
       username,
       wishlistcount,
-      cartCount
+      cartCount,
+      orderaddress
     });
   } catch (error) {}
   },
