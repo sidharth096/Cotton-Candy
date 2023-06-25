@@ -24,7 +24,6 @@ router.get('/coupen',admincheck,admincontroller.coupen)
 router.get('/offer',admincheck,admincontroller.offer)
 router.get('/sales-report-page',admincheck,admincontroller.salesReportPage);
 router.get('/logout',admincontroller.logout)
-router.get('/sales-report-page',admincheck,admincontroller.salesReportPage);
 router.get('/banner',admincheck,admincontroller.bannerpage)
 
  

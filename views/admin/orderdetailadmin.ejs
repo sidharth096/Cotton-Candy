@@ -164,14 +164,14 @@
                             </tbody>
                         </table>
                         <% if(Order.orderStatus=='placed' ) {%>
-                            <button onclick="cancelOrder('<%=Order._id%>')" type="button" class="btn btn-light">Order
+                            <button onclick="cancelOrder('<%=Order._id%>')" type="button" class="btn btn-dark">Order
                             Cancel</button>
-                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-light">Return Order
+                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-dark">Return Order
                             </button>
-                            <button onclick="DeliveredOrder('<%=Order._id%>')" type="button" class="btn btn-light">Order Delivered 
+                            <button onclick="DeliveredOrder('<%=Order._id%>')" type="button" class="btn btn-dark">Order Delivered 
                            </button>
                          <% }else if(Order.orderStatus=='delivered'){ %>
-                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-light">Return Order
+                            <button onclick="ReturnOrder('<%=Order._id%>')" type="button" class="btn btn-dark">Return Order
                             </button>
                          <% } %>   
                     </div> <!-- table-responsive// -->
@@ -202,7 +202,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             function cancelOrder(orderId) {
-
+               console.log("aaa");
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -216,7 +216,7 @@
                         $.ajax({
 
                             type: 'put',
-                            url: `/cancelOrder/${orderId}`,
+                            url: `/admin/cancelOrder/${orderId}`,
 
 
                             success: function (response) {

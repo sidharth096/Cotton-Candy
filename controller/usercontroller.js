@@ -586,18 +586,45 @@ userProfile:async(req,res)=>{
 cancelOrder:async(req,res)=>{ 
     try {
       let orderId=req.params.id
-      let userId=req.session.userid._id
-     const cancelledResponse= await orderModel.findOneAndUpdate(
-        { _id: orderId },
-        {
-          $set: { 
-            orderStatus: "Cancelled"
-          }
-        }) 
 
-        if(cancelledResponse.paymentMethod!='COD'){
-          await walletHelper.addMoneyToWallet(userId,cancelledResponse.totalAmount);
+      const order = await orderModel.findOne({ _id: req.params.id });
+
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productquantity += item.quantity;
+        await Product.save();
+      }
+
+    //  const cancelledResponse= await orderModel.findOneAndUpdate(
+    //     { _id: orderId },
+    //     {
+    //       $set: { 
+    //         orderStatus: "Cancelled"
+    //       }
+    //     }) 
+
+    //     if(cancelledResponse.paymentMethod!='COD'){
+    //       await walletHelper.addMoneyToWallet(userId,cancelledResponse.totalAmount);
+    //     }
+    const cancelledResponse = await orderModel.findOneAndUpdate(
+      { _id: orderId },
+      {
+        $set: {
+          orderStatus: "Cancelled"
         }
+      }
+    );
+    let userId =cancelledResponse.user
+       console.log(userId);
+    console.log(cancelledResponse);
+    if (cancelledResponse.paymentMethod != "COD") {
+      await walletHelper.addMoneyToWallet(
+        userId,
+        cancelledResponse.totalAmount
+      );
+    }
         res.json({status:true})
       
 
@@ -609,20 +636,40 @@ cancelOrder:async(req,res)=>{
  ReturnOrder:async(req,res)=>{
     try {
         let orderId=req.params.id
-        let userId=req.session.userid._id
+
+        const order = await orderModel.findOne({ _id: req.params.id });
+
+        const canceledItems = order.orderedItems;
+  
+        for (const item of canceledItems) {
+         const Product = await product.findOne({ _id: item.productId });
+          Product.productquantity += item.quantity;
+          await Product.save();
+        }
 
 
-        const returnResponse= await orderModel.findOneAndUpdate(
+        // const returnResponse= await orderModel.findOneAndUpdate(
+        //   { _id: orderId },
+        //   {
+        //     $set: {
+        //       orderStatus: "Return"
+        //     }
+        //   })
+
+        //   if(returnResponse.paymentMethod!='COD'){
+        //     await walletHelper.addMoneyToWallet(userId,returnResponse.totalAmount);
+        //   }
+        const returnResponse = await orderModel.findOneAndUpdate(
           { _id: orderId },
           {
             $set: {
               orderStatus: "Return"
             }
-          })
-
-          if(returnResponse.paymentMethod!='COD'){
-            await walletHelper.addMoneyToWallet(userId,returnResponse.totalAmount);
           }
+         );
+         let userId=returnResponse.user
+  
+          await walletHelper.addMoneyToWallet(userId, returnResponse.totalAmount);
 
           res.json({status:true})
       

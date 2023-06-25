@@ -9,6 +9,7 @@ const Coupon = require("../models/coupenmodel");
 const Offer = require("../models/offermodel");
 const banner = require("../models/bannermodal");
 const orderhelper = require("../helpers/orderhelper");
+const walletHelper = require('../helpers/wallethelper');
 const admin = require("../models/adminmodel");
 const bcrypt = require("bcrypt");
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -371,35 +372,103 @@ module.exports = {
       res.status(500).json({ error: "An error occurred" });
     }
   },
+  // cancelOrder: async (req, res) => {
+  //   try {
+  //     let orderId = req.params.id;
+
+  //     await orderModel.updateOne(
+  //       { _id: orderId },
+  //       {
+  //         $set: {
+  //           orderStatus: "Cancelled",
+  //         },
+  //       }
+  //     );
+  //     res.json({ status: true });
+  //   } catch (error) {}
+  // },
+  // ReturnOrder: async (req, res) => {
+  //   try {
+  //     let orderId = req.params.id;
+  //     await orderModel.updateOne(
+  //       { _id: orderId },
+  //       {
+  //         $set: {
+  //           orderStatus: "Return",
+  //         },
+  //       }
+  //     );
+  //     res.json({ status: true });
+  //   } catch (error) {}
+  // },
+
   cancelOrder: async (req, res) => {
     try {
+      console.log("gg");
       let orderId = req.params.id;
+    
+      const order = await orderModel.findOne({ _id: req.params.id });
 
-      await orderModel.updateOne(
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productquantity += item.quantity;
+        await Product.save();
+      }
+
+
+      
+      const cancelledResponse = await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
           $set: {
-            orderStatus: "Cancelled",
-          },
+            orderStatus: "Cancelled"
+          }
         }
       );
+      let userId =cancelledResponse.user
+         console.log(userId);
+      console.log(cancelledResponse);
+      if (cancelledResponse.paymentMethod != "COD") {
+        await walletHelper.addMoneyToWallet(
+          userId,
+          cancelledResponse.totalAmount
+        );
+      }
       res.json({ status: true });
     } catch (error) {}
   },
   ReturnOrder: async (req, res) => {
     try {
       let orderId = req.params.id;
-      await orderModel.updateOne(
+      const order = await orderModel.findOne({ _id: req.params.id });
+
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productquantity += item.quantity;
+        await Product.save();
+      }
+
+
+      const returnResponse = await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
           $set: {
-            orderStatus: "Return",
-          },
+            orderStatus: "Return"
+          }
         }
       );
+      let userId=returnResponse.user
+
+        await walletHelper.addMoneyToWallet(userId, returnResponse.totalAmount);
       res.json({ status: true });
     } catch (error) {}
   },
+
+
 
   orderDelivery: async (req, res) => {
     try {
