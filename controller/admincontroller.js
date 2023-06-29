@@ -361,11 +361,13 @@ module.exports = {
           $lookup: {
             from: "addresses",
             localField: "address",
-            foreignField: " _id",
-            as: "address",
+            foreignField: "_id",
+            as:"address",
           },
         },
       ]);
+       console.log("hello");
+       console.log(order[0]);
       res.render("admin/orderdetailadmin", { Order: order[0] });
     } catch (err) {
       console.log(err);

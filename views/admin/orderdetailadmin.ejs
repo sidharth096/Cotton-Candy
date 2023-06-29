@@ -76,9 +76,10 @@
                         </span>
                         <div class="text">
                             <h6 class="mb-1">Deliver to</h6>
-
-                            <p class="mb-1">
-                             <br> <br> 
+                            
+                            <p><%=Order.address[0].name%><br><%=Order.address[0].address %><br>
+                                <%=Order.address[0].city %><br><%=Order.address[0].state %><br>
+                                <%=Order.address[0].postcode %><br><%=Order.address[0].phone %>
                             </p>
                             <a href="#">View profile</a>
                         </div>
